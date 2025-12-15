@@ -1,0 +1,26 @@
+<!-- Medical Calculator API Navbar -->
+<nav class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-[9999]">
+  <div class="container-xl">
+    <div class="flex justify-between h-16">
+      <!-- Logo and brand name -->
+      <div class="flex items-center space-x-8">
+        <div class="flex-shrink-0 flex items-center">
+          <%= link_to root_path, class: "text-xl font-bold text-gray-900 dark:text-gray-50" do %>
+            <%= Rails.application.config.x.appname %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Right side: User dropdown or auth links -->
+      <div class="flex items-center space-x-4">
+        <% if user_signed_in? %>
+          <!-- User dropdown (production-ready component) -->
+          <%= render 'shared/user_dropdown' %>
+        <% else %>
+          <%= link_to "Sign In", sign_in_path, class: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-50 px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
+          <%= link_to "Sign Up", sign_up_path, class: "bg-primary hover:bg-primary-dark text-gray-50 px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
