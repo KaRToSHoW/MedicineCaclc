@@ -73,7 +73,7 @@ export default function ResultScreen() {
     return (
       <View className="flex-1 bg-surface items-center justify-center">
         <ActivityIndicator size="large" color="#0080FF" />
-        <Text className="text-text-secondary mt-4">Loading result...</Text>
+        <Text className="text-text-secondary mt-4">Загрузка результата...</Text>
       </View>
     );
   }
@@ -85,12 +85,12 @@ export default function ResultScreen() {
       {/* Header */}
       <View className={`${styles.bg} px-6 pt-16 pb-8 border-b-4 ${styles.border}`}>
         <Pressable onPress={() => router.back()} className="mb-4 active:opacity-70">
-          <Text className={`${styles.text} text-lg font-medium`}>← Back</Text>
+          <Text className={`${styles.text} text-lg font-medium`}>← Назад</Text>
         </Pressable>
         <View className="flex-row items-center mb-2">
           <Text className="text-3xl mr-3">{styles.icon}</Text>
           <Text className={`text-2xl font-bold ${styles.text}`}>
-            Calculation Result
+            Результат расчета
           </Text>
         </View>
         <Text className="text-sm text-text-secondary">
@@ -102,7 +102,7 @@ export default function ResultScreen() {
         {/* Result Value Card */}
         <View className={`rounded-2xl p-6 mb-6 border-2 ${styles.border} ${styles.bg}`}>
           <Text className="text-sm font-medium text-text-secondary mb-3">
-            Calculated Value
+            Рассчитанное значение
           </Text>
           <View className="flex-row items-baseline mb-4">
             <Text className="text-6xl font-bold text-text-primary">
@@ -117,7 +117,7 @@ export default function ResultScreen() {
         {/* Interpretation Card */}
         <View className="bg-surface-elevated rounded-2xl p-6 mb-6 border border-border">
           <Text className="text-lg font-bold text-text-primary mb-4">
-            Clinical Interpretation
+            Клиническая интерпретация
           </Text>
           <View className={`rounded-xl p-4 ${styles.bg} border ${styles.border}`}>
             <Text className={`text-base ${styles.text} font-medium`}>
@@ -129,7 +129,7 @@ export default function ResultScreen() {
         {/* Input Data Card */}
         <View className="bg-surface-elevated rounded-2xl p-6 mb-6 border border-border">
           <Text className="text-lg font-bold text-text-primary mb-4">
-            Input Parameters
+            Входные параметры
           </Text>
           <View className="gap-3">
             {Object.entries(result.inputData).map(([key, value]) => (
@@ -150,13 +150,13 @@ export default function ResultScreen() {
           <View className="flex-row items-center mb-3">
             <Text className="text-base mr-2">📅</Text>
             <Text className="text-sm text-text-secondary">
-              Date: {new Date(result.performedAt).toLocaleDateString('ru-RU')}
+              Дата: {new Date(result.performedAt).toLocaleDateString('ru-RU')}
             </Text>
           </View>
           <View className="flex-row items-center">
             <Text className="text-base mr-2">⏱️</Text>
             <Text className="text-sm text-text-secondary">
-              Time: {new Date(result.performedAt).toLocaleTimeString('ru-RU')}
+              Время: {new Date(result.performedAt).toLocaleTimeString('ru-RU')}
             </Text>
           </View>
         </View>
@@ -167,12 +167,12 @@ export default function ResultScreen() {
             <Text className="text-xl mr-3">ℹ️</Text>
             <View className="flex-1">
               <Text className="text-sm font-medium text-info-text mb-1">
-                Medical Disclaimer
+                Медицинское предупреждение
               </Text>
               <Text className="text-xs text-text-secondary">
-                This result is for informational purposes only and should not replace professional
-                medical advice. Always consult with a qualified healthcare provider for diagnosis
-                and treatment.
+                Этот результат носит исключительно информационный характер и не должен заменять профессиональный
+                медицинский совет. Всегда консультируйтесь с квалифицированным врачом для диагностики
+                и лечения.
               </Text>
             </View>
           </View>
@@ -185,7 +185,7 @@ export default function ResultScreen() {
             className="bg-primary rounded-xl py-4 items-center active:opacity-80"
           >
             <Text className="text-base font-semibold text-text-inverse">
-              Calculate Another
+              Рассчитать еще
             </Text>
           </Pressable>
           <Pressable
@@ -193,7 +193,7 @@ export default function ResultScreen() {
             className="bg-surface-secondary border border-border rounded-xl py-4 items-center active:opacity-70"
           >
             <Text className="text-base font-semibold text-text-secondary">
-              View History
+              Смотреть историю
             </Text>
           </Pressable>
         </View>

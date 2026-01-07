@@ -9,12 +9,12 @@ import { useCalculatorsStore } from '@/stores/calculatorsStore';
  */
 
 const categories = [
-  { id: 'all', name: 'All' },
-  { id: 'general', name: 'General' },
-  { id: 'cardiology', name: 'Cardiology' },
-  { id: 'endocrinology', name: 'Endocrinology' },
-  { id: 'neurology', name: 'Neurology' },
-  { id: 'pediatrics', name: 'Pediatrics' },
+  { id: 'all', name: 'Все' },
+  { id: 'general', name: 'Общие' },
+  { id: 'cardiology', name: 'Кардиология' },
+  { id: 'endocrinology', name: 'Эндокринология' },
+  { id: 'neurology', name: 'Неврология' },
+  { id: 'pediatrics', name: 'Педиатрия' },
 ];
 
 export default function CalculatorsListScreen() {
@@ -45,10 +45,10 @@ export default function CalculatorsListScreen() {
       {/* Header */}
       <View className="bg-primary px-6 pt-16 pb-6">
         <Text className="text-2xl font-bold text-text-inverse mb-2">
-          All Calculators
+          Все калькуляторы
         </Text>
         <Text className="text-sm text-text-inverse opacity-90">
-          {filteredCalculators.length} calculators available
+          Доступно {filteredCalculators.length} калькуляторов
         </Text>
       </View>
 
@@ -57,7 +57,7 @@ export default function CalculatorsListScreen() {
         <TextInput
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder="Search calculators..."
+          placeholder="Поиск калькуляторов..."
           placeholderTextColor="#A0A0A0"
           className="bg-surface-elevated border border-border rounded-xl px-4 py-3 text-base text-text-primary"
         />
@@ -96,7 +96,7 @@ export default function CalculatorsListScreen() {
       <ScrollView className="flex-1 px-6">
         {loading ? (
           <View className="bg-surface-elevated rounded-2xl p-6 border border-border">
-            <Text className="text-center text-text-secondary">Loading calculators...</Text>
+            <Text className="text-center text-text-secondary">Загрузка калькуляторов...</Text>
           </View>
         ) : error ? (
           <View className="bg-danger-bg border border-danger rounded-xl p-4">
@@ -105,7 +105,7 @@ export default function CalculatorsListScreen() {
         ) : filteredCalculators.length === 0 ? (
           <View className="bg-surface-elevated rounded-2xl p-6 border border-border">
             <Text className="text-center text-text-secondary">
-              No calculators found matching your criteria.
+              Нет калькуляторов, соответствующих вашему запросу.
             </Text>
           </View>
         ) : (

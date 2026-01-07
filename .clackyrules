@@ -1,8 +1,8 @@
 ## Project Structure
 
-This is an Expo + Rails 7x full-stack template:
+This is an Expo + Python FastAPI full-stack template:
 - Frontend: Expo (React Native) with Expo Router and NativeWind
-- Backend: Rails 7.2 API (in `backend/` submodule)
+- Backend: Python FastAPI (in `api/` directory)
 
 ## Startup Commands
 
@@ -11,9 +11,9 @@ This is an Expo + Rails 7x full-stack template:
 npm run start
 ```
 
-**Backend (Rails API):**
+**Backend (Python FastAPI):**
 ```bash
-npm run start-backend    # Starts Rails API (port 3001)
+npm run start-backend    # Starts Python API (port 3001)
 ```
 
 ## When to Restart Frontend Development Server
@@ -34,17 +34,19 @@ Restarting the Expo dev server is unnecessary because it automatically hot-reloa
 - TypeScript ~5.3
 - React 18.2
 
-### Backend (see backend/.clackyrules for details)
-- Ruby on Rails 7.2 (API mode)
-- PostgreSQL
-- Figaro (environment variables)
-- RSpec (testing)
-- Puma
+### Backend
+- Python 3.x
+- FastAPI 0.115.5 (async web framework)
+- SQLAlchemy 2.0.36 (async ORM)
+- PostgreSQL (via asyncpg)
+- Pydantic 2.10.3 (data validation)
+- JWT authentication (python-jose)
+- Uvicorn (ASGI server)
 
 ## Port Configuration
 
 - **Frontend (Expo web)**: 3000 (configurable via EXPO_WEB_PORT, default is 3000)
-- **Backend (Rails API)**: 3001 (auto-detected when running as submodule)
+- **Backend (Python API)**: 3001
 
 ## Cross-Platform Rules (iOS + Android + Web)
 
@@ -64,7 +66,6 @@ Restarting the Expo dev server is unnecessary because it automatically hot-reloa
 
 **ALWAYS start by updating the project name:**
 - Update `name` (display name, can be in any language) and `slug` (URL-safe identifier, English only) in `app.config.js`
-- Update backend app name: `echo "YourAppName" > backend/config/appname.txt`
 
 **ALWAYS update the design system in `tailwind.config.js`** before creating any screens/components.
 
@@ -116,12 +117,11 @@ npm test        # Jest tests
 
 **Backend tests (if you modified any backend code):**
 ```bash
-cd backend && rake test     # RSpec tests
+cd api && python -m pytest     # Python tests
 ```
 
 - This is NON-NEGOTIABLE - never deliver with failing tests or lint errors
-- Backend: Run multiple times until all tests pass (shows max 5 failures at once)
-- **If you are planning tasks with TodoWrite tool, ALWAYS include "Run npm test and ensure all tests pass" (and "Run rake test" for backend changes) as specific task items**
+- **If you are planning tasks with TodoWrite tool, ALWAYS include "Run npm test and ensure all tests pass" (and "Run pytest" for backend changes) as specific task items**
 
 ## Some important tips when Developing user authentication/payment/LLM-calling(AI APP) system
 
@@ -132,12 +132,10 @@ When developing features, **DO NOT create them manually**. Use generators:
 1. **API Client**: `npm run gen api RESOURCE [actions...]`
    - Generates: `types/resource.ts`, `services/resource.ts`, `stores/resourceStore.ts`
    - **FormData Support**: `create` and `update` methods automatically support both JSON and FormData (for file uploads)
-   - Backend: `cd backend && rails g controller api::v1::RESOURCE [actions...]`
    - Example: `npm run gen api posts index show create update`
 
 2. **Auth System**: `npm run gen authentication`
    - Frontend: Generates types, services, contexts, hooks, auth screens (sign-in/sign-up/forgot-password)
-   - Backend: `cd backend && rails generate authentication`
    - Auto-wraps app with `<AuthProvider>` in `app/_layout.tsx`
    - Usage: `const { user, login, logout } = useAuth();`
 
@@ -169,7 +167,7 @@ When user requests icon changes without providing specific images, use [ui-avata
 
 **camelCase** - Variables, Properties, Functions:
 - `sessionToken`, `createdAt`, `isLoading`, `passwordConfirmation`
-- Frontend uses camelCase, even for API data from Rails
+- Frontend uses camelCase for all API data
 
 **⚠️ CRITICAL - Type definitions MUST use camelCase:**
 ```typescript
@@ -177,15 +175,15 @@ When user requests icon changes without providing specific images, use [ui-avata
 // ❌ Wrong:    user_name, created_at (causes runtime errors!)
 ```
 
-**Auto-conversion** - `services/api.ts` handles Rails ↔ JavaScript:
-- Rails backend (snake_case): `{ session_token: "abc", created_at: "..." }`
+**Auto-conversion** - `services/api.ts` handles snake_case ↔ camelCase:
+- Python backend (snake_case): `{ session_token: "abc", created_at: "..." }`
 - JS frontend (camelCase): `{ sessionToken: "abc", createdAt: "..." }`
 - Never use snake_case in TypeScript code - let api.ts convert automatically
 
 ### Adding Dependencies
 - Always specify versions when installing packages
 - Frontend: Use Expo SDK 51 compatible versions
-- Backend: See backend/.clackyrules for Rails guidelines
+- Backend: Add to `api/requirements.txt` and run `python3 -m pip install -r api/requirements.txt`
 
 ### API Communication & State Management
 - **CRITICAL**: NEVER import from `services/` in screens/components - ALWAYS use store layer
@@ -221,7 +219,6 @@ When user requests icon changes without providing specific images, use [ui-avata
   const addItem = usePhotosStore(s => s.addItem);
   await addItem(formData);
   ```
-- **ActiveStorage URL**: ALWAYS use `attachment_url(attachment)` for full url, NEVER use `only_path: true`
 
 ### File-based Routing (Expo Router)
 - Routes defined in `app/` directory
@@ -244,9 +241,64 @@ When user requests icon changes without providing specific images, use [ui-avata
 ```bash
 npm test
 ```
+
 ### Backend Testing
 
-See `backend/.clackyrules` - must run `rake test` before delivery
+**Run tests:**
+```bash
+cd api && python -m pytest
+```
+
+## Backend Structure (Python FastAPI)
+
+### Project Layout
+```
+api/
+├── main.py                 # FastAPI app entry point
+├── requirements.txt        # Python dependencies
+├── seed_data.py           # Database seeding script
+└── app/
+    ├── core/
+    │   ├── config.py      # Application settings
+    │   ├── database.py    # SQLAlchemy setup
+    │   └── security.py    # JWT & password hashing
+    ├── models/
+    │   └── __init__.py    # SQLAlchemy models
+    ├── schemas.py         # Pydantic schemas
+    └── api/
+        └── v1/            # API endpoints
+            ├── __init__.py
+            ├── auth.py
+            ├── calculators.py
+            ├── calculation_results.py
+            ├── profiles.py
+            └── health.py
+```
+
+### Key Files
+
+**api/main.py** - FastAPI application with CORS and lifespan management
+**api/app/core/config.py** - Settings (DATABASE_URL, SECRET_KEY, etc.)
+**api/app/core/database.py** - Async SQLAlchemy engine and session
+**api/app/core/security.py** - JWT token creation and password hashing
+**api/app/models/__init__.py** - Database models (User, Calculator, CalculationResult, etc.)
+**api/app/schemas.py** - Pydantic request/response models
+**api/seed_data.py** - Seeds database with initial calculator data
+
+### Running Backend
+
+```bash
+# Install dependencies
+cd api && python3 -m pip install -r requirements.txt
+
+# Seed database
+python3 seed_data.py
+
+# Start server
+npm run start-backend
+# or directly:
+cd api && python3 -m uvicorn main:app --host 0.0.0.0 --port 3001 --reload
+```
 
 ## Important Notes
 
@@ -261,7 +313,6 @@ See `backend/.clackyrules` - must run `rake test` before delivery
 - Keep dependencies minimal and well-documented
 - Use TypeScript strictly - avoid `any` type when possible
 - Follow semantic naming conventions
-- For backend development guidelines, refer to `backend/.clackyrules`
 
 ### DO NOT
 - Use fake data that should come from API/database

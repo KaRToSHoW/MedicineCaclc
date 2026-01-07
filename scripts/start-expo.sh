@@ -10,4 +10,4 @@ if [ -n "$CLACKY_PREVIEW_DOMAIN_BASE" ]; then
 fi
 # Otherwise use default Expo behavior (auto-detect IP for LAN access)
 
-exec expo start "$@" --port "$EXPO_PORT"
+exec ./node_modules/.bin/expo start "$@" --port "$EXPO_PORT"
