@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "npx dotenv-cli -- ./scripts/start-expo.sh",
-    "web": "npx dotenv-cli -- ./scripts/start-expo.sh --web",
-    "android": "npx dotenv-cli -- ./scripts/start-expo.sh --android",
-    "ios": "npx dotenv-cli -- ./scripts/start-expo.sh --ios",
-    "start-backend": "./scripts/start-python-backend.sh",
+    "start": "npx dotenv-cli -- ./scripts/start-expo.bat",
+    "web": "npx dotenv-cli -- ./scripts/start-expo.bat --web",
+    "android": "npx dotenv-cli -- ./scripts/start-expo.bat --android",
+    "ios": "npx dotenv-cli -- ./scripts/start-expo.bat --ios",
+    "start-backend": "python api/main.py",
     "gen": "node scripts/generators/index.js",
     "test": "run-p lint test:jest",
     "test:jest": "jest",
@@ -15,7 +15,9 @@
     "lint:eslint": "eslint .",
     "lint:types": "tsc --noEmit",
     "lint:fix": "eslint . --fix",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "seed:firebase": "node scripts/seed_calculators_firestore.js",
+    "seed:firebase:dry": "node scripts/seed_calculators_firestore.js --dry"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
@@ -27,6 +29,9 @@
     "expo-router": "~3.5.23",
     "expo-secure-store": "~13.0.2",
     "expo-status-bar": "~1.12.1",
+    "firebase": "^10.14.1",
+    "mathjs": "^12.4.0",
+    "firebase-admin": "^13.6.0",
     "nativewind": "^4.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",

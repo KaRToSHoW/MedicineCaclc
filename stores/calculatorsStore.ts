@@ -27,7 +27,16 @@ export const useCalculatorsStore = create<CalculatorsStore>((set) => ({
   fetchAll: async () => {
     set({ loading: true, error: null });
     try {
-      const items = await calculatorsService.getAll();
+      let items = await calculatorsService.getAll();
+      // Normalize category to a sortable id (lowercase), ensure id is string
+      // and ensure inputFields exists (supports `input_fields` from seed JSON)
+      items = items.map((it) => ({
+        ...it,
+        id: String(it.id),
+        category: it.category || '' ,
+        categoryId: String(it.category || '').toLowerCase(),
+        inputFields: (it as any).inputFields || (it as any).input_fields || [],
+      } as any));
       set({ items, loading: false });
     } catch (error: any) {
       console.error('Failed to fetch calculators:', error);

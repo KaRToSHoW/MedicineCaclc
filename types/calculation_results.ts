@@ -9,9 +9,9 @@
 import { Calculator } from './calculators';
 
 export interface CalculationResult {
-  id: number;
-  userId: number;
-  calculatorId: number;
+  id: string | number;
+  userId: string | number;
+  calculatorId: string | number;
   inputData: Record<string, any>;
   resultValue: number;
   interpretation: string;
@@ -22,7 +22,7 @@ export interface CalculationResult {
 }
 
 export interface CreateCalculationResultInput {
-  calculatorId: number;
+  calculatorId: string | number;
   inputData: Record<string, any>;
 }
 

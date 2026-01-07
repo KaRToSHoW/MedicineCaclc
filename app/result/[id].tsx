@@ -57,13 +57,13 @@ const getSeverityStyles = (interpretation: string) => {
 
 export default function ResultScreen() {
   const params = useLocalSearchParams();
-  const resultId = parseInt(params.id as string);
+  const resultId = params.id as string;
   
   const { items: results, loading } = useCalculationResultsStore();
   const [result, setResult] = useState<CalculationResult | null>(null);
 
   useEffect(() => {
-    const foundResult = results.find((r) => r.id === resultId);
+    const foundResult = results.find((r) => String(r.id) === String(resultId));
     if (foundResult) {
       setResult(foundResult);
     }
@@ -106,7 +106,16 @@ export default function ResultScreen() {
           </Text>
           <View className="flex-row items-baseline mb-4">
             <Text className="text-6xl font-bold text-text-primary">
-              {result.resultValue.toFixed(2)}
+              {(() => {
+                const val = result.resultValue as any;
+                // If formula likely returns a date (e.g., Naegele's rule) the value may be a timestamp
+                const isDateLike = typeof val === 'number' && val > 1e11;
+                if (isDateLike) {
+                  return new Date(val).toLocaleDateString('ru-RU');
+                }
+                if (typeof val === 'number') return val.toFixed(2);
+                return String(val ?? '');
+              })()}
             </Text>
             <Text className="text-lg text-text-secondary ml-2">
               {result.calculator?.category === 'general' && result.calculator?.name?.includes('BMI') ? 'kg/m²' : ''}
