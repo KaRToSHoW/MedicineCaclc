@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "npx dotenv-cli -- ./scripts/start-expo.bat",
-    "web": "npx dotenv-cli -- ./scripts/start-expo.bat --web",
-    "android": "npx dotenv-cli -- ./scripts/start-expo.bat --android",
-    "ios": "npx dotenv-cli -- ./scripts/start-expo.bat --ios",
-    "start-backend": "python api/main.py",
+    "start": "npx dotenv-cli -- ./scripts/start-expo.sh",
+    "web": "npx dotenv-cli -- ./scripts/start-expo.sh --web",
+    "android": "npx dotenv-cli -- ./scripts/start-expo.sh --android",
+    "ios": "npx dotenv-cli -- ./scripts/start-expo.sh --ios",
+    "start-backend": "python3 api/main.py",
     "gen": "node scripts/generators/index.js",
     "test": "run-p lint test:jest",
     "test:jest": "jest",
@@ -65,7 +65,7 @@
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|firebase|@firebase)"
     ],
     "moduleNameMapper": {
       "\\.(css)$": "<rootDir>/__mocks__/styleMock.js"

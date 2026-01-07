@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Medical Calculator API"
     
     # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:pvRuvyIM@localhost:5432/medical_calculator_development"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:EgGUBPWJ@127.0.0.1:5432/medical_calculator_development"
     
     # CORS
     ALLOWED_ORIGINS: List[str] = ["*"]

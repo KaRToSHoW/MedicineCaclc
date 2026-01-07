@@ -33,7 +33,7 @@ export default function HistoryScreen() {
     return matchesSearch && matchesCategory;
   });
 
-  const handleResultPress = (id: number) => {
+  const handleResultPress = (id: string | number) => {
     router.push(`/result/${id}`);
   };
 
@@ -65,7 +65,7 @@ export default function HistoryScreen() {
     return (
       <View className="flex-1 bg-surface">
         <View className="bg-primary px-6 pt-16 pb-8">
-          <Pressable onPress={() => router.back()} className="mb-4 active:opacity-70">
+          <Pressable onPress={() => router.canGoBack() ? router.back() : router.push('/')} className="mb-4 active:opacity-70">
             <Text className="text-text-inverse text-lg">← Назад</Text>
           </Pressable>
           <Text className="text-2xl font-bold text-text-inverse mb-2">
@@ -107,7 +107,7 @@ export default function HistoryScreen() {
     <View className="flex-1 bg-surface">
       {/* Header */}
       <View className="bg-primary px-6 pt-16 pb-6">
-        <Pressable onPress={() => router.back()} className="mb-4 active:opacity-70">
+        <Pressable onPress={() => router.canGoBack() ? router.back() : router.push('/')} className="mb-4 active:opacity-70">
           <Text className="text-text-inverse text-lg">← Назад</Text>
         </Pressable>
         <Text className="text-2xl font-bold text-text-inverse mb-2">
@@ -209,14 +209,14 @@ export default function HistoryScreen() {
                     </Text>
                   </View>
                   <View className="items-end ml-3">
-                      <Text className="text-2xl font-bold text-text-primary">
-                        {(() => {
-                          const v = (result as any).resultValue;
-                          if (typeof v === 'number' && isFinite(v)) return v.toFixed(1);
-                          if (typeof v === 'string' && v.trim() !== '' && !isNaN(Number(v))) return Number(v).toFixed(1);
-                          return '-';
-                        })()}
-                      </Text>
+                    <Text className="text-2xl font-bold text-text-primary">
+                      {(() => {
+                        const v = (result as any).resultValue;
+                        if (typeof v === 'number' && isFinite(v)) return v.toFixed(1);
+                        if (typeof v === 'string' && v.trim() !== '' && !isNaN(Number(v))) return Number(v).toFixed(1);
+                        return '-';
+                      })()}
+                    </Text>
                     <Text className="text-xs text-text-muted mt-1">→</Text>
                   </View>
                 </View>

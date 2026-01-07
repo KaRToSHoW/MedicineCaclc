@@ -23,13 +23,41 @@ class CalculatorsService {
       const normalizedFields = (inputFields as any[]).map((f) => ({
         name: f.name || f.id || f.key,
         label: f.label || f.title || f.display || f.name,
+        labelRu: f.labelRu || f.label_ru,
         type: f.type || 'number',
         unit: f.unit,
-        options: f.options || [],
+        options: (f.options || []).map((opt: any) => 
+          typeof opt === 'object' ? {
+            value: opt.value,
+            label: opt.label,
+            labelRu: opt.labelRu || opt.label_ru
+          } : opt
+        ),
         min: f.min,
         max: f.max,
       }));
-      return { id, ...c, inputFields: normalizedFields } as Calculator;
+      
+      const interpretationRules = (c.interpretationRules || c.interpretation_rules || []).map((r: any) => ({
+        condition: r.condition,
+        interpretation: r.interpretation,
+        interpretationRu: r.interpretationRu || r.interpretation_ru,
+        conclusion: r.conclusion,
+        recommendations: r.recommendations,
+        severity: r.severity,
+      }));
+      
+      return {
+        id,
+        name: c.name,
+        nameRu: c.nameRu || c.name_ru,
+        description: c.description,
+        descriptionRu: c.descriptionRu || c.description_ru,
+        category: c.category,
+        categoryRu: c.categoryRu || c.category_ru,
+        formula: c.formula,
+        inputFields: normalizedFields,
+        interpretationRules,
+      } as Calculator;
     });
     return items as CalculatorsResponse;
   }
@@ -41,13 +69,41 @@ class CalculatorsService {
       const normalizedFields = (inputFields as any[]).map((f) => ({
         name: f.name || f.id || f.key,
         label: f.label || f.title || f.display || f.name,
+        labelRu: f.labelRu || f.label_ru,
         type: f.type || 'number',
         unit: f.unit,
-        options: f.options || [],
+        options: (f.options || []).map((opt: any) => 
+          typeof opt === 'object' ? {
+            value: opt.value,
+            label: opt.label,
+            labelRu: opt.labelRu || opt.label_ru
+          } : opt
+        ),
         min: f.min,
         max: f.max,
       }));
-      return { id: cid, ...c, inputFields: normalizedFields } as Calculator;
+      
+      const interpretationRules = (c.interpretationRules || c.interpretation_rules || []).map((r: any) => ({
+        condition: r.condition,
+        interpretation: r.interpretation,
+        interpretationRu: r.interpretationRu || r.interpretation_ru,
+        conclusion: r.conclusion,
+        recommendations: r.recommendations,
+        severity: r.severity,
+      }));
+      
+      return {
+        id: cid,
+        name: c.name,
+        nameRu: c.nameRu || c.name_ru,
+        description: c.description,
+        descriptionRu: c.descriptionRu || c.description_ru,
+        category: c.category,
+        categoryRu: c.categoryRu || c.category_ru,
+        formula: c.formula,
+        inputFields: normalizedFields,
+        interpretationRules,
+      } as Calculator;
     });
     const found = items.find(i => String(i.id) === String(id));
     if (!found) throw new Error('Calculator not found');

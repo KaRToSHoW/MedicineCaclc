@@ -20,7 +20,7 @@ export default function SignInScreen() {
 
   const handleSignIn = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please enter email and password');
+      Alert.alert('Ошибка', 'Пожалуйста, введите email и пароль');
       return;
     }
 
@@ -29,7 +29,7 @@ export default function SignInScreen() {
       await login({ email, password });
       router.replace('/');
     } catch (error) {
-      Alert.alert('Error', error instanceof Error ? error.message : 'Login failed');
+      Alert.alert('Ошибка', error instanceof Error ? error.message : 'Не удалось войти');
     } finally {
       setSubmitting(false);
     }

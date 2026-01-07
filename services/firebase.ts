@@ -2,6 +2,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getAnalytics, Analytics } from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAGUW3la2giOJn_sG2Nz4HRAfqP1QuY0KA",
@@ -16,6 +17,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+// Initialize Analytics (only in browser environment)
+let analytics: Analytics | null = null;
+if (typeof window !== 'undefined') {
+  try {
+    analytics = getAnalytics(app);
+  } catch (error) {
+    console.warn('Analytics not available:', error);
+  }
+}
+export { analytics };
 
 // Promise that resolves once Firebase Auth has initialized and fired first state
 export const authReady: Promise<FirebaseUser | null> = new Promise(resolve => {

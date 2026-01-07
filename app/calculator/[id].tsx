@@ -142,7 +142,7 @@ export default function CalculatorScreen() {
       <View className="flex-1 bg-surface items-center justify-center px-6">
         <Text className="text-lg font-semibold mb-2">{calculator.name}</Text>
         <Text className="text-sm text-text-secondary mb-4">Для этого калькулятора не заданы входные параметры.</Text>
-        <Pressable onPress={() => router.back()} className="bg-primary rounded-xl px-6 py-3">
+        <Pressable onPress={() => router.canGoBack() ? router.back() : router.push('/')} className="bg-primary rounded-xl px-6 py-3">
           <Text className="text-text-inverse">Назад</Text>
         </Pressable>
       </View>
@@ -153,14 +153,14 @@ export default function CalculatorScreen() {
     <ScrollView className="flex-1 bg-surface">
       {/* Header */}
       <View className="bg-primary px-6 pt-16 pb-8">
-        <Pressable onPress={() => router.back()} className="mb-4 active:opacity-70">
+        <Pressable onPress={() => router.canGoBack() ? router.back() : router.push('/')} className="mb-4 active:opacity-70">
           <Text className="text-text-inverse text-lg">← Назад</Text>
         </Pressable>
         <Text className="text-2xl font-bold text-text-inverse mb-2">
-          {calculator.name}
+          {calculator.nameRu || calculator.name}
         </Text>
         <Text className="text-sm text-text-inverse opacity-90 capitalize">
-          {calculator.category}
+          {calculator.categoryRu || calculator.category}
         </Text>
       </View>
 
@@ -168,7 +168,7 @@ export default function CalculatorScreen() {
         {/* Description */}
         <View className="bg-info-bg border border-info rounded-xl p-4 mb-6">
           <Text className="text-sm text-text-secondary">
-            {calculator.description}
+            {calculator.descriptionRu || calculator.description}
           </Text>
         </View>
 
@@ -181,40 +181,44 @@ export default function CalculatorScreen() {
           {calculator.inputFields.map((field: InputField, index: number) => (
             <View key={field.name} className={index > 0 ? 'mt-4' : ''}>
               <Text className="text-sm font-medium text-text-primary mb-2">
-                {field.label}
+                {field.labelRu || field.label}
                 {field.unit ? ` (${field.unit})` : ''}
               </Text>
               
               {field.type === 'select' && field.options ? (
                 <View className="gap-2">
-                  {field.options.map((option) => (
-                    <Pressable
-                      key={option}
-                      onPress={() => setInputValues({ ...inputValues, [field.name]: option })}
-                      className={`rounded-xl px-4 py-3 border ${
-                        inputValues[field.name] === option
-                          ? 'bg-primary border-primary'
-                          : 'bg-surface border-border'
-                      } active:opacity-70`}
-                    >
-                      <Text
-                        className={`text-base ${
-                          inputValues[field.name] === option
-                            ? 'text-text-inverse font-medium'
-                            : 'text-text-secondary'
-                        }`}
+                  {field.options.map((option: any) => {
+                    const optionValue = typeof option === 'object' ? option.value : option;
+                    const optionLabel = typeof option === 'object' ? (option.labelRu || option.label) : option;
+                    return (
+                      <Pressable
+                        key={optionValue}
+                        onPress={() => setInputValues({ ...inputValues, [field.name]: String(optionValue) })}
+                        className={`rounded-xl px-4 py-3 border ${
+                          inputValues[field.name] === String(optionValue)
+                            ? 'bg-primary border-primary'
+                            : 'bg-surface border-border'
+                        } active:opacity-70`}
                       >
-                        {option}
-                      </Text>
-                    </Pressable>
-                  ))}
+                        <Text
+                          className={`text-base ${
+                            inputValues[field.name] === String(optionValue)
+                              ? 'text-text-inverse font-medium'
+                              : 'text-text-secondary'
+                          }`}
+                        >
+                          {optionLabel}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
                 </View>
               ) : (
                 <TextInput
                   value={inputValues[field.name] || ''}
                   onChangeText={(value) => setInputValues({ ...inputValues, [field.name]: value })}
                   keyboardType={field.type === 'number' ? 'numeric' : 'default'}
-                  placeholder={`Введите ${field.label.toLowerCase()}`}
+                  placeholder={`Введите ${(field.labelRu || field.label).toLowerCase()}`}
                   placeholderTextColor="#A0A0A0"
                   className={`bg-surface border rounded-xl px-4 py-3.5 text-base text-text-primary ${
                     errors[field.name] ? 'border-danger' : 'border-border'
