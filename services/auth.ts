@@ -14,7 +14,6 @@ import {
   onAuthStateChanged,
   getIdToken,
 } from 'firebase/auth';
-import { calculationResultsService } from '@/services/calculation_results';
 
 class AuthService {
   async login({ email, password }: { email: string; password: string }) {
@@ -22,8 +21,6 @@ class AuthService {
     const token = await getIdToken(result.user);
     await storage.set('session_token', token);
     await storage.set('uid', result.user.uid);
-    // Migrate any local results to Firestore for this user
-    try { await calculationResultsService.migrateLocalToFirestore(); } catch (e) { console.warn('Migration failed', e); }
     return { sessionToken: token, user: { id: result.user.uid, email: result.user.email } } as any;
   }
 
@@ -32,8 +29,6 @@ class AuthService {
     const token = await getIdToken(result.user);
     await storage.set('session_token', token);
     await storage.set('uid', result.user.uid);
-    // Migrate any local results to Firestore for this user
-    try { await calculationResultsService.migrateLocalToFirestore(); } catch (e) { console.warn('Migration failed', e); }
     return { sessionToken: token, user: { id: result.user.uid, email: result.user.email } } as any;
   }
 

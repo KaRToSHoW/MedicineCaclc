@@ -9,29 +9,36 @@
 export interface InputField {
   name: string;
   label: string;
+  labelRu?: string;
   type: 'number' | 'text' | 'select';
   unit?: string;
   min?: number;
   max?: number;
-  options?: string[];
+  options?: (string | { value: string | number; label: string; labelRu?: string })[];
 }
 
 export interface InterpretationRule {
   condition: string;
   interpretation: string;
-  severity: 'normal' | 'caution' | 'warning' | 'danger' | 'critical';
+  interpretationRu?: string;
+  conclusion?: string;
+  recommendations?: string;
+  severity?: 'normal' | 'caution' | 'warning' | 'danger' | 'critical';
 }
 
 export interface Calculator {
   id: string | number;
   name: string;
+  nameRu?: string;
   description: string;
+  descriptionRu?: string;
   formula: string;
   category: string;
+  categoryRu?: string;
   inputFields: InputField[];
   interpretationRules: InterpretationRule[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface CreateCalculatorInput {
