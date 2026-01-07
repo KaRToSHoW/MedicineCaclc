@@ -1,68 +1,91 @@
 /** @type {import('tailwindcss').Config} */
 
-// Medical Calculator Design System - Professional Medical Color Palette
-// Color scheme optimized for healthcare applications with trust and professionalism
+// Modern Medical Calculator Design System with Gradients & Animations
+// Fresh, clean, and professional color palette optimized for healthcare
 const colors = {
-  // Medical Brand Colors - Trustworthy blues and healing greens
+  // Primary Brand - Modern Medical Blue
   primary: {
-    DEFAULT: 'hsl(210, 100%, 50%)',    // Medical Blue - professional and trustworthy
-    light: 'hsl(210, 100%, 92%)',      // Light blue backgrounds
-    dark: 'hsl(210, 100%, 40%)',       // Dark blue for emphasis
+    DEFAULT: 'hsl(211, 100%, 50%)',     // Vibrant medical blue
+    light: 'hsl(211, 100%, 95%)',       // Very light blue for backgrounds
+    dark: 'hsl(211, 100%, 35%)',        // Deep blue for emphasis
+    50: 'hsl(211, 100%, 98%)',
+    100: 'hsl(211, 100%, 95%)',
+    200: 'hsl(211, 100%, 85%)',
+    300: 'hsl(211, 100%, 70%)',
+    400: 'hsl(211, 100%, 60%)',
+    500: 'hsl(211, 100%, 50%)',
+    600: 'hsl(211, 100%, 45%)',
+    700: 'hsl(211, 100%, 35%)',
+    800: 'hsl(211, 100%, 25%)',
+    900: 'hsl(211, 100%, 15%)',
   },
+  
+  // Secondary - Fresh Teal/Cyan accent
   secondary: {
-    DEFAULT: 'hsl(145, 63%, 42%)',     // Medical Green - healing and health
-    light: 'hsl(145, 63%, 90%)',       // Light green backgrounds
-    dark: 'hsl(145, 63%, 32%)',        // Dark green for emphasis
+    DEFAULT: 'hsl(186, 100%, 42%)',     // Fresh teal
+    light: 'hsl(186, 100%, 94%)',       // Light teal backgrounds
+    dark: 'hsl(186, 100%, 30%)',        // Dark teal
   },
+
+  // Accent - Modern Purple for highlights
   accent: {
-    DEFAULT: 'hsl(200, 80%, 55%)',     // Calming teal - modern medical feel
-    light: 'hsl(200, 80%, 95%)',       // Very light teal
-    dark: 'hsl(200, 80%, 40%)',        // Deep teal
+    DEFAULT: 'hsl(262, 83%, 58%)',      // Modern purple
+    light: 'hsl(262, 83%, 95%)',        // Very light purple
+    dark: 'hsl(262, 83%, 40%)',         // Deep purple
   },
 
-  // Text colors - optimized for medical readability
+  // Text colors - High contrast and readable
   text: {
-    primary: 'hsl(210, 20%, 20%)',     // Dark blue-gray for main text
-    secondary: 'hsl(210, 15%, 45%)',   // Medium blue-gray for descriptions
-    muted: 'hsl(210, 10%, 65%)',       // Light gray for helper text
-    inverse: 'hsl(0, 0%, 100%)',       // White text for colored backgrounds
+    primary: 'hsl(220, 26%, 14%)',      // Almost black with blue tint
+    secondary: 'hsl(220, 16%, 40%)',    // Medium gray-blue
+    muted: 'hsl(220, 10%, 60%)',        // Light gray
+    inverse: 'hsl(0, 0%, 100%)',        // Pure white
   },
 
-  // Surface colors - clean clinical whites and soft grays
+  // Surface colors - Clean and modern
   surface: {
-    DEFAULT: 'hsl(0, 0%, 100%)',       // Pure white - clean clinical feel
-    elevated: 'hsl(210, 40%, 98%)',    // Very subtle blue-tinted white for cards
-    secondary: 'hsl(210, 30%, 96%)',   // Light blue-gray background
+    DEFAULT: 'hsl(0, 0%, 100%)',        // Pure white
+    elevated: 'hsl(220, 40%, 99%)',     // Subtle blue-white for cards
+    secondary: 'hsl(220, 30%, 97%)',    // Light gray-blue background
+    hover: 'hsl(220, 30%, 95%)',        // Hover state
   },
-  border: 'hsl(210, 20%, 88%)',        // Soft blue-gray borders
+  
+  border: 'hsl(220, 20%, 90%)',         // Soft gray-blue borders
 
-  // Neutral colors
+  // Neutral grays
   neutral: {
-    DEFAULT: 'hsl(210, 10%, 65%)',
-    light: 'hsl(210, 10%, 85%)',
-    dark: 'hsl(210, 10%, 45%)',
+    DEFAULT: 'hsl(220, 10%, 60%)',
+    light: 'hsl(220, 10%, 85%)',
+    dark: 'hsl(220, 10%, 40%)',
   },
 
-  // Clinical Status Colors - Medical interpretation standards
+  // Status colors - Clinical standards with modern twist
   success: {
-    DEFAULT: 'hsl(145, 63%, 42%)',     // Healthy/Normal green
-    bg: 'hsl(145, 63%, 95%)',          // Light green background
-    text: 'hsl(145, 63%, 32%)',        // Dark green text
+    DEFAULT: 'hsl(142, 71%, 45%)',      // Fresh green
+    bg: 'hsl(142, 71%, 96%)',           // Light green background
+    text: 'hsl(142, 71%, 30%)',         // Dark green text
+    border: 'hsl(142, 71%, 85%)',       // Green border
   },
+  
   warning: {
-    DEFAULT: 'hsl(38, 92%, 50%)',      // Caution/Borderline orange
-    bg: 'hsl(38, 92%, 95%)',           // Light orange background
-    text: 'hsl(38, 92%, 35%)',         // Dark orange text
+    DEFAULT: 'hsl(38, 92%, 55%)',       // Bright amber
+    bg: 'hsl(38, 92%, 96%)',            // Light amber background
+    text: 'hsl(38, 92%, 30%)',          // Dark amber text
+    border: 'hsl(38, 92%, 85%)',        // Amber border
   },
+  
   danger: {
-    DEFAULT: 'hsl(0, 84%, 55%)',       // Critical/Abnormal red
-    bg: 'hsl(0, 84%, 96%)',            // Light red background
-    text: 'hsl(0, 84%, 40%)',          // Dark red text
+    DEFAULT: 'hsl(0, 84%, 60%)',        // Modern red
+    bg: 'hsl(0, 84%, 97%)',             // Light red background
+    text: 'hsl(0, 84%, 35%)',           // Dark red text
+    border: 'hsl(0, 84%, 88%)',         // Red border
   },
+  
   info: {
-    DEFAULT: 'hsl(210, 100%, 50%)',    // Information blue
-    bg: 'hsl(210, 100%, 95%)',         // Light blue background
-    text: 'hsl(210, 100%, 35%)',       // Dark blue text
+    DEFAULT: 'hsl(199, 89%, 48%)',      // Bright blue
+    bg: 'hsl(199, 89%, 96%)',           // Light blue background
+    text: 'hsl(199, 89%, 30%)',         // Dark blue text
+    border: 'hsl(199, 89%, 85%)',       // Blue border
   },
 };
 
@@ -79,47 +102,111 @@ module.exports = {
   theme: {
     extend: {
       /*
-       * Design System - Semantic Color Tokens
+       * Modern Medical Design System - Semantic Color Tokens
        *
-       * Usage:
-       * - Text: text-text-primary, text-text-secondary, text-text-muted
-       * - Surface: bg-surface, bg-surface-elevated
-       * - Brand: bg-primary, bg-secondary, bg-primary-light, bg-primary-dark
-       * - Status: bg-success, bg-warning, bg-danger, bg-info
-       * - Borders: border-border
+       * Usage Examples:
+       * - Text: text-text-primary, text-text-secondary, text-text-muted, text-text-inverse
+       * - Surfaces: bg-surface, bg-surface-elevated, bg-surface-secondary, bg-surface-hover
+       * - Brand: bg-primary, bg-secondary, bg-accent, bg-primary-light, bg-primary-dark
+       * - Status: bg-success, bg-warning, bg-danger, bg-info (also bg-success-bg, text-success-text, border-success-border)
+       * - Borders: border-border, border-success-border, border-warning-border, border-danger-border
        *
-       * ⚠️ NEVER use direct colors: text-white, bg-white, text-black, bg-black
-       * ⚠️ Use semantic tokens only for maintainability and theme consistency
+       * ⚠️ CRITICAL RULE: NEVER use direct colors like text-white, bg-white, text-black, bg-black
+       * ⚠️ ALWAYS use semantic tokens for consistency and maintainability
        */
       colors: colors,
-
-      // Aliases for AI's common mistake: bg-bg-primary -> bg-primary
-      backgroundColor: {
-        'bg-primary': colors.primary.DEFAULT,
-        'bg-primary-light': colors.primary.light,
-        'bg-primary-dark': colors.primary.dark,
-        'bg-secondary': colors.secondary.DEFAULT,
-        'bg-secondary-light': colors.secondary.light,
-        'bg-secondary-dark': colors.secondary.dark,
-        'bg-surface': colors.surface.DEFAULT,
-        'bg-surface-elevated': colors.surface.elevated,
-        'bg-danger': colors.danger.DEFAULT,
-        'bg-warning': colors.warning.DEFAULT,
-        'bg-success': colors.success.DEFAULT,
-        'bg-info': colors.info.DEFAULT,
+      
+      // Modern gradients for beautiful UI
+      backgroundImage: {
+        'gradient-primary': 'linear-gradient(135deg, hsl(211, 100%, 50%) 0%, hsl(211, 100%, 35%) 100%)',
+        'gradient-secondary': 'linear-gradient(135deg, hsl(186, 100%, 42%) 0%, hsl(186, 100%, 30%) 100%)',
+        'gradient-accent': 'linear-gradient(135deg, hsl(262, 83%, 58%) 0%, hsl(262, 83%, 40%) 100%)',
+        'gradient-success': 'linear-gradient(135deg, hsl(142, 71%, 45%) 0%, hsl(142, 71%, 35%) 100%)',
+        'gradient-warning': 'linear-gradient(135deg, hsl(38, 92%, 55%) 0%, hsl(38, 92%, 45%) 100%)',
+        'gradient-danger': 'linear-gradient(135deg, hsl(0, 84%, 60%) 0%, hsl(0, 84%, 45%) 100%)',
+        'gradient-info': 'linear-gradient(135deg, hsl(199, 89%, 48%) 0%, hsl(199, 89%, 35%) 100%)',
+        'gradient-soft': 'linear-gradient(135deg, hsl(220, 40%, 99%) 0%, hsl(220, 30%, 97%) 100%)',
+      },
+      
+      // Modern shadows for depth and elevation
+      boxShadow: {
+        'soft': '0 2px 8px 0 rgba(0, 0, 0, 0.05)',
+        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        'card-hover': '0 8px 16px -4px rgba(0, 0, 0, 0.12), 0 4px 8px -2px rgba(0, 0, 0, 0.08)',
+        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+        'glow-primary': '0 0 20px rgba(0, 128, 255, 0.3)',
+        'glow-success': '0 0 20px rgba(16, 185, 129, 0.3)',
+        'glow-danger': '0 0 20px rgba(239, 68, 68, 0.3)',
       },
 
-      // Aliases for AI's common mistake: text-text-primary -> text-text-primary
-      textColor: {
-        'text-primary': colors.text.primary,
-        'text-secondary': colors.text.secondary,
-        'text-muted': colors.text.muted,
-        'text-inverse': colors.text.inverse,
+      // Modern border radius
+      borderRadius: {
+        'card': '16px',
+        'button': '12px',
+        'input': '12px',
+        'pill': '9999px',
       },
 
-      // Border aliases
-      borderColor: {
-        'border-border': colors.border,
+      // Typography scale
+      fontSize: {
+        'display': ['36px', { lineHeight: '44px', fontWeight: '700' }],
+        'title': ['28px', { lineHeight: '36px', fontWeight: '600' }],
+        'heading': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'subheading': ['18px', { lineHeight: '26px', fontWeight: '600' }],
+        'body': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'caption': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'small': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+      },
+
+      // Animations & Transitions
+      animation: {
+        'fade-in': 'fadeIn 0.3s ease-in-out',
+        'fade-in-up': 'fadeInUp 0.4s ease-out',
+        'fade-in-down': 'fadeInDown 0.4s ease-out',
+        'scale-in': 'scaleIn 0.2s ease-out',
+        'slide-in-right': 'slideInRight 0.3s ease-out',
+        'pulse-soft': 'pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'shimmer': 'shimmer 2s linear infinite',
+      },
+      
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeInDown: {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(-20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        pulseSoft: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-1000px 0' },
+          '100%': { backgroundPosition: '1000px 0' },
+        },
+      },
+
+      // Spacing scale (extended)
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
       },
     },
   },
