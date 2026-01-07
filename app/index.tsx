@@ -48,7 +48,7 @@ export default function HomeScreen() {
           </View>
           {isAuthenticated ? (
             <Pressable
-              onPress={() => router.push('/(auth)/sign-in')}
+              onPress={() => router.push('/settings')}
               className="bg-primary-light rounded-xl px-4 py-2 active:opacity-80"
             >
               <Text className="text-xs text-text-inverse font-medium">
@@ -182,7 +182,8 @@ export default function HomeScreen() {
                 Медицинский дисклеймер
               </Text>
               <Text className="text-xs text-text-secondary">
-                Эти калькуляторы предоставляют оценки на основе стандартных медицинских формул. Всегда консультируйтесь с квалифицированным медицинским специалистом для получения медицинской консультации.
+                Эти калькуляторы предоставляют оценки на основе стандартных медицинских формул.
+                {' '}Всегда консультируйтесь с квалифицированным медицинским специалистом.
               </Text>
             </View>
           </View>

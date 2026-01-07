@@ -108,10 +108,10 @@ export default function HistoryScreen() {
       {/* Header */}
       <View className="bg-primary px-6 pt-16 pb-6">
         <Pressable onPress={() => router.back()} className="mb-4 active:opacity-70">
-          <Text className="text-text-inverse text-lg">← Back</Text>
+          <Text className="text-text-inverse text-lg">← Назад</Text>
         </Pressable>
         <Text className="text-2xl font-bold text-text-inverse mb-2">
-          Calculation History
+          История расчетов
         </Text>
         <Text className="text-sm text-text-inverse opacity-90">
           Найдено {filteredResults.length} расчетов

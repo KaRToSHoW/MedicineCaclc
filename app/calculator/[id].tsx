@@ -42,15 +42,15 @@ export default function CalculatorScreen() {
     calculator?.inputFields.forEach((field) => {
       const value = inputValues[field.name];
       if (!value || value.trim() === '') {
-        newErrors[field.name] = 'This field is required';
+        newErrors[field.name] = 'Это поле обязательно';
       } else if (field.type === 'number') {
         const numValue = parseFloat(value);
         if (isNaN(numValue)) {
-          newErrors[field.name] = 'Please enter a valid number';
+          newErrors[field.name] = 'Введите корректное число';
         } else if (field.min !== undefined && numValue < field.min) {
-          newErrors[field.name] = `Value must be at least ${field.min}`;
+          newErrors[field.name] = `Значение должно быть не менее ${field.min}`;
         } else if (field.max !== undefined && numValue > field.max) {
-          newErrors[field.name] = `Value must not exceed ${field.max}`;
+          newErrors[field.name] = `Значение не должно превышать ${field.max}`;
         }
       }
     });
@@ -87,7 +87,7 @@ export default function CalculatorScreen() {
       }
     } catch (error: any) {
       console.error('Calculation error:', error);
-      setErrors({ general: error.message || 'Calculation failed. Please try again.' });
+      setErrors({ general: error.message || 'Ошибка расчета. Попробуйте еще раз.' });
     }
   };
 
