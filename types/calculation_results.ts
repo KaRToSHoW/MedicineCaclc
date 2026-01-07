@@ -26,6 +26,8 @@ export interface CreateCalculationResultInput {
   inputData: Record<string, any>;
 }
 
+export type CreateCalculationResultInputOrFormData = CreateCalculationResultInput | FormData;
+
 export interface UpdateCalculationResultInput {
   // Calculation results are typically immutable
 }

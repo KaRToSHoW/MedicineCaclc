@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCalculationResultsStore } from '@/stores/calculationResultsStore';
+import { useCalculatorsStore } from '@/stores/calculatorsStore';
 import { CalculationResult } from '@/types/calculation_results';
+import { Calculator } from '@/types/calculators';
 
 /**
  * Calculation Result Screen
@@ -60,14 +62,37 @@ export default function ResultScreen() {
   const resultId = params.id as string;
   
   const { items: results, loading } = useCalculationResultsStore();
+  const { items: calculators } = useCalculatorsStore();
   const [result, setResult] = useState<CalculationResult | null>(null);
+  const [calculator, setCalculator] = useState<Calculator | null>(null);
+  const [conclusion, setConclusion] = useState<string>('');
+  const [recommendations, setRecommendations] = useState<string>('');
 
   useEffect(() => {
     const foundResult = results.find((r) => String(r.id) === String(resultId));
     if (foundResult) {
       setResult(foundResult);
+      
+      // Find calculator and extract conclusion/recommendations
+      const calc = calculators.find((c) => String(c.id) === String(foundResult.calculatorId));
+      if (calc) {
+        setCalculator(calc);
+        
+        // Find matching interpretation rule
+        if (calc.interpretationRules && calc.interpretationRules.length > 0) {
+          const rule = calc.interpretationRules.find((r) => {
+            const interp = r.interpretationRu || r.interpretation || '';
+            return interp.toLowerCase() === foundResult.interpretation.toLowerCase();
+          });
+          
+          if (rule) {
+            setConclusion(rule.conclusion || '');
+            setRecommendations(rule.recommendations || '');
+          }
+        }
+      }
     }
-  }, [resultId, results]);
+  }, [resultId, results, calculators]);
 
   if (loading || !result) {
     return (
@@ -81,30 +106,30 @@ export default function ResultScreen() {
   const styles = getSeverityStyles(result.interpretation);
 
   return (
-    <ScrollView className="flex-1 bg-surface">
-      {/* Header */}
-      <View className={`${styles.bg} px-6 pt-16 pb-8 border-b-4 ${styles.border}`}>
-        <Pressable onPress={() => router.back()} className="mb-4 active:opacity-70">
-          <Text className={`${styles.text} text-lg font-medium`}>← Назад</Text>
+    <ScrollView className="flex-1 bg-surface-secondary">
+      {/* Header with Gradient */}
+      <View className="bg-gradient-primary px-6 pt-16 pb-8 shadow-lg">
+        <Pressable onPress={() => router.canGoBack() ? router.back() : router.push('/')} className="mb-4 active:opacity-70">
+          <Text className="text-text-inverse text-lg font-medium">← Назад</Text>
         </Pressable>
         <View className="flex-row items-center mb-2">
-          <Text className="text-3xl mr-3">{styles.icon}</Text>
-          <Text className={`text-2xl font-bold ${styles.text}`}>
+          <Text className="text-4xl mr-3">{styles.icon}</Text>
+          <Text className="text-3xl font-bold text-text-inverse">
             Результат расчета
           </Text>
         </View>
-        <Text className="text-sm text-text-secondary">
-          {result.calculator?.name || 'Medical Calculator'}
+        <Text className="text-base text-text-inverse opacity-90">
+          {calculator?.nameRu || calculator?.name || result.calculator?.name || 'Medical Calculator'}
         </Text>
       </View>
 
       <View className="px-6 py-6">
-        {/* Result Value Card */}
-        <View className={`rounded-2xl p-6 mb-6 border-2 ${styles.border} ${styles.bg}`}>
-          <Text className="text-sm font-medium text-text-secondary mb-3">
+        {/* Result Value Card with Animation */}
+        <View className={`rounded-card p-6 mb-6 shadow-card-hover ${styles.bg}`}>
+          <Text className="text-sm font-semibold text-text-secondary mb-3 uppercase tracking-wide">
             Рассчитанное значение
           </Text>
-          <View className="flex-row items-baseline mb-4">
+          <View className="flex-row items-baseline mb-2">
             <Text className="text-6xl font-bold text-text-primary">
               {(() => {
                 const val = result.resultValue as any;
@@ -117,36 +142,73 @@ export default function ResultScreen() {
                 return String(val ?? '');
               })()}
             </Text>
-            <Text className="text-lg text-text-secondary ml-2">
-              {result.calculator?.category === 'general' && result.calculator?.name?.includes('BMI') ? 'kg/m²' : ''}
+            <Text className="text-xl text-text-secondary ml-3">
+              {calculator?.category === 'Anthropometry' && calculator?.name?.includes('BMI') ? 'kg/m²' : ''}
+              {calculator?.name?.includes('BMR') ? 'kcal/day' : ''}
             </Text>
           </View>
         </View>
 
         {/* Interpretation Card */}
-        <View className="bg-surface-elevated rounded-2xl p-6 mb-6 border border-border">
-          <Text className="text-lg font-bold text-text-primary mb-4">
-            Клиническая интерпретация
-          </Text>
-          <View className={`rounded-xl p-4 ${styles.bg} border ${styles.border}`}>
-            <Text className={`text-base ${styles.text} font-medium`}>
+        <View className="bg-surface rounded-card p-6 mb-6 shadow-card">
+          <View className="flex-row items-center mb-4">
+            <Text className="text-2xl mr-2">{styles.icon}</Text>
+            <Text className="text-xl font-bold text-text-primary">
+              Клиническая интерпретация
+            </Text>
+          </View>
+          <View className={`rounded-xl p-5 ${styles.bg}`}>
+            <Text className={`text-lg ${styles.text} font-semibold`}>
               {result.interpretation}
             </Text>
           </View>
         </View>
 
+        {/* Conclusion Card */}
+        {conclusion ? (
+          <View className="bg-surface rounded-card p-6 mb-6 shadow-card">
+            <View className="flex-row items-center mb-4">
+              <Text className="text-2xl mr-2">📋</Text>
+              <Text className="text-xl font-bold text-text-primary">
+                Заключение
+              </Text>
+            </View>
+            <Text className="text-base text-text-primary leading-6">
+              {conclusion}
+            </Text>
+          </View>
+        ) : null}
+
+        {/* Recommendations Card */}
+        {recommendations ? (
+          <View className="bg-gradient-soft rounded-card p-6 mb-6 shadow-card border border-primary-light">
+            <View className="flex-row items-center mb-4">
+              <Text className="text-2xl mr-2">💡</Text>
+              <Text className="text-xl font-bold text-primary">
+                Рекомендации
+              </Text>
+            </View>
+            <Text className="text-base text-text-primary leading-6">
+              {recommendations}
+            </Text>
+          </View>
+        ) : null}
+
         {/* Input Data Card */}
-        <View className="bg-surface-elevated rounded-2xl p-6 mb-6 border border-border">
-          <Text className="text-lg font-bold text-text-primary mb-4">
-            Входные параметры
-          </Text>
+        <View className="bg-surface rounded-card p-6 mb-6 shadow-card">
+          <View className="flex-row items-center mb-4">
+            <Text className="text-2xl mr-2">📝</Text>
+            <Text className="text-xl font-bold text-text-primary">
+              Входные параметры
+            </Text>
+          </View>
           <View className="gap-3">
-            {Object.entries(result.inputData).map(([key, value]) => (
-              <View key={key} className="flex-row justify-between items-center py-2 border-b border-border last:border-b-0">
-                <Text className="text-sm font-medium text-text-secondary capitalize">
+            {Object.entries(result.inputData).map(([key, value], index) => (
+              <View key={key} className={`flex-row justify-between items-center py-3 ${index < Object.keys(result.inputData).length - 1 ? 'border-b border-border' : ''}`}>
+                <Text className="text-base font-medium text-text-secondary capitalize">
                   {key.replace(/_/g, ' ')}
                 </Text>
-                <Text className="text-base font-semibold text-text-primary">
+                <Text className="text-lg font-bold text-text-primary">
                   {typeof value === 'number' ? value.toFixed(1) : value}
                 </Text>
               </View>
@@ -155,30 +217,30 @@ export default function ResultScreen() {
         </View>
 
         {/* Metadata */}
-        <View className="bg-surface-elevated rounded-2xl p-5 mb-6 border border-border">
+        <View className="bg-surface rounded-card p-5 mb-6 shadow-soft">
           <View className="flex-row items-center mb-3">
-            <Text className="text-base mr-2">📅</Text>
-            <Text className="text-sm text-text-secondary">
-              Дата: {new Date(result.performedAt).toLocaleDateString('ru-RU')}
+            <Text className="text-xl mr-3">📅</Text>
+            <Text className="text-base text-text-secondary">
+              {new Date(result.performedAt).toLocaleDateString('ru-RU')}
             </Text>
           </View>
           <View className="flex-row items-center">
-            <Text className="text-base mr-2">⏱️</Text>
-            <Text className="text-sm text-text-secondary">
-              Время: {new Date(result.performedAt).toLocaleTimeString('ru-RU')}
+            <Text className="text-xl mr-3">⏱️</Text>
+            <Text className="text-base text-text-secondary">
+              {new Date(result.performedAt).toLocaleTimeString('ru-RU')}
             </Text>
           </View>
         </View>
 
         {/* Medical Disclaimer */}
-        <View className="bg-info-bg border border-info rounded-xl p-4 mb-6">
+        <View className="bg-info-bg border-2 border-info rounded-card p-5 mb-6 shadow-soft">
           <View className="flex-row items-start">
-            <Text className="text-xl mr-3">ℹ️</Text>
+            <Text className="text-2xl mr-3">ℹ️</Text>
             <View className="flex-1">
-              <Text className="text-sm font-medium text-info-text mb-1">
+              <Text className="text-base font-bold text-info-text mb-2">
                 Медицинское предупреждение
               </Text>
-              <Text className="text-xs text-text-secondary">
+              <Text className="text-sm text-text-secondary leading-5">
                 Этот результат носит исключительно информационный характер и не должен заменять профессиональный
                 медицинский совет. Всегда консультируйтесь с квалифицированным врачом для диагностики
                 и лечения.
@@ -188,21 +250,21 @@ export default function ResultScreen() {
         </View>
 
         {/* Action Buttons */}
-        <View className="gap-3">
+        <View className="gap-4">
           <Pressable
             onPress={() => router.push('/')}
-            className="bg-primary rounded-xl py-4 items-center active:opacity-80"
+            className="bg-gradient-primary rounded-button py-4 items-center shadow-lg active:opacity-90"
           >
-            <Text className="text-base font-semibold text-text-inverse">
-              Рассчитать еще
+            <Text className="text-lg font-bold text-text-inverse">
+              🔄 Рассчитать еще
             </Text>
           </Pressable>
           <Pressable
             onPress={() => router.push('/history')}
-            className="bg-surface-secondary border border-border rounded-xl py-4 items-center active:opacity-70"
+            className="bg-surface border-2 border-primary rounded-button py-4 items-center shadow-card active:opacity-80"
           >
-            <Text className="text-base font-semibold text-text-secondary">
-              Смотреть историю
+            <Text className="text-lg font-bold text-primary">
+              📊 Смотреть историю
             </Text>
           </Pressable>
         </View>

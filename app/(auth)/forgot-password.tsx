@@ -16,7 +16,7 @@ export default function ForgotPasswordScreen() {
 
   const handleResetPassword = async () => {
     if (!email) {
-      Alert.alert('Error', 'Please enter your email');
+      Alert.alert('Ошибка', 'Пожалуйста, введите ваш email');
       return;
     }
 
@@ -34,12 +34,12 @@ export default function ForgotPasswordScreen() {
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       Alert.alert(
-        'Success',
-        'Password reset instructions have been sent to your email',
-        [{ text: 'OK', onPress: () => router.back() }]
+        'Успех',
+        'Инструкции по восстановлению пароля отправлены на ваш email',
+        [{ text: 'ОК', onPress: () => router.canGoBack() ? router.back() : router.push('/(auth)/sign-in') }]
       );
     } catch (error) {
-      Alert.alert('Error', error instanceof Error ? error.message : 'Failed to send reset email');
+      Alert.alert('Ошибка', error instanceof Error ? error.message : 'Не удалось отправить письмо');
     } finally {
       setSubmitting(false);
     }
@@ -50,10 +50,10 @@ export default function ForgotPasswordScreen() {
       <View className="flex-1 p-8 pt-20 pb-20">
         <View className="mb-8">
           <Text className="text-4xl font-bold text-text-primary mb-2">
-            Forgot Password?
+            Забыли пароль?
           </Text>
           <Text className="text-lg text-text-secondary">
-            Enter your email to receive reset instructions
+            Введите email для восстановления
           </Text>
         </View>
 
@@ -64,7 +64,7 @@ export default function ForgotPasswordScreen() {
             </Text>
             <TextInput
               className="bg-surface-elevated border border-border rounded-lg px-4 py-3 text-text-primary"
-              placeholder="your@email.com"
+              placeholder="Ваш email"
               placeholderTextColor="#9CA3AF"
               value={email}
               onChangeText={setEmail}
@@ -84,19 +84,19 @@ export default function ForgotPasswordScreen() {
             <ActivityIndicator color="#fff" />
           ) : (
             <Text className="text-white text-center font-semibold text-base">
-              Send Reset Instructions
+              Отправить инструкции
             </Text>
           )}
         </Pressable>
 
         <View className="flex-row items-center justify-center gap-1">
           <Text className="text-text-secondary">
-            Remember your password?
+            Вспомнили пароль?
           </Text>
           <Link href="/sign-in" asChild>
             <Pressable>
               <Text className="text-primary font-semibold">
-                Sign In
+                Войти
               </Text>
             </Pressable>
           </Link>

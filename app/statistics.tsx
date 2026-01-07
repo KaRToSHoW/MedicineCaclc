@@ -74,7 +74,7 @@ export default function StatisticsScreen() {
     return (
       <View className="flex-1 bg-surface">
         <View className="bg-primary px-6 pt-16 pb-8">
-          <Pressable onPress={() => router.back()} className="mb-4 active:opacity-70">
+          <Pressable onPress={() => router.canGoBack() ? router.back() : router.push('/')} className="mb-4 active:opacity-70">
             <Text className="text-text-inverse text-lg">← Назад</Text>
           </Pressable>
           <Text className="text-2xl font-bold text-text-inverse mb-2">
@@ -116,7 +116,7 @@ export default function StatisticsScreen() {
     <View className="flex-1 bg-surface">
       {/* Header */}
       <View className="bg-primary px-6 pt-16 pb-8">
-        <Pressable onPress={() => router.back()} className="mb-4 active:opacity-70">
+        <Pressable onPress={() => router.canGoBack() ? router.back() : router.push('/')} className="mb-4 active:opacity-70">
           <Text className="text-text-inverse text-lg">← Назад</Text>
         </Pressable>
         <Text className="text-2xl font-bold text-text-inverse mb-2">

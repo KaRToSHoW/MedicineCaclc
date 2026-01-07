@@ -25,17 +25,17 @@ export default function SignUpScreen() {
 
   const handleSignUp = async () => {
     if (!name || !email || !password || !passwordConfirmation) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Ошибка', 'Пожалуйста, заполните все поля');
       return;
     }
 
     if (password !== passwordConfirmation) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert('Ошибка', 'Пароли не совпадают');
       return;
     }
 
     if (password.length < MIN_PASSWORD_LENGTH) {
-      Alert.alert('Error', `Password must be at least ${MIN_PASSWORD_LENGTH} characters`);
+      Alert.alert('Ошибка', `Пароль должен содержать минимум ${MIN_PASSWORD_LENGTH} символов`);
       return;
     }
 
@@ -49,7 +49,7 @@ export default function SignUpScreen() {
       });
       router.replace('/');
     } catch (error) {
-      Alert.alert('Error', error instanceof Error ? error.message : 'Sign up failed');
+      Alert.alert('Ошибка', error instanceof Error ? error.message : 'Не удалось зарегистрироваться');
     } finally {
       setSubmitting(false);
     }
@@ -68,21 +68,21 @@ export default function SignUpScreen() {
       <View className="flex-1 p-8 pt-20 pb-20">
         <View className="mb-8">
           <Text className="text-4xl font-bold text-text-primary mb-2">
-            Create Account
+            Создать аккаунт
           </Text>
           <Text className="text-lg text-text-secondary">
-            Sign up to get started
+            Зарегистрируйтесь, чтобы начать
           </Text>
         </View>
 
         <View className="gap-4 mb-6">
           <View>
             <Text className="text-sm font-medium text-text-primary mb-2">
-              Name
+              Имя
             </Text>
             <TextInput
               className="bg-surface-elevated border border-border rounded-lg px-4 py-3 text-text-primary"
-              placeholder="Your name"
+              placeholder="Ваше имя"
               placeholderTextColor="#9CA3AF"
               value={name}
               onChangeText={setName}
@@ -96,7 +96,7 @@ export default function SignUpScreen() {
             </Text>
             <TextInput
               className="bg-surface-elevated border border-border rounded-lg px-4 py-3 text-text-primary"
-              placeholder="your@email.com"
+              placeholder="Ваш email"
               placeholderTextColor="#9CA3AF"
               value={email}
               onChangeText={setEmail}
@@ -108,11 +108,11 @@ export default function SignUpScreen() {
 
           <View>
             <Text className="text-sm font-medium text-text-primary mb-2">
-              Password
+              Пароль
             </Text>
             <TextInput
               className="bg-surface-elevated border border-border rounded-lg px-4 py-3 text-text-primary"
-              placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
+              placeholder={`Минимум ${MIN_PASSWORD_LENGTH} символов`}
               placeholderTextColor="#9CA3AF"
               value={password}
               onChangeText={setPassword}
@@ -123,11 +123,11 @@ export default function SignUpScreen() {
 
           <View>
             <Text className="text-sm font-medium text-text-primary mb-2">
-              Confirm Password
+              Подтверждение пароля
             </Text>
             <TextInput
               className="bg-surface-elevated border border-border rounded-lg px-4 py-3 text-text-primary"
-              placeholder="Re-enter your password"
+              placeholder="Повторите пароль"
               placeholderTextColor="#9CA3AF"
               value={passwordConfirmation}
               onChangeText={setPasswordConfirmation}
@@ -146,19 +146,19 @@ export default function SignUpScreen() {
             <ActivityIndicator color="#fff" />
           ) : (
             <Text className="text-white text-center font-semibold text-base">
-              Sign Up
+              Зарегистрироваться
             </Text>
           )}
         </Pressable>
 
         <View className="flex-row items-center justify-center gap-1">
           <Text className="text-text-secondary">
-            Already have an account?
+            Уже есть аккаунт?
           </Text>
           <Link href="/sign-in" asChild>
             <Pressable>
               <Text className="text-primary font-semibold">
-                Sign In
+                Войти
               </Text>
             </Pressable>
           </Link>
