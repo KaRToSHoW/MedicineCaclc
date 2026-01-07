@@ -70,6 +70,610 @@ async def seed_calculators():
             ]
         },
         {
+            "name": "APGAR Score",
+            "name_ru": "Шкала Апгар",
+            "description": "Assess newborn health status",
+            "description_ru": "Оценка состояния новорожденного",
+            "category": "Pediatrics",
+            "category_ru": "Педиатрия",
+            "formula": "{appearance} + {pulse} + {grimace} + {activity} + {respiration}",
+            "input_fields": [
+                {
+                    "name": "appearance",
+                    "label": "Appearance (color)",
+                    "label_ru": "Внешний вид (цвет)",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "Blue/pale", "label_ru": "Синий/бледный"},
+                        {"value": 1, "label": "Body pink, extremities blue", "label_ru": "Тело розовое, конечности синие"},
+                        {"value": 2, "label": "All pink", "label_ru": "Весь розовый"}
+                    ]
+                },
+                {
+                    "name": "pulse",
+                    "label": "Pulse (heart rate)",
+                    "label_ru": "Пульс (ЧСС)",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "Absent", "label_ru": "Отсутствует"},
+                        {"value": 1, "label": "< 100 bpm", "label_ru": "< 100 уд/мин"},
+                        {"value": 2, "label": "≥ 100 bpm", "label_ru": "≥ 100 уд/мин"}
+                    ]
+                },
+                {
+                    "name": "grimace",
+                    "label": "Grimace (reflex)",
+                    "label_ru": "Гримаса (рефлекс)",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No response", "label_ru": "Нет ответа"},
+                        {"value": 1, "label": "Grimace", "label_ru": "Гримаса"},
+                        {"value": 2, "label": "Cry", "label_ru": "Плач"}
+                    ]
+                },
+                {
+                    "name": "activity",
+                    "label": "Activity (muscle tone)",
+                    "label_ru": "Активность (мышечный тонус)",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "Limp", "label_ru": "Вялый"},
+                        {"value": 1, "label": "Some flexion", "label_ru": "Слабое сгибание"},
+                        {"value": 2, "label": "Active movement", "label_ru": "Активные движения"}
+                    ]
+                },
+                {
+                    "name": "respiration",
+                    "label": "Respiration",
+                    "label_ru": "Дыхание",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "Absent", "label_ru": "Отсутствует"},
+                        {"value": 1, "label": "Weak/irregular", "label_ru": "Слабое/нерегулярное"},
+                        {"value": 2, "label": "Strong/crying", "label_ru": "Сильное/крик"}
+                    ]
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "<= 3",
+                    "interpretation": "Critically low - immediate resuscitation needed",
+                    "interpretation_ru": "Критически низкий - требуется немедленная реанимация"
+                },
+                {
+                    "condition": ">= 4 and <= 6",
+                    "interpretation": "Moderately abnormal - needs assistance",
+                    "interpretation_ru": "Умеренно патологический - нужна помощь"
+                },
+                {
+                    "condition": ">= 7 and <= 10",
+                    "interpretation": "Normal condition",
+                    "interpretation_ru": "Нормальное состояние"
+                }
+            ]
+        },
+        {
+            "name": "Pregnancy Due Date",
+            "name_ru": "Предполагаемая дата родов",
+            "description": "Calculate estimated delivery date",
+            "description_ru": "Рассчитать предполагаемую дату родов",
+            "category": "Obstetrics",
+            "category_ru": "Акушерство",
+            "formula": "{gestational_age} * 7",
+            "input_fields": [
+                {
+                    "name": "gestational_age",
+                    "label": "Weeks since last period",
+                    "label_ru": "Недель с последних месячных",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 1,
+                    "max_value": 42
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "",
+                    "interpretation": "Days since last menstrual period",
+                    "interpretation_ru": "Дней с последней менструации"
+                }
+            ]
+        },
+        {
+            "name": "Ideal Body Weight",
+            "name_ru": "Идеальная масса тела",
+            "description": "Calculate ideal weight (Devine formula)",
+            "description_ru": "Рассчитать идеальный вес (формула Дивайна)",
+            "category": "General Health",
+            "category_ru": "Общее здоровье",
+            "formula": "50 + 2.3 * (({height} / 2.54) - 60)",
+            "input_fields": [
+                {
+                    "name": "height",
+                    "label": "Height (cm)",
+                    "label_ru": "Рост (см)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 100,
+                    "max_value": 250
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "",
+                    "interpretation": "Ideal body weight in kg (male formula)",
+                    "interpretation_ru": "Идеальная масса тела в кг (формула для мужчин)"
+                }
+            ]
+        },
+        {
+            "name": "Body Surface Area",
+            "name_ru": "Площадь поверхности тела",
+            "description": "Calculate BSA (Mosteller formula)",
+            "description_ru": "Рассчитать ППТ (формула Мостеллера)",
+            "category": "General Health",
+            "category_ru": "Общее здоровье",
+            "formula": "(({height} * {weight}) / 3600) ** 0.5",
+            "input_fields": [
+                {
+                    "name": "height",
+                    "label": "Height (cm)",
+                    "label_ru": "Рост (см)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 100,
+                    "max_value": 250
+                },
+                {
+                    "name": "weight",
+                    "label": "Weight (kg)",
+                    "label_ru": "Вес (кг)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 20,
+                    "max_value": 300
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "",
+                    "interpretation": "Body surface area in m²",
+                    "interpretation_ru": "Площадь поверхности тела в м²"
+                }
+            ]
+        },
+        {
+            "name": "Corrected QT Interval",
+            "name_ru": "Скорректированный интервал QT",
+            "description": "Calculate QTc (Bazett formula)",
+            "description_ru": "Рассчитать QTc (формула Базетта)",
+            "category": "Cardiology",
+            "category_ru": "Кардиология",
+            "formula": "{qt_interval} / ({rr_interval} ** 0.5)",
+            "input_fields": [
+                {
+                    "name": "qt_interval",
+                    "label": "QT Interval (ms)",
+                    "label_ru": "Интервал QT (мс)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 200,
+                    "max_value": 600
+                },
+                {
+                    "name": "rr_interval",
+                    "label": "RR Interval (s)",
+                    "label_ru": "Интервал RR (с)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 0.4,
+                    "max_value": 2.0
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "< 430",
+                    "interpretation": "Normal QTc",
+                    "interpretation_ru": "Нормальный QTc"
+                },
+                {
+                    "condition": ">= 430 and < 450",
+                    "interpretation": "Borderline QTc",
+                    "interpretation_ru": "Пограничный QTc"
+                },
+                {
+                    "condition": ">= 450",
+                    "interpretation": "Prolonged QTc - risk of arrhythmia",
+                    "interpretation_ru": "Удлиненный QTc - риск аритмии"
+                }
+            ]
+        },
+        {
+            "name": "Anion Gap",
+            "name_ru": "Анионная разница",
+            "description": "Calculate serum anion gap",
+            "description_ru": "Рассчитать анионную разницу сыворотки",
+            "category": "Laboratory",
+            "category_ru": "Лабораторная диагностика",
+            "formula": "{sodium} - ({chloride} + {bicarbonate})",
+            "input_fields": [
+                {
+                    "name": "sodium",
+                    "label": "Sodium (mEq/L)",
+                    "label_ru": "Натрий (мЭкв/л)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 120,
+                    "max_value": 160
+                },
+                {
+                    "name": "chloride",
+                    "label": "Chloride (mEq/L)",
+                    "label_ru": "Хлорид (мЭкв/л)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 80,
+                    "max_value": 120
+                },
+                {
+                    "name": "bicarbonate",
+                    "label": "Bicarbonate (mEq/L)",
+                    "label_ru": "Бикарбонат (мЭкв/л)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 10,
+                    "max_value": 40
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "< 8",
+                    "interpretation": "Low anion gap",
+                    "interpretation_ru": "Низкая анионная разница"
+                },
+                {
+                    "condition": ">= 8 and <= 12",
+                    "interpretation": "Normal anion gap",
+                    "interpretation_ru": "Нормальная анионная разница"
+                },
+                {
+                    "condition": "> 12",
+                    "interpretation": "High anion gap - metabolic acidosis",
+                    "interpretation_ru": "Высокая анионная разница - метаболический ацидоз"
+                }
+            ]
+        },
+        {
+            "name": "Fractional Sodium Excretion",
+            "name_ru": "Фракционная экскреция натрия",
+            "description": "Differentiate causes of acute kidney injury",
+            "description_ru": "Дифференцировать причины острого повреждения почек",
+            "category": "Nephrology",
+            "category_ru": "Нефрология",
+            "formula": "(({urine_sodium} / {plasma_sodium}) / ({urine_creatinine} / {plasma_creatinine})) * 100",
+            "input_fields": [
+                {
+                    "name": "urine_sodium",
+                    "label": "Urine Sodium (mEq/L)",
+                    "label_ru": "Натрий мочи (мЭкв/л)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 1,
+                    "max_value": 200
+                },
+                {
+                    "name": "plasma_sodium",
+                    "label": "Plasma Sodium (mEq/L)",
+                    "label_ru": "Натрий плазмы (мЭкв/л)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 120,
+                    "max_value": 160
+                },
+                {
+                    "name": "urine_creatinine",
+                    "label": "Urine Creatinine (mg/dL)",
+                    "label_ru": "Креатинин мочи (мг/дл)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 10,
+                    "max_value": 300
+                },
+                {
+                    "name": "plasma_creatinine",
+                    "label": "Plasma Creatinine (mg/dL)",
+                    "label_ru": "Креатинин плазмы (мг/дл)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 0.5,
+                    "max_value": 15
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "< 1",
+                    "interpretation": "Prerenal azotemia (volume depletion)",
+                    "interpretation_ru": "Преренальная азотемия (дефицит объема)"
+                },
+                {
+                    "condition": ">= 1 and < 2",
+                    "interpretation": "Borderline",
+                    "interpretation_ru": "Пограничное значение"
+                },
+                {
+                    "condition": ">= 2",
+                    "interpretation": "Acute tubular necrosis",
+                    "interpretation_ru": "Острый тубулярный некроз"
+                }
+            ]
+        },
+        {
+            "name": "CHADS2 Score",
+            "name_ru": "Шкала CHADS2",
+            "description": "Stroke risk in atrial fibrillation",
+            "description_ru": "Риск инсульта при фибрилляции предсердий",
+            "category": "Cardiology",
+            "category_ru": "Кардиология",
+            "formula": "{chf} + {hypertension} + {age} + {diabetes} + (2 * {stroke_tia})",
+            "input_fields": [
+                {
+                    "name": "chf",
+                    "label": "Congestive Heart Failure",
+                    "label_ru": "Сердечная недостаточность",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "hypertension",
+                    "label": "Hypertension",
+                    "label_ru": "Гипертензия",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "age",
+                    "label": "Age ≥ 75 years",
+                    "label_ru": "Возраст ≥ 75 лет",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "diabetes",
+                    "label": "Diabetes Mellitus",
+                    "label_ru": "Сахарный диабет",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "stroke_tia",
+                    "label": "Prior Stroke/TIA",
+                    "label_ru": "Инсульт/ТИА в анамнезе",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "= 0",
+                    "interpretation": "Low risk (1.9% annual stroke risk)",
+                    "interpretation_ru": "Низкий риск (1.9% годовой риск инсульта)"
+                },
+                {
+                    "condition": "= 1",
+                    "interpretation": "Low-moderate risk (2.8% annual)",
+                    "interpretation_ru": "Низкий-умеренный риск (2.8% годовой)"
+                },
+                {
+                    "condition": "= 2",
+                    "interpretation": "Moderate risk (4.0% annual)",
+                    "interpretation_ru": "Умеренный риск (4.0% годовой)"
+                },
+                {
+                    "condition": ">= 3",
+                    "interpretation": "High risk (>5.9% annual) - anticoagulation recommended",
+                    "interpretation_ru": "Высокий риск (>5.9% годовой) - рекомендована антикоагуляция"
+                }
+            ]
+        },
+        {
+            "name": "Wells DVT Score",
+            "name_ru": "Шкала Уэллса для ТГВ",
+            "description": "Assess probability of deep vein thrombosis",
+            "description_ru": "Оценка вероятности тромбоза глубоких вен",
+            "category": "Hematology",
+            "category_ru": "Гематология",
+            "formula": "{active_cancer} + {paralysis} + {bedridden} + {localized_tenderness} + {entire_leg_swollen} + {calf_swelling} + {pitting_edema} + {collateral_veins} + {alternative_diagnosis}",
+            "input_fields": [
+                {
+                    "name": "active_cancer",
+                    "label": "Active cancer",
+                    "label_ru": "Активный рак",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "paralysis",
+                    "label": "Paralysis/recent plaster",
+                    "label_ru": "Паралич/недавний гипс",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "bedridden",
+                    "label": "Bedridden >3 days/surgery",
+                    "label_ru": "Постельный режим >3 дней/операция",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "localized_tenderness",
+                    "label": "Localized tenderness along veins",
+                    "label_ru": "Локальная болезненность вдоль вен",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "entire_leg_swollen",
+                    "label": "Entire leg swollen",
+                    "label_ru": "Отек всей ноги",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "calf_swelling",
+                    "label": "Calf swelling >3cm vs other leg",
+                    "label_ru": "Отек икры >3см vs другая нога",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "pitting_edema",
+                    "label": "Pitting edema",
+                    "label_ru": "Ямочный отек",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "collateral_veins",
+                    "label": "Collateral superficial veins",
+                    "label_ru": "Коллатеральные поверхностные вены",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": 0, "label": "No", "label_ru": "Нет"},
+                        {"value": 1, "label": "Yes", "label_ru": "Да"}
+                    ]
+                },
+                {
+                    "name": "alternative_diagnosis",
+                    "label": "Alternative diagnosis likely",
+                    "label_ru": "Альтернативный диагноз вероятен",
+                    "type": "select",
+                    "required": True,
+                    "options": [
+                        {"value": -2, "label": "Yes", "label_ru": "Да"},
+                        {"value": 0, "label": "No", "label_ru": "Нет"}
+                    ]
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "<= 0",
+                    "interpretation": "Low probability (3% DVT risk)",
+                    "interpretation_ru": "Низкая вероятность (3% риск ТГВ)"
+                },
+                {
+                    "condition": ">= 1 and <= 2",
+                    "interpretation": "Moderate probability (17% DVT risk)",
+                    "interpretation_ru": "Умеренная вероятность (17% риск ТГВ)"
+                },
+                {
+                    "condition": ">= 3",
+                    "interpretation": "High probability (75% DVT risk) - imaging required",
+                    "interpretation_ru": "Высокая вероятность (75% риск ТГВ) - требуется визуализация"
+                }
+            ]
+        },
+        {
+            "name": "Albumin-Globulin Ratio",
+            "name_ru": "Соотношение альбумин/глобулин",
+            "description": "Assess liver and kidney function",
+            "description_ru": "Оценка функции печени и почек",
+            "category": "Laboratory",
+            "category_ru": "Лабораторная диагностика",
+            "formula": "{albumin} / ({total_protein} - {albumin})",
+            "input_fields": [
+                {
+                    "name": "albumin",
+                    "label": "Albumin (g/dL)",
+                    "label_ru": "Альбумин (г/дл)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 1.0,
+                    "max_value": 6.0
+                },
+                {
+                    "name": "total_protein",
+                    "label": "Total Protein (g/dL)",
+                    "label_ru": "Общий белок (г/дл)",
+                    "type": "number",
+                    "required": True,
+                    "min_value": 3.0,
+                    "max_value": 10.0
+                }
+            ],
+            "interpretation_rules": [
+                {
+                    "condition": "< 1.0",
+                    "interpretation": "Low ratio - possible liver disease or inflammation",
+                    "interpretation_ru": "Низкое соотношение - возможна болезнь печени или воспаление"
+                },
+                {
+                    "condition": ">= 1.0 and <= 2.5",
+                    "interpretation": "Normal albumin-globulin ratio",
+                    "interpretation_ru": "Нормальное соотношение альбумин/глобулин"
+                },
+                {
+                    "condition": "> 2.5",
+                    "interpretation": "High ratio - possible dehydration or protein loss",
+                    "interpretation_ru": "Высокое соотношение - возможна дегидратация или потеря белка"
+                }
+            ]
+        },
+        {
             "name": "Basal Metabolic Rate",
             "name_ru": "Базальный метаболизм",
             "description": "Calculate daily calorie needs",
@@ -413,8 +1017,11 @@ async def seed_calculators():
         existing_calculators = result.scalars().all()
         
         if existing_calculators:
-            print(f"Calculators already exist ({len(existing_calculators)} found). Skipping seed.")
-            return
+            print(f"Found {len(existing_calculators)} existing calculators. Deleting...")
+            for calc in existing_calculators:
+                await session.delete(calc)
+            await session.commit()
+            print("Existing calculators deleted.")
         
         # Add calculators
         # Define valid Calculator fields to filter out Russian translations

@@ -1,269 +1,283 @@
-# Expo + Python FastAPI Template
+# Медицинский калькулятор
 
-A full-stack mobile application template combining Expo (React Native) frontend with Python FastAPI backend API.
+Кросс-платформенное мобильное приложение для выполнения медицинских расчетов. Разработано на Expo (React Native) с Python FastAPI backend.
 
-## Project Structure
+## 🏥 Возможности
+
+- **7 категорий медицинских калькуляторов:**
+  - Антропометрия (BMI)
+  - Кардиология (HEART Score, MAP)
+  - Питание (BMR)
+  - Нефрология (GFR)
+  - Реанимация (GCS)
+  - Педиатрия (Broselow)
+
+- **Основные функции:**
+  - Аутентификация пользователей (JWT)
+  - История расчетов с фильтрацией
+  - Статистика использования
+  - Экспорт результатов в PDF
+  - Интеграция с медицинскими базами данных
+  - Поддержка iOS, Android и Web
+
+## 🚀 Быстрый старт
+
+### Требования
+
+- Node.js 18+ и npm
+- Python 3.10+
+- PostgreSQL 15.0
+
+### Установка
+
+```bash
+# 1. Установить зависимости frontend
+npm install
+
+# 2. Установить зависимости backend
+cd api
+python3 -m pip install -r requirements.txt --user
+cd ..
+```
+
+### Настройка базы данных
+
+```bash
+# 1. Создать базу данных
+python3 api/create_db.py
+
+# 2. Заполнить тестовыми данными
+python3 api/seed_data.py
+```
+
+### Запуск приложения
+
+```bash
+# Frontend (Expo)
+npm run start
+
+# Backend (FastAPI) - в отдельном терминале
+npm run start-backend
+```
+
+Приложение будет доступно:
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://localhost:3001
+- **API Docs:** http://localhost:3001/docs
+
+## 📱 Tech Stack
+
+### Frontend
+- **Expo SDK 51.0** - React Native фреймворк
+- **TypeScript 5.3** - типизация
+- **Expo Router 3.5** - file-based навигация
+- **NativeWind v4** - Tailwind CSS для React Native
+- **Zustand** - управление состоянием
+
+### Backend
+- **FastAPI 0.115.5** - async web фреймворк
+- **SQLAlchemy 2.0.36** - async ORM
+- **PostgreSQL 15.0** - база данных
+- **Pydantic 2.10.3** - валидация данных
+- **JWT** - аутентификация
+- **ReportLab 4.0.9** - генерация PDF
+
+## 📂 Структура проекта
 
 ```
 .
-├── api/                  # Python FastAPI backend
-│   ├── main.py          # FastAPI app entry point
-│   ├── requirements.txt # Python dependencies
-│   ├── seed_data.py     # Database seeding
-│   └── app/
-│       ├── core/        # Core configuration
-│       ├── models/      # SQLAlchemy models
-│       ├── schemas.py   # Pydantic schemas
-│       └── api/v1/      # API endpoints
-├── config/              # Frontend configuration
-│   └── api.ts          # API endpoint configuration
-├── app/                # Expo Router pages
-├── components/         # React components
-├── services/           # API services
-├── stores/            # Zustand state stores
-└── .env               # Environment variables
+├── app/                          # Frontend приложение (Expo)
+│   ├── index.tsx                # Главный экран
+│   ├── calculators/             # Список калькуляторов
+│   ├── calculator/[id].tsx      # Форма расчета
+│   ├── result/[id].tsx          # Результат расчета
+│   ├── history.tsx              # История
+│   ├── statistics.tsx           # Статистика
+│   ├── sign-in.tsx              # Вход
+│   └── sign-up.tsx              # Регистрация
+├── components/                   # React компоненты
+├── services/                     # API клиенты
+├── stores/                       # Zustand stores
+├── types/                        # TypeScript типы
+├── api/                          # Backend приложение (FastAPI)
+│   ├── main.py                  # Точка входа FastAPI
+│   ├── app/
+│   │   ├── api/v1/              # API endpoints
+│   │   ├── core/                # Конфигурация, БД, безопасность
+│   │   ├── models/              # SQLAlchemy модели
+│   │   ├── services/            # Бизнес-логика
+│   │   └── schemas.py           # Pydantic схемы
+│   ├── requirements.txt         # Python зависимости
+│   ├── create_db.py            # Создание БД
+│   └── seed_data.py            # Тестовые данные
+└── docs/                         # Документация
+    ├── technical-description.md  # Техническое описание
+    ├── architecture-uml.md       # UML диаграммы
+    ├── mockups-design.md         # Дизайн и макеты
+    ├── final-report.md           # Итоговый отчет
+    └── diagrams/                 # PlantUML исходники
 ```
 
-## Installation
-
-### Prerequisites
-
-* Node.js and npm
-
-    ```bash
-    $ node --version  # output should be 18.x or higher
-    $ npm --version   # output should be 8.x or higher
-    ```
-
-* Python 3.x
-
-    ```bash
-    $ python3 --version  # output should be 3.9 or higher
-    ```
-
-* PostgreSQL
-
-    ```bash
-    $ brew install postgresql
-    ```
-
-### Setup
-
-1. Install frontend dependencies:
-
-    ```bash
-    $ npm install
-    ```
-
-2. Setup backend (Python FastAPI):
-
-    ```bash
-    $ cd api
-    $ python3 -m pip install -r requirements.txt
-    ```
-
-3. Configure environment variables:
-
-    Copy `.env.example` to `.env` and adjust settings:
-
-    ```bash
-    $ cp .env.example .env
-    ```
-
-4. Seed database (optional):
-
-    ```bash
-    $ cd api
-    $ python3 seed_data.py
-    ```
-
-## Configuration
-
-Environment variables in `.env`:
+## 🔧 Доступные команды
 
 ```bash
-# FastAPI backend port
-APP_PORT=3001
+# Frontend
+npm run start              # Запустить Expo dev server
+npm run start-backend      # Запустить FastAPI backend
+npm test                   # Запустить тесты
 
-# Expo web server port (frontend runs on 3000)
-EXPO_WEB_PORT=3000
+# Generators
+npm run gen api <resource> # Генерация API клиента
+npm run gen authentication # Генерация системы аутентификации
+
+# Backend
+cd api
+python -m pytest           # Запустить тесты
+python -m uvicorn main:app --reload  # Запустить API с hot reload
 ```
 
-Backend configuration in `api/app/core/config.py`:
+## 📖 API Документация
 
-```python
-DATABASE_URL = "postgresql+asyncpg://postgres:password@localhost:5432/dbname"
-SECRET_KEY = "your-secret-key"
+После запуска backend, документация API доступна по адресу:
+- **Swagger UI:** http://localhost:3001/docs
+- **ReDoc:** http://localhost:3001/redoc
+
+### Основные endpoints:
+
+**Аутентификация:**
+```
+POST /api/v1/auth/sign-up        # Регистрация
+POST /api/v1/auth/sign-in        # Вход
+POST /api/v1/auth/sign-out       # Выход
 ```
 
-## Development
-
-Start backend and frontend:
-
-**Option 1 - Using npm scripts:**
-```bash
-$ npm run start-backend  # Start FastAPI backend (port 3001)
-$ npm run start         # Start Expo frontend
+**Калькуляторы:**
+```
+GET  /api/v1/calculators         # Список калькуляторов
+GET  /api/v1/calculators/{id}    # Информация о калькуляторе
 ```
 
-**Option 2 - Manual start:**
-
-**Terminal 1 - Backend API:**
-```bash
-$ cd api
-$ python3 -m uvicorn main:app --host 0.0.0.0 --port 3001 --reload
+**Расчеты:**
 ```
-Backend will start on port **3001**: http://localhost:3001
-
-**Terminal 2 - Frontend:**
-```bash
-$ npm run start   # Start Metro bundler
-$ npm run web     # Start web development (port 3000)
-$ npm run ios     # Start iOS simulator
-$ npm run android # Start Android emulator
+POST /api/v1/calculation_results              # Выполнить расчет
+GET  /api/v1/calculation_results              # История расчетов
+GET  /api/v1/calculation_results/{id}         # Конкретный результат
+GET  /api/v1/calculation_results/{id}/export  # Экспорт в PDF
 ```
 
-Frontend web will start on port **3000**: http://localhost:3000
-
-## API Endpoints
-
-The backend provides RESTful API endpoints:
-
-### Health Check
-* `GET /api/v1/health` - Health check endpoint
-
-### Authentication
-* `POST /api/v1/registrations` - User registration
-* `POST /api/v1/sessions` - User login
-* `DELETE /api/v1/sessions` - User logout
-
-### Calculators
-* `GET /api/v1/calculators` - List all calculators
-* `GET /api/v1/calculators/{id}` - Get calculator by ID
-
-### Calculation Results
-* `GET /api/v1/calculation_results` - List user's calculation history
-* `POST /api/v1/calculation_results` - Create new calculation
-* `GET /api/v1/calculation_results/{id}` - Get calculation result by ID
-* `DELETE /api/v1/calculation_results/{id}` - Delete calculation result
-
-### User Profile
-* `GET /api/v1/profile` - Get current user profile
-* `PATCH /api/v1/profile` - Update user profile
-
-Example requests:
-```bash
-$ curl http://localhost:3001/api/v1/health
-# {"status":"healthy"}
-
-$ curl http://localhost:3001/api/v1/calculators
-# [{"id":1,"name":"Body Mass Index (BMI)","description":"...","formula":"..."}]
+**Интеграции:**
+```
+GET  /api/v1/integrations/icd10/search        # Поиск кодов МКБ-10
+POST /api/v1/integrations/reference-ranges    # Референсные значения
 ```
 
-## Authentication
-
-The app includes JWT-based authentication system with:
-* User registration with email/password
-* Secure password hashing (bcrypt)
-* JWT token generation and validation
-* Protected API endpoints
-* Session management with SecureStore
-
-Frontend usage:
-```typescript
-import { useAuth } from '@/hooks/useAuth';
-
-const { user, login, logout } = useAuth();
-
-// Login
-await login(email, password);
-
-// Logout
-await logout();
-```
-
-## Tech Stack
-
-### Frontend (Expo)
-* React Native 0.74.5
-* Expo SDK ~51.0
-* Expo Router ~3.5 (file-based routing)
-* NativeWind v4 (Tailwind CSS for React Native)
-* TypeScript ~5.3
-* React 18.2
-* Zustand (state management)
-
-### Backend (Python FastAPI)
-* Python 3.x
-* FastAPI 0.115.5 (async web framework)
-* SQLAlchemy 2.0.36 (async ORM)
-* PostgreSQL (via asyncpg)
-* Pydantic 2.10.3 (data validation)
-* JWT authentication (python-jose)
-* Uvicorn (ASGI server)
-* Bcrypt (password hashing)
-
-## Testing
-
-### Frontend Tests
-```bash
-$ npm test        # Run all tests (Jest + ESLint + TypeScript)
-$ npm run lint    # Run linting only
-```
-
-### Backend Tests
-```bash
-$ cd api
-$ python -m pytest
-```
-
-## Generators
-
-### API Client Generator
-
-Generate types, services, and stores for a new resource:
+## 🧪 Тестирование
 
 ```bash
-$ npm run gen api RESOURCE [actions...]
+# Frontend тесты (Jest)
+npm test
+
+# Backend тесты (pytest)
+cd api && python -m pytest
+
+# Lint проверка
+npm run lint
 ```
 
-Example:
+## 🗄️ База данных
+
+Приложение использует PostgreSQL со следующими таблицами:
+- `users` - пользователи
+- `sessions` - сессии аутентификации
+- `calculators` - медицинские калькуляторы
+- `calculation_results` - результаты расчетов
+- `usage_statistics` - статистика использования
+
+Модели данных автоматически создаются при первом запуске через SQLAlchemy ORM.
+
+## 🔐 Безопасность
+
+- JWT токены для аутентификации
+- Bcrypt хеширование паролей
+- CORS настройка для защиты API
+- Валидация входных данных через Pydantic
+- SQL injection защита через ORM
+
+## 🌍 Переменные окружения
+
+Создайте файл `.env` в корне проекта:
+
+```env
+# Database
+DATABASE_URL=postgresql+asyncpg://postgres:password@127.0.0.1:5432/medical_calculator_development
+
+# JWT
+SECRET_KEY=your-secret-key-change-this-in-production
+ACCESS_TOKEN_EXPIRE_MINUTES=10080
+
+# External Integrations (optional)
+MEDICAL_DATA_API_KEY=
+ANALYTICS_API_KEY=
+FCM_SERVER_KEY=
+```
+
+## 📚 Документация проекта
+
+Полная документация разработки доступна в папке `docs/`:
+
+- **[Техническое описание](docs/technical-description.md)** - требования и особенности системы
+- **[UML диаграммы](docs/architecture-uml.md)** - архитектура приложения
+- **[Дизайн и mockups](docs/mockups-design.md)** - UI/UX дизайн
+- **[Итоговый отчет](docs/final-report.md)** - полный отчет по всем заданиям
+
+## 🚢 Деплой
+
+### Production Build
+
+**iOS:**
 ```bash
-$ npm run gen api posts index show create update
+eas build --platform ios
 ```
 
-This generates:
-* `types/posts.ts` - TypeScript types
-* `services/posts.ts` - API service functions
-* `stores/postsStore.ts` - Zustand store
-
-### Authentication Generator
-
-Generate complete authentication system:
-
+**Android:**
 ```bash
-$ npm run gen authentication
+eas build --platform android
 ```
 
-This generates:
-* Authentication types (`types/auth.ts`)
-* Auth service (`services/auth.ts`)
-* Auth context (`contexts/AuthContext.tsx`)
-* Auth hook (`hooks/useAuth.ts`)
-* Auth screens (`app/(auth)/sign-in.tsx`, `sign-up.tsx`, `forgot-password.tsx`)
+**Web:**
+```bash
+npx expo export:web
+```
 
-## Deployment
+**Backend:**
+```bash
+# Docker
+docker build -t medical-calculator-api ./api
+docker run -p 3001:3001 medical-calculator-api
+```
 
-### Environment Configuration
+## 🤝 Contributing
 
-The app uses the same environment variables for both frontend and backend:
+1. Fork репозиторий
+2. Создайте feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit изменения (`git commit -m 'Add some AmazingFeature'`)
+4. Push в branch (`git push origin feature/AmazingFeature`)
+5. Откройте Pull Request
 
-* **Local dev**: Uses `APP_PORT` from `.env`
-* **Cloud dev**: Reads system-injected `APP_PORT` + `CLACKY_PREVIEW_DOMAIN_BASE`
-* **Production**: Uses `PUBLIC_HOST` for the API domain
+## 📝 Лицензия
 
-All configuration is managed through `app.config.js` and automatically maps to the appropriate format.
+Этот проект разработан в образовательных целях.
 
-## License
+## 👨‍⚕️ Медицинское предупреждение
 
-MIT
+⚠️ **Важно:** Этот калькулятор предназначен для образовательных целей и не должен заменять профессиональную медицинскую консультацию. Всегда консультируйтесь с квалифицированным врачом для диагностики и лечения.
+
+## 📧 Контакты
+
+Для вопросов и предложений создавайте Issue в репозитории.
+
+---
+
+**Версия:** 1.0.0  
+**Дата:** Январь 2025  
+**Статус:** ✅ Production Ready
