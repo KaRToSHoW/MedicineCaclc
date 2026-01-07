@@ -417,8 +417,13 @@ async def seed_calculators():
             return
         
         # Add calculators
+        # Define valid Calculator fields to filter out Russian translations
+        valid_fields = {'name', 'description', 'category', 'formula', 'input_fields', 'interpretation_rules'}
+        
         for calc_data in calculators_data:
-            calculator = Calculator(**calc_data)
+            # Filter out unsupported fields (Russian translations)
+            filtered_data = {k: v for k, v in calc_data.items() if k in valid_fields}
+            calculator = Calculator(**filtered_data)
             session.add(calculator)
         
         await session.commit()
