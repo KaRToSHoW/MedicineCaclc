@@ -1,91 +1,91 @@
 /** @type {import('tailwindcss').Config} */
 
-// Modern Medical Calculator Design System with Gradients & Animations
-// Fresh, clean, and professional color palette optimized for healthcare
+// Professional Medical Design System
+// Clean, trustworthy, and calming color palette optimized for healthcare professionals
 const colors = {
-  // Primary Brand - Modern Medical Blue
+  // Primary - Medical Blue (trust, professionalism, calm)
   primary: {
-    DEFAULT: 'hsl(211, 100%, 50%)',     // Vibrant medical blue
-    light: 'hsl(211, 100%, 95%)',       // Very light blue for backgrounds
-    dark: 'hsl(211, 100%, 35%)',        // Deep blue for emphasis
-    50: 'hsl(211, 100%, 98%)',
-    100: 'hsl(211, 100%, 95%)',
-    200: 'hsl(211, 100%, 85%)',
-    300: 'hsl(211, 100%, 70%)',
-    400: 'hsl(211, 100%, 60%)',
-    500: 'hsl(211, 100%, 50%)',
-    600: 'hsl(211, 100%, 45%)',
-    700: 'hsl(211, 100%, 35%)',
-    800: 'hsl(211, 100%, 25%)',
-    900: 'hsl(211, 100%, 15%)',
+    DEFAULT: 'hsl(210, 75%, 45%)',      // Deep medical blue
+    light: 'hsl(210, 75%, 96%)',        // Very light blue for backgrounds
+    dark: 'hsl(210, 75%, 32%)',         // Dark blue for emphasis
+    50: 'hsl(210, 75%, 98%)',
+    100: 'hsl(210, 75%, 96%)',
+    200: 'hsl(210, 75%, 88%)',
+    300: 'hsl(210, 75%, 72%)',
+    400: 'hsl(210, 75%, 58%)',
+    500: 'hsl(210, 75%, 45%)',
+    600: 'hsl(210, 75%, 38%)',
+    700: 'hsl(210, 75%, 32%)',
+    800: 'hsl(210, 75%, 24%)',
+    900: 'hsl(210, 75%, 18%)',
   },
   
-  // Secondary - Fresh Teal/Cyan accent
+  // Secondary - Teal (healthcare, healing, balance)
   secondary: {
-    DEFAULT: 'hsl(186, 100%, 42%)',     // Fresh teal
-    light: 'hsl(186, 100%, 94%)',       // Light teal backgrounds
-    dark: 'hsl(186, 100%, 30%)',        // Dark teal
+    DEFAULT: 'hsl(175, 60%, 40%)',      // Professional teal
+    light: 'hsl(175, 60%, 95%)',        // Light teal backgrounds
+    dark: 'hsl(175, 60%, 28%)',         // Dark teal
   },
 
-  // Accent - Modern Purple for highlights
+  // Accent - Soft Purple (premium, care)
   accent: {
-    DEFAULT: 'hsl(262, 83%, 58%)',      // Modern purple
-    light: 'hsl(262, 83%, 95%)',        // Very light purple
-    dark: 'hsl(262, 83%, 40%)',         // Deep purple
+    DEFAULT: 'hsl(250, 45%, 50%)',      // Muted professional purple
+    light: 'hsl(250, 45%, 96%)',        // Very light purple
+    dark: 'hsl(250, 45%, 35%)',         // Deep purple
   },
 
-  // Text colors - High contrast and readable
+  // Text colors - Professional and readable
   text: {
-    primary: 'hsl(220, 26%, 14%)',      // Almost black with blue tint
-    secondary: 'hsl(220, 16%, 40%)',    // Medium gray-blue
-    muted: 'hsl(220, 10%, 60%)',        // Light gray
-    inverse: 'hsl(0, 0%, 100%)',        // Pure white
+    primary: 'hsl(210, 30%, 18%)',      // Dark blue-gray (main text)
+    secondary: 'hsl(210, 20%, 45%)',    // Medium gray-blue (secondary text)
+    muted: 'hsl(210, 15%, 65%)',        // Light gray (labels, hints)
+    inverse: 'hsl(0, 0%, 100%)',        // Pure white (on dark backgrounds)
   },
 
-  // Surface colors - Clean and modern
+  // Surface colors - Clean and professional
   surface: {
     DEFAULT: 'hsl(0, 0%, 100%)',        // Pure white
-    elevated: 'hsl(220, 40%, 99%)',     // Subtle blue-white for cards
-    secondary: 'hsl(220, 30%, 97%)',    // Light gray-blue background
-    hover: 'hsl(220, 30%, 95%)',        // Hover state
+    elevated: 'hsl(210, 40%, 98%)',     // Subtle blue-white for cards
+    secondary: 'hsl(210, 35%, 96%)',    // Light gray-blue background
+    hover: 'hsl(210, 35%, 94%)',        // Hover state
   },
   
-  border: 'hsl(220, 20%, 90%)',         // Soft gray-blue borders
+  border: 'hsl(210, 25%, 88%)',         // Soft gray-blue borders
 
-  // Neutral grays
+  // Neutral grays - Professional palette
   neutral: {
-    DEFAULT: 'hsl(220, 10%, 60%)',
-    light: 'hsl(220, 10%, 85%)',
-    dark: 'hsl(220, 10%, 40%)',
+    DEFAULT: 'hsl(210, 15%, 60%)',
+    light: 'hsl(210, 15%, 85%)',
+    dark: 'hsl(210, 15%, 40%)',
   },
 
-  // Status colors - Clinical standards with modern twist
+  // Status colors - Clinical standards (calm and clear)
   success: {
-    DEFAULT: 'hsl(142, 71%, 45%)',      // Fresh green
-    bg: 'hsl(142, 71%, 96%)',           // Light green background
-    text: 'hsl(142, 71%, 30%)',         // Dark green text
-    border: 'hsl(142, 71%, 85%)',       // Green border
+    DEFAULT: 'hsl(145, 55%, 42%)',      // Professional green
+    bg: 'hsl(145, 55%, 96%)',           // Light green background
+    text: 'hsl(145, 55%, 28%)',         // Dark green text
+    border: 'hsl(145, 55%, 85%)',       // Green border
   },
   
   warning: {
-    DEFAULT: 'hsl(38, 92%, 55%)',       // Bright amber
-    bg: 'hsl(38, 92%, 96%)',            // Light amber background
-    text: 'hsl(38, 92%, 30%)',          // Dark amber text
-    border: 'hsl(38, 92%, 85%)',        // Amber border
+    DEFAULT: 'hsl(35, 85%, 50%)',       // Professional amber
+    bg: 'hsl(35, 85%, 96%)',            // Light amber background
+    text: 'hsl(35, 85%, 32%)',          // Dark amber text
+    border: 'hsl(35, 85%, 85%)',        // Amber border
   },
   
   danger: {
-    DEFAULT: 'hsl(0, 84%, 60%)',        // Modern red
-    bg: 'hsl(0, 84%, 97%)',             // Light red background
-    text: 'hsl(0, 84%, 35%)',           // Dark red text
-    border: 'hsl(0, 84%, 88%)',         // Red border
+    DEFAULT: 'hsl(355, 70%, 52%)',      // Professional red
+    bg: 'hsl(355, 70%, 97%)',           // Light red background
+    text: 'hsl(355, 70%, 35%)',         // Dark red text
+    border: 'hsl(355, 70%, 88%)',       // Red border
   },
   
   info: {
-    DEFAULT: 'hsl(199, 89%, 48%)',      // Bright blue
-    bg: 'hsl(199, 89%, 96%)',           // Light blue background
-    text: 'hsl(199, 89%, 30%)',         // Dark blue text
-    border: 'hsl(199, 89%, 85%)',       // Blue border
+    DEFAULT: 'hsl(205, 85%, 48%)',      // Professional blue
+    bg: 'hsl(205, 85%, 96%)',           // Light blue background
+    text: 'hsl(205, 85%, 30%)',         // Dark blue text
+    border: 'hsl(205, 85%, 85%)',       // Blue border
   },
 };
 
@@ -102,7 +102,7 @@ module.exports = {
   theme: {
     extend: {
       /*
-       * Modern Medical Design System - Semantic Color Tokens
+       * Professional Medical Design System - Semantic Color Tokens
        *
        * Usage Examples:
        * - Text: text-text-primary, text-text-secondary, text-text-muted, text-text-inverse
@@ -116,51 +116,51 @@ module.exports = {
        */
       colors: colors,
       
-      // Modern gradients for beautiful UI
+      // Professional gradients (subtle and elegant)
       backgroundImage: {
-        'gradient-primary': 'linear-gradient(135deg, hsl(211, 100%, 50%) 0%, hsl(211, 100%, 35%) 100%)',
-        'gradient-secondary': 'linear-gradient(135deg, hsl(186, 100%, 42%) 0%, hsl(186, 100%, 30%) 100%)',
-        'gradient-accent': 'linear-gradient(135deg, hsl(262, 83%, 58%) 0%, hsl(262, 83%, 40%) 100%)',
-        'gradient-success': 'linear-gradient(135deg, hsl(142, 71%, 45%) 0%, hsl(142, 71%, 35%) 100%)',
-        'gradient-warning': 'linear-gradient(135deg, hsl(38, 92%, 55%) 0%, hsl(38, 92%, 45%) 100%)',
-        'gradient-danger': 'linear-gradient(135deg, hsl(0, 84%, 60%) 0%, hsl(0, 84%, 45%) 100%)',
-        'gradient-info': 'linear-gradient(135deg, hsl(199, 89%, 48%) 0%, hsl(199, 89%, 35%) 100%)',
-        'gradient-soft': 'linear-gradient(135deg, hsl(220, 40%, 99%) 0%, hsl(220, 30%, 97%) 100%)',
+        'gradient-primary': 'linear-gradient(135deg, hsl(210, 75%, 45%) 0%, hsl(210, 75%, 32%) 100%)',
+        'gradient-secondary': 'linear-gradient(135deg, hsl(175, 60%, 40%) 0%, hsl(175, 60%, 28%) 100%)',
+        'gradient-accent': 'linear-gradient(135deg, hsl(250, 45%, 50%) 0%, hsl(250, 45%, 35%) 100%)',
+        'gradient-success': 'linear-gradient(135deg, hsl(145, 55%, 42%) 0%, hsl(145, 55%, 32%) 100%)',
+        'gradient-warning': 'linear-gradient(135deg, hsl(35, 85%, 50%) 0%, hsl(35, 85%, 40%) 100%)',
+        'gradient-danger': 'linear-gradient(135deg, hsl(355, 70%, 52%) 0%, hsl(355, 70%, 40%) 100%)',
+        'gradient-info': 'linear-gradient(135deg, hsl(205, 85%, 48%) 0%, hsl(205, 85%, 35%) 100%)',
+        'gradient-soft': 'linear-gradient(135deg, hsl(210, 40%, 98%) 0%, hsl(210, 35%, 96%) 100%)',
       },
       
-      // Modern shadows for depth and elevation
+      // Professional shadows (subtle elevation)
       boxShadow: {
-        'soft': '0 2px 8px 0 rgba(0, 0, 0, 0.05)',
-        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-        'card-hover': '0 8px 16px -4px rgba(0, 0, 0, 0.12), 0 4px 8px -2px rgba(0, 0, 0, 0.08)',
-        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        'inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-        'glow-primary': '0 0 20px rgba(0, 128, 255, 0.3)',
-        'glow-success': '0 0 20px rgba(16, 185, 129, 0.3)',
-        'glow-danger': '0 0 20px rgba(239, 68, 68, 0.3)',
+        'soft': '0 2px 8px 0 rgba(30, 58, 95, 0.04)',
+        'card': '0 1px 3px 0 rgba(30, 58, 95, 0.08), 0 1px 2px 0 rgba(30, 58, 95, 0.06)',
+        'card-hover': '0 8px 16px -4px rgba(30, 58, 95, 0.10), 0 4px 8px -2px rgba(30, 58, 95, 0.08)',
+        'lg': '0 10px 15px -3px rgba(30, 58, 95, 0.08), 0 4px 6px -2px rgba(30, 58, 95, 0.05)',
+        'xl': '0 20px 25px -5px rgba(30, 58, 95, 0.08), 0 10px 10px -5px rgba(30, 58, 95, 0.04)',
+        'inner': 'inset 0 2px 4px 0 rgba(30, 58, 95, 0.06)',
+        'glow-primary': '0 0 20px rgba(45, 108, 170, 0.25)',
+        'glow-success': '0 0 20px rgba(52, 145, 105, 0.25)',
+        'glow-danger': '0 0 20px rgba(207, 72, 80, 0.25)',
       },
 
-      // Modern border radius
+      // Professional border radius (consistent and clean)
       borderRadius: {
-        'card': '16px',
-        'button': '12px',
-        'input': '12px',
+        'card': '12px',
+        'button': '8px',
+        'input': '8px',
         'pill': '9999px',
       },
 
-      // Typography scale
+      // Typography scale (professional and readable)
       fontSize: {
-        'display': ['36px', { lineHeight: '44px', fontWeight: '700' }],
-        'title': ['28px', { lineHeight: '36px', fontWeight: '600' }],
-        'heading': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'display': ['32px', { lineHeight: '40px', fontWeight: '700' }],
+        'title': ['24px', { lineHeight: '32px', fontWeight: '600' }],
+        'heading': ['20px', { lineHeight: '28px', fontWeight: '600' }],
         'subheading': ['18px', { lineHeight: '26px', fontWeight: '600' }],
         'body': ['16px', { lineHeight: '24px', fontWeight: '400' }],
         'caption': ['14px', { lineHeight: '20px', fontWeight: '400' }],
         'small': ['12px', { lineHeight: '16px', fontWeight: '400' }],
       },
 
-      // Animations & Transitions
+      // Smooth animations
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'fade-in-up': 'fadeInUp 0.4s ease-out',
@@ -168,7 +168,6 @@ module.exports = {
         'scale-in': 'scaleIn 0.2s ease-out',
         'slide-in-right': 'slideInRight 0.3s ease-out',
         'pulse-soft': 'pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'shimmer': 'shimmer 2s linear infinite',
       },
       
       keyframes: {
@@ -194,15 +193,11 @@ module.exports = {
         },
         pulseSoft: {
           '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.8' },
-        },
-        shimmer: {
-          '0%': { backgroundPosition: '-1000px 0' },
-          '100%': { backgroundPosition: '1000px 0' },
+          '50%': { opacity: '0.85' },
         },
       },
 
-      // Spacing scale (extended)
+      // Spacing scale
       spacing: {
         '18': '4.5rem',
         '88': '22rem',

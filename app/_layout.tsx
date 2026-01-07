@@ -98,7 +98,9 @@ export default function RootLayout() {
       <DemoComponent />
     </>
   ) : (
-    <Stack />
+    <Stack screenOptions={{
+      headerShown: false,
+    }} />
   );
 
   return (

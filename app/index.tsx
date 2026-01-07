@@ -10,15 +10,14 @@ import { useAuth } from '@/hooks/useAuth';
  */
 
 const categories = [
-  { id: 'Anthropometry', name: 'Антропометрия', icon: '📏' },
+  { id: 'General Health', name: 'Общее здоровье', icon: '⚕️' },
   { id: 'Cardiology', name: 'Кардиология', icon: '❤️' },
-  { id: 'Nutrition', name: 'Питание', icon: '🍎' },
-  { id: 'Renal', name: 'Почки', icon: '🫘' },
-  { id: 'Pulmonology', name: 'Лёгкие', icon: '🫁' },
-  { id: 'Critical Care', name: 'Интенсивная терапия', icon: '🚑' },
+  { id: 'Nephrology', name: 'Нефрология', icon: '🫘' },
   { id: 'Neurology', name: 'Неврология', icon: '🧠' },
   { id: 'Pediatrics', name: 'Педиатрия', icon: '👶' },
-  { id: 'Endocrinology', name: 'Эндокринология', icon: '🔬' },
+  { id: 'Obstetrics', name: 'Акушерство', icon: '🤰' },
+  { id: 'Hematology', name: 'Гематология', icon: '💉' },
+  { id: 'Laboratory', name: 'Лабораторная', icon: '🔬' },
 ];
 
 export default function HomeScreen() {
@@ -110,13 +109,14 @@ export default function HomeScreen() {
               key={category.id}
               onPress={() => handleCategoryPress(category.id)}
               className={`${
-                category.id === 'Anthropometry' ? 'bg-gradient-primary' :
+                category.id === 'General Health' ? 'bg-gradient-primary' :
                   category.id === 'Cardiology' ? 'bg-gradient-danger' :
-                    category.id === 'Nutrition' ? 'bg-gradient-success' :
-                      category.id === 'Renal' ? 'bg-gradient-secondary' :
-                        category.id === 'Pulmonology' ? 'bg-gradient-info' :
-                          category.id === 'Critical Care' ? 'bg-gradient-warning' :
-                            'bg-gradient-accent'
+                    category.id === 'Nephrology' ? 'bg-gradient-secondary' :
+                      category.id === 'Neurology' ? 'bg-gradient-accent' :
+                        category.id === 'Pediatrics' ? 'bg-gradient-info' :
+                          category.id === 'Obstetrics' ? 'bg-gradient-success' :
+                            category.id === 'Hematology' ? 'bg-gradient-danger' :
+                              'bg-gradient-accent'
               } rounded-card px-6 py-5 flex-row items-center shadow-card-hover active:opacity-90 min-w-[45%]`}
             >
               <Text className="text-4xl mr-4">{category.icon}</Text>
@@ -163,12 +163,13 @@ export default function HomeScreen() {
                   <View className="w-14 h-14 rounded-pill bg-gradient-soft items-center justify-center mr-4 shadow-soft">
                     <Text className="text-3xl">
                       {calculator.category === 'Cardiology' ? '❤️' :
-                        calculator.category === 'Endocrinology' ? '🔬' :
-                          calculator.category === 'Neurology' ? '🧠' :
-                            calculator.category === 'Pediatrics' ? '👶' :
-                              calculator.category === 'Nutrition' ? '🍎' :
-                                calculator.category === 'Renal' ? '🫘' :
-                                  calculator.category === 'Pulmonology' ? '🫁' : '⚕️'}
+                        calculator.category === 'Neurology' ? '🧠' :
+                          calculator.category === 'Pediatrics' ? '👶' :
+                            calculator.category === 'General Health' ? '⚕️' :
+                              calculator.category === 'Nephrology' ? '🫘' :
+                                calculator.category === 'Obstetrics' ? '🤰' :
+                                  calculator.category === 'Hematology' ? '💉' :
+                                    calculator.category === 'Laboratory' ? '🔬' : '⚕️'}
                     </Text>
                   </View>
                   <View className="flex-1">

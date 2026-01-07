@@ -10,15 +10,14 @@ import { useCalculatorsStore } from '@/stores/calculatorsStore';
 
 const categories = [
   { id: 'all', name: 'Все' },
-  { id: 'Anthropometry', name: 'Антропометрия' },
+  { id: 'General Health', name: 'Общее здоровье' },
   { id: 'Cardiology', name: 'Кардиология' },
-  { id: 'Nutrition', name: 'Питание' },
-  { id: 'Renal', name: 'Почки' },
-  { id: 'Pulmonology', name: 'Лёгкие' },
-  { id: 'Critical Care', name: 'Интенсивная терапия' },
+  { id: 'Nephrology', name: 'Нефрология' },
   { id: 'Neurology', name: 'Неврология' },
   { id: 'Pediatrics', name: 'Педиатрия' },
-  { id: 'Endocrinology', name: 'Эндокринология' },
+  { id: 'Obstetrics', name: 'Акушерство' },
+  { id: 'Hematology', name: 'Гематология' },
+  { id: 'Laboratory', name: 'Лабораторная' },
 ];
 
 export default function CalculatorsListScreen() {
@@ -126,16 +125,15 @@ export default function CalculatorsListScreen() {
             ).map(([categoryId, items]) => (
               <View key={categoryId} className="mb-6">
                 <Text className="text-sm font-semibold text-text-primary mb-3 uppercase tracking-wide">
-                  {categoryId === 'Cardiology' ? '❤️ Кардиология' 
-                    : categoryId === 'Endocrinology' ? '🔬 Эндокринология' 
-                      : categoryId === 'Neurology' ? '🧠 Неврология' 
-                        : categoryId === 'Pediatrics' ? '👶 Педиатрия'
-                          : categoryId === 'Anthropometry' ? '📏 Антропометрия'
-                            : categoryId === 'Nutrition' ? '🍎 Питание'
-                              : categoryId === 'Renal' ? '🫘 Почки'
-                                : categoryId === 'Pulmonology' ? '🫁 Лёгкие'
-                                  : categoryId === 'Critical Care' ? '🚑 Интенсивная терапия'
-                                    : 'Прочее'}
+                  {categoryId === 'General Health' ? '⚕️ Общее здоровье'
+                    : categoryId === 'Cardiology' ? '❤️ Кардиология' 
+                      : categoryId === 'Nephrology' ? '🫘 Нефрология'
+                        : categoryId === 'Neurology' ? '🧠 Неврология' 
+                          : categoryId === 'Pediatrics' ? '👶 Педиатрия'
+                            : categoryId === 'Obstetrics' ? '🤰 Акушерство'
+                              : categoryId === 'Hematology' ? '💉 Гематология'
+                                : categoryId === 'Laboratory' ? '🔬 Лабораторная'
+                                  : 'Прочее'}
                 </Text>
                 {items.map((calculator: any) => (
                   <Pressable
@@ -147,15 +145,14 @@ export default function CalculatorsListScreen() {
                       <View className="w-12 h-12 rounded-full bg-primary-50 items-center justify-center mr-4">
                         <Text className="text-2xl">
                           {(() => {
+                            if (categoryId === 'General Health') return '⚕️';
                             if (categoryId === 'Cardiology') return '❤️';
-                            if (categoryId === 'Endocrinology') return '🔬';
+                            if (categoryId === 'Nephrology') return '🫘';
                             if (categoryId === 'Neurology') return '🧠';
                             if (categoryId === 'Pediatrics') return '👶';
-                            if (categoryId === 'Anthropometry') return '📏';
-                            if (categoryId === 'Nutrition') return '🍎';
-                            if (categoryId === 'Renal') return '🫘';
-                            if (categoryId === 'Pulmonology') return '🫁';
-                            if (categoryId === 'Critical Care') return '🚑';
+                            if (categoryId === 'Obstetrics') return '🤰';
+                            if (categoryId === 'Hematology') return '💉';
+                            if (categoryId === 'Laboratory') return '🔬';
                             return '⚕️';
                           })()}
                         </Text>
