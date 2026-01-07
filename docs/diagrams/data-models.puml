@@ -1,0 +1,72 @@
+@startuml Data Models
+
+class User {
+  +id: Integer
+  +email: String
+  +name: String
+  +password_digest: String
+  +role: String
+  +created_at: DateTime
+  +updated_at: DateTime
+  --
+  +sessions: List<Session>
+  +calculation_results: List<CalculationResult>
+}
+
+class Session {
+  +id: Integer
+  +user_id: Integer
+  +session_token: String
+  +ip_address: String
+  +user_agent: String
+  +created_at: DateTime
+  +updated_at: DateTime
+  --
+  +user: User
+}
+
+class Calculator {
+  +id: Integer
+  +name: String
+  +description: Text
+  +formula: Text
+  +category: String
+  +input_fields: JSON
+  +interpretation_rules: JSON
+  +created_at: DateTime
+  +updated_at: DateTime
+  --
+  +calculation_results: List<CalculationResult>
+}
+
+class CalculationResult {
+  +id: Integer
+  +user_id: Integer
+  +calculator_id: Integer
+  +input_data: JSON
+  +result_value: Float
+  +interpretation: Text
+  +performed_at: DateTime
+  +created_at: DateTime
+  +updated_at: DateTime
+  --
+  +user: User
+  +calculator: Calculator
+}
+
+class UsageStatistic {
+  +id: Integer
+  +user_id: Integer
+  +calculator_id: Integer
+  +action: String
+  +meta_data: JSON
+  +created_at: DateTime
+}
+
+User "1" -- "N" Session : has many
+User "1" -- "N" CalculationResult : has many
+Calculator "1" -- "N" CalculationResult : has many
+User "1" -- "N" UsageStatistic : has many
+Calculator "1" -- "N" UsageStatistic : has many
+
+@enduml

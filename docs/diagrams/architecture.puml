@@ -1,0 +1,76 @@
+@startuml Medical Calculator Architecture
+
+' Actors
+actor "Пользователь" as User
+actor "Медицинский\nспециалист" as Doctor
+
+' Components - Frontend
+package "Frontend (React Native)" {
+  [Экраны UI] as UI
+  [Навигация\nExpo Router] as Router
+  [Управление\nсостоянием\nZustand] as State
+  [API Клиент\nservices/] as APIClient
+  [Локальное\nхранилище\nSecureStore] as Storage
+}
+
+' Components - Backend
+package "Backend (FastAPI)" {
+  [API Endpoints\n/api/v1] as API
+  [Бизнес-логика\nServices] as Logic
+  [Аутентификация\nJWT Middleware] as Auth
+  [Модели данных\nPydantic Schemas] as Schemas
+}
+
+' Database
+database "PostgreSQL" {
+  [users] as UsersTable
+  [sessions] as SessionsTable
+  [calculators] as CalcsTable
+  [calculation_results] as ResultsTable
+  [usage_statistics] as StatsTable
+}
+
+' External Services
+cloud "Внешние сервисы" {
+  [Медицинские\nбазы данных] as MedDB
+  [Аналитика] as Analytics
+  [Push\nуведомления] as Push
+}
+
+' User interactions
+User --> UI : Взаимодействие
+Doctor --> UI : Взаимодействие
+
+' Frontend internal flow
+UI --> Router : Навигация
+UI --> State : Получение данных
+State --> APIClient : API запросы
+APIClient --> Storage : Токены сессии
+
+' Frontend to Backend
+APIClient --> API : HTTP/REST\n(JSON)
+
+' Backend internal flow
+API --> Auth : Проверка\nаутентификации
+Auth --> Logic : Вызов\nбизнес-логики
+Logic --> Schemas : Валидация\nданных
+
+' Backend to Database
+Logic --> UsersTable : User Model\n(id, email, name,\npassword_digest)
+Logic --> SessionsTable : Session Model\n(id, user_id,\nsession_token)
+Logic --> CalcsTable : Calculator Model\n(id, name, formula,\ninput_fields,\ninterpretation_rules)
+Logic --> ResultsTable : CalculationResult Model\n(id, user_id,\ncalculator_id,\ninput_data,\nresult_value,\ninterpretation)
+Logic --> StatsTable : UsageStatistic Model\n(id, calculator_id,\naction, meta_data)
+
+' External integrations
+Logic --> MedDB : Справочные\nданные
+Logic --> Analytics : События\nиспользования
+Logic --> Push : Уведомления
+
+' Relationships
+UsersTable "1" -- "N" SessionsTable : user_id
+UsersTable "1" -- "N" ResultsTable : user_id
+CalcsTable "1" -- "N" ResultsTable : calculator_id
+CalcsTable "1" -- "N" StatsTable : calculator_id
+
+@enduml
