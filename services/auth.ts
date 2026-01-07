@@ -14,7 +14,7 @@ class AuthService {
    * Login user
    */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const data = await api.post<AuthResponse>(`${API_BASE_URL}/api/v1/login`, credentials);
+    const data = await api.post<AuthResponse>(`${API_BASE_URL}/api/v1/sessions`, credentials);
 
     // Store token
     if (data.sessionToken) {
@@ -28,7 +28,7 @@ class AuthService {
    * Sign up new user
    */
   async signup(signupData: SignUpData): Promise<AuthResponse> {
-    const data = await api.post<AuthResponse>(`${API_BASE_URL}/api/v1/sign_up`, { user: signupData });
+    const data = await api.post<AuthResponse>(`${API_BASE_URL}/api/v1/registrations`, signupData);
 
     // Store token
     if (data.sessionToken) {
@@ -43,7 +43,7 @@ class AuthService {
    */
   async logout(): Promise<void> {
     try {
-      await api.delete(`${API_BASE_URL}/api/v1/logout`);
+      await api.delete(`${API_BASE_URL}/api/v1/sessions`);
     } catch (error) {
       console.error('Logout API call failed:', error);
       // Continue with local cleanup even if API call fails
