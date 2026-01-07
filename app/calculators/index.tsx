@@ -10,7 +10,6 @@ import { useCalculatorsStore } from '@/stores/calculatorsStore';
 
 const categories = [
   { id: 'all', name: 'Все' },
-  { id: 'general', name: 'Общие' },
   { id: 'cardiology', name: 'Кардиология' },
   { id: 'endocrinology', name: 'Эндокринология' },
   { id: 'neurology', name: 'Неврология' },
@@ -29,14 +28,15 @@ export default function CalculatorsListScreen() {
     fetchAll();
   }, []);
 
+  // Normalize search and category filtering using `categoryId` created by the store
   const filteredCalculators = calculators.filter((calc) => {
     const matchesSearch = calc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       calc.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || calc.category === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || calc.categoryId === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const handleCalculatorPress = (id: number) => {
+  const handleCalculatorPress = (id: string) => {
     router.push(`/calculator/${id}`);
   };
 
@@ -110,35 +110,45 @@ export default function CalculatorsListScreen() {
           </View>
         ) : (
           <View className="gap-3 pb-6">
-            {filteredCalculators.map((calculator) => (
-              <Pressable
-                key={calculator.id}
-                onPress={() => handleCalculatorPress(calculator.id)}
-                className="bg-surface-elevated rounded-2xl p-5 border border-border active:opacity-70"
-              >
-                <View className="flex-row items-start mb-3">
-                  <View className="w-12 h-12 rounded-full bg-primary-light items-center justify-center mr-4">
-                    <Text className="text-2xl">
-                      {calculator.category === 'cardiology' ? '❤️' :
-                        calculator.category === 'endocrinology' ? '🔬' :
-                          calculator.category === 'neurology' ? '🧠' :
-                            calculator.category === 'pediatrics' ? '👶' : '⚕️'}
-                    </Text>
-                  </View>
-                  <View className="flex-1">
-                    <Text className="text-base font-semibold text-text-primary mb-1">
-                      {calculator.name}
-                    </Text>
-                    <Text className="text-xs text-text-secondary capitalize mb-2">
-                      {calculator.category}
-                    </Text>
-                    <Text className="text-sm text-text-secondary" numberOfLines={2}>
-                      {calculator.description}
-                    </Text>
-                  </View>
-                  <Text className="text-text-muted text-lg ml-2">→</Text>
-                </View>
-              </Pressable>
+            {/* Group calculators by categoryId */}
+            {Object.entries(
+              filteredCalculators.reduce((acc: Record<string, any[]>, calc) => {
+                const key = calc.categoryId || 'other';
+                acc[key] = acc[key] || [];
+                acc[key].push(calc);
+                return acc;
+              }, {})
+            ).map(([categoryId, items]) => (
+              <View key={categoryId} className="mb-6">
+                <Text className="text-sm font-semibold text-text-primary mb-3">{categoryId === 'cardiology' ? 'Кардиология' : categoryId === 'endocrinology' ? 'Эндокринология' : categoryId === 'neurology' ? 'Неврология' : categoryId === 'pediatrics' ? 'Педиатрия' : 'Прочее'}</Text>
+                {items.map((calculator: any) => (
+                  <Pressable
+                    key={calculator.id}
+                    onPress={() => handleCalculatorPress(calculator.id)}
+                    className="bg-surface-elevated rounded-2xl p-5 border border-border active:opacity-70 mb-3"
+                  >
+                    <View className="flex-row items-start mb-3">
+                      <View className="w-12 h-12 rounded-full bg-primary-light items-center justify-center mr-4">
+                        <Text className="text-2xl">
+                          {categoryId === 'cardiology' ? '❤️' : categoryId === 'endocrinology' ? '🔬' : categoryId === 'neurology' ? '🧠' : categoryId === 'pediatrics' ? '👶' : '⚕️'}
+                        </Text>
+                      </View>
+                      <View className="flex-1">
+                        <Text className="text-base font-semibold text-text-primary mb-1">
+                          {calculator.name}
+                        </Text>
+                        <Text className="text-xs text-text-secondary capitalize mb-2">
+                          {calculator.category}
+                        </Text>
+                        <Text className="text-sm text-text-secondary" numberOfLines={2}>
+                          {calculator.description}
+                        </Text>
+                      </View>
+                      <Text className="text-text-muted text-lg ml-2">→</Text>
+                    </View>
+                  </Pressable>
+                ))}
+              </View>
             ))}
           </View>
         )}

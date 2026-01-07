@@ -4,7 +4,9 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useCalculatorsStore } from '@/stores/calculatorsStore';
 import { useCalculationResultsStore } from '@/stores/calculationResultsStore';
 import { Calculator, InputField } from '@/types/calculators';
+import evaluateFormula from '@/utils/formulaEvaluator';
 import { useAuth } from '@/hooks/useAuth';
+import getInterpretation from '@/utils/interpreter';
 
 /**
  * Calculator Input Screen
@@ -13,18 +15,18 @@ import { useAuth } from '@/hooks/useAuth';
 
 export default function CalculatorScreen() {
   const params = useLocalSearchParams();
-  const calculatorId = parseInt(params.id as string);
-  const { isAuthenticated } = useAuth();
+  const calculatorId = params.id as string;
   
   const { items: calculators, loading: loadingCalc } = useCalculatorsStore();
   const { addItem: createResult, loading: calculating } = useCalculationResultsStore();
+  const { isAuthenticated } = useAuth();
   
   const [calculator, setCalculator] = useState<Calculator | null>(null);
   const [inputValues, setInputValues] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    const calc = calculators.find((c) => c.id === calculatorId);
+    const calc = calculators.find((c) => String(c.id) === String(calculatorId));
     if (calc) {
       setCalculator(calc);
       // Initialize input values
@@ -62,11 +64,7 @@ export default function CalculatorScreen() {
   const handleCalculate = async () => {
     if (!validateInputs() || !calculator) return;
 
-    // Check authentication
-    if (!isAuthenticated) {
-      router.push('/(auth)/sign-in');
-      return;
-    }
+    // No authentication required — calculations and results are stored locally
 
     try {
       // Convert string values to numbers for numeric fields
@@ -76,10 +74,39 @@ export default function CalculatorScreen() {
         processedData[field.name] = field.type === 'number' ? parseFloat(value) : value;
       });
 
-      const result = await createResult({
+      // Evaluate formula if provided
+      let computedValue: number | null = null;
+      let interpretation = '';
+      if (calculator.formula && calculator.formula.indexOf('{') !== -1) {
+        try {
+          const val = evaluateFormula(calculator.formula, processedData);
+          if (typeof val === 'number' && !isNaN(val) && isFinite(val)) {
+            computedValue = val;
+          }
+        } catch (err) {
+          console.warn('Formula evaluation failed:', err);
+        }
+      }
+
+      // Use centralized interpreter for clinical interpretation
+      interpretation = getInterpretation(calculator, computedValue, processedData);
+
+      const payload: any = {
         calculatorId: calculator.id,
+        calculator: { id: calculator.id, name: calculator.name, category: calculator.category },
         inputData: processedData,
-      });
+        resultValue: computedValue,
+        interpretation,
+      };
+
+      // Require authentication to persist directly to Firebase
+      if (!isAuthenticated) {
+        // Avoid navigating (web navigator state can cause errors); show message instead
+        setErrors({ general: 'Пожалуйста, войдите в систему, чтобы сохранить результат в облаке.' });
+        return;
+      }
+
+      const result = await createResult(payload);
 
       // Navigate to result screen
       if (result) {
@@ -105,6 +132,19 @@ export default function CalculatorScreen() {
       <View className="flex-1 bg-surface items-center justify-center">
         <ActivityIndicator size="large" color="#0080FF" />
         <Text className="text-text-secondary mt-4">Загрузка калькулятора...</Text>
+      </View>
+    );
+  }
+
+  // If calculator exists but has no input fields, show a helpful message
+  if (calculator && (!calculator.inputFields || calculator.inputFields.length === 0)) {
+    return (
+      <View className="flex-1 bg-surface items-center justify-center px-6">
+        <Text className="text-lg font-semibold mb-2">{calculator.name}</Text>
+        <Text className="text-sm text-text-secondary mb-4">Для этого калькулятора не заданы входные параметры.</Text>
+        <Pressable onPress={() => router.back()} className="bg-primary rounded-xl px-6 py-3">
+          <Text className="text-text-inverse">Назад</Text>
+        </Pressable>
       </View>
     );
   }

@@ -23,7 +23,7 @@ export interface InterpretationRule {
 }
 
 export interface Calculator {
-  id: number;
+  id: string | number;
   name: string;
   description: string;
   formula: string;

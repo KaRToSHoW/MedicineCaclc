@@ -209,9 +209,14 @@ export default function HistoryScreen() {
                     </Text>
                   </View>
                   <View className="items-end ml-3">
-                    <Text className="text-2xl font-bold text-text-primary">
-                      {result.resultValue.toFixed(1)}
-                    </Text>
+                      <Text className="text-2xl font-bold text-text-primary">
+                        {(() => {
+                          const v = (result as any).resultValue;
+                          if (typeof v === 'number' && isFinite(v)) return v.toFixed(1);
+                          if (typeof v === 'string' && v.trim() !== '' && !isNaN(Number(v))) return Number(v).toFixed(1);
+                          return '-';
+                        })()}
+                      </Text>
                     <Text className="text-xs text-text-muted mt-1">→</Text>
                   </View>
                 </View>

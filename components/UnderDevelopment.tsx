@@ -24,7 +24,7 @@ export default function UnderDevelopment() {
       Animated.timing(rotateAnim, {
         toValue: 1,
         duration: 3000,
-        useNativeDriver: true,
+        useNativeDriver: false,
       })
     ).start();
     // rotateAnim is stable (created with useRef), no need to add to deps
