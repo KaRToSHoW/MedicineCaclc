@@ -8,27 +8,21 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 export default function BottomNavigation() {
   const router = useRouter();
   const pathname = usePathname();
+
+  // Анимации
   const dropPosition = useRef(new Animated.Value(0)).current;
+  const bubbleScale = useRef(new Animated.Value(1)).current;
+  const bubbleStretch = useRef(new Animated.Value(1)).current;
 
   const tabs = [
-    {
-      name: 'Главная',
-      iconType: 'home' as const,
-      route: '/',
-      activeRoutes: ['/'],
-    },
+    { name: 'Главная', iconType: 'home' as const, route: '/', activeRoutes: ['/'] },
     {
       name: 'Калькуляторы',
       iconType: 'calculator' as const,
       route: '/calculators',
       activeRoutes: ['/calculators', '/calculator'],
     },
-    {
-      name: 'Избранное',
-      iconType: 'favorite' as const,
-      route: '/favorites',
-      activeRoutes: ['/favorites'],
-    },
+    { name: 'Избранное', iconType: 'favorite' as const, route: '/favorites', activeRoutes: ['/favorites'] },
     {
       name: 'Профиль',
       iconType: 'profile' as const,
@@ -37,177 +31,137 @@ export default function BottomNavigation() {
     },
   ];
 
-  const isActive = (tab: typeof tabs[0]) => {
-    return tab.activeRoutes.some(route => {
-      if (route === '/') {
-        return pathname === '/';
-      }
-      return pathname.startsWith(route);
-    });
-  };
+  const isActive = (tab: typeof tabs[0]) =>
+    tab.activeRoutes.some(route =>
+      route === '/' ? pathname === '/' : pathname.startsWith(route),
+    );
 
   const activeIndex = tabs.findIndex(tab => isActive(tab));
   const tabWidth = SCREEN_WIDTH / tabs.length;
 
   useEffect(() => {
-    Animated.spring(dropPosition, {
-      toValue: activeIndex * tabWidth + tabWidth / 2,
-      useNativeDriver: true,
-      tension: 68,
-      friction: 12,
-    }).start();
-    // dropPosition is a ref and doesn't need to be in dependencies
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex, tabWidth]);
+    Animated.sequence([
+      Animated.parallel([
+        Animated.timing(bubbleStretch, {
+          toValue: 1.25,
+          duration: 140,
+          useNativeDriver: true,
+        }),
+        Animated.timing(bubbleScale, {
+          toValue: 0.92,
+          duration: 140,
+          useNativeDriver: true,
+        }),
+      ]),
+      Animated.spring(dropPosition, {
+        toValue: activeIndex,
+        tension: 80,
+        friction: 10,
+        useNativeDriver: true,
+      }),
+      Animated.parallel([
+        Animated.spring(bubbleStretch, {
+          toValue: 1,
+          tension: 100,
+          friction: 8,
+          useNativeDriver: true,
+        }),
+        Animated.spring(bubbleScale, {
+          toValue: 1,
+          tension: 100,
+          friction: 8,
+          useNativeDriver: true,
+        }),
+      ]),
+    ]).start();
+  }, [activeIndex]);
 
   return (
-    <View 
-      className="bg-surface relative"
+    <View
       style={{
-        paddingBottom: Platform.OS === 'ios' ? 20 : 8,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: -4 },
-        shadowOpacity: 0.12,
-        shadowRadius: 12,
-        elevation: 12,
+        paddingBottom: Platform.OS === 'ios' ? 22 : 10,
       }}
     >
-      {/* Animated Liquid Drop Indicator */}
-      <Animated.View
-        className="absolute top-0 items-center"
+      {/* УГЛУБЛЕНИЕ (НИША) */}
+      <View
         style={{
-          transform: [{ translateX: dropPosition }, { translateY: -8 }],
-          marginLeft: -18,
+          position: 'absolute',
+          top: 6,
+          left: 6,
+          right: 6,
+          height: 64,
+          borderRadius: 32,
+          backgroundColor: 'rgba(0,0,0,0.06)',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 3 },
+          shadowOpacity: 0.25,
+          shadowRadius: 8,
+          elevation: 6,
         }}
-      >
-        {/* Main Drop */}
-        <View 
-          className="bg-primary items-center justify-center"
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: 18,
-            shadowColor: 'hsl(210, 75%, 45%)',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.3,
-            shadowRadius: 8,
-            elevation: 6,
-          }}
-        >
-          {/* Inner glow */}
-          <View 
-            className="bg-primary-light"
-            style={{
-              width: 20,
-              height: 20,
-              borderRadius: 10,
-              opacity: 0.5,
-            }}
-          />
-        </View>
-        
-        {/* Drop Tail */}
-        <View 
-          className="bg-primary"
-          style={{
-            width: 12,
-            height: 8,
-            borderBottomLeftRadius: 8,
-            borderBottomRightRadius: 8,
-            marginTop: -2,
-          }}
-        />
-        
-        {/* Small drip */}
-        <View 
-          className="bg-primary"
-          style={{
-            width: 4,
-            height: 4,
-            borderRadius: 2,
-            marginTop: 1,
-          }}
-        />
-      </Animated.View>
+      />
 
-      {/* Tabs */}
-      <View className="flex-row justify-around items-center px-2 pt-8 pb-2">
+      {/* ПРОЗРАЧНЫЙ ПУЗЫРЁК */}
+      <Animated.View
+        pointerEvents="none"
+        style={{
+          position: 'absolute',
+          top: 8,
+          width: 56,
+          height: 56,
+          borderRadius: 28,
+          backgroundColor: 'rgba(255,255,255,0.25)',
+          borderWidth: 1,
+          borderColor: 'rgba(255,255,255,0.35)',
+          transform: [
+            {
+              translateX: Animated.add(
+                Animated.multiply(dropPosition, tabWidth),
+                new Animated.Value(tabWidth / 2 - 28),
+              ),
+            },
+            { scaleX: bubbleStretch },
+            { scaleY: bubbleScale },
+          ],
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.4,
+          shadowRadius: 10,
+          elevation: 10,
+          zIndex: 2,
+        }}
+      />
+
+      {/* КНОПКИ */}
+      <View className="flex-row justify-around items-center px-2 py-3">
         {tabs.map((tab, index) => {
-          const active = isActive(tab);
+          const active = index === activeIndex;
+
           return (
             <Pressable
               key={tab.route}
               onPress={() => router.push(tab.route as any)}
-              className="flex-1 items-center py-2 active:scale-95"
-              style={{ 
-                minWidth: 60,
-                transform: active ? [{ scale: 1.05 }] : [{ scale: 1 }],
-              }}
+              className="flex-1 items-center"
             >
-              {/* Icon with background when active */}
-              {active ? (
-                <View 
-                  className="items-center justify-center mb-2 bg-primary-light"
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 24,
-                  }}
-                >
-                  <TabIcon type={tab.iconType} active={active} size={26} />
-                </View>
-              ) : (
-                <View className="items-center justify-center mb-2">
-                  <TabIcon type={tab.iconType} active={active} size={24} />
-                </View>
-              )}
-              
-              {/* Label */}
-              <Text 
-                className={`text-xs font-semibold ${
-                  active 
-                    ? 'text-primary' 
-                    : 'text-text-muted'
+              <View
+                className="items-center justify-center mb-1"
+                style={{ height: 40, zIndex: 5 }}
+              >
+                <TabIcon
+                  type={tab.iconType}
+                  active={active}
+                  size={active ? 28 : 24}
+                />
+              </View>
+
+              <Text
+                className={`text-[11px] font-semibold ${
+                  active ? 'text-white' : 'text-text-muted'
                 }`}
+                style={{ opacity: active ? 1 : 0.7, zIndex: 5 }}
                 numberOfLines={1}
-                style={{
-                  opacity: active ? 1 : 0.7,
-                }}
               >
                 {tab.name}
               </Text>
-              
-              {/* Active indicator dots */}
-              {active ? (
-                <View className="flex-row gap-1 mt-1">
-                  <View 
-                    className="bg-primary"
-                    style={{
-                      width: 3,
-                      height: 3,
-                      borderRadius: 1.5,
-                    }}
-                  />
-                  <View 
-                    className="bg-primary"
-                    style={{
-                      width: 3,
-                      height: 3,
-                      borderRadius: 1.5,
-                      opacity: 0.6,
-                    }}
-                  />
-                  <View 
-                    className="bg-primary"
-                    style={{
-                      width: 3,
-                      height: 3,
-                      borderRadius: 1.5,
-                      opacity: 0.3,
-                    }}
-                  />
-                </View>
-              ) : null}
             </Pressable>
           );
         })}
