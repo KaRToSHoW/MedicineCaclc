@@ -3,8 +3,8 @@
  *
  * Matches backend/lib/env_checker.rb logic:
  * 1. Production: PUBLIC_HOST -> https://PUBLIC_HOST
- * 2. Cloud dev: APP_PORT + CLACKY_PREVIEW_DOMAIN_BASE -> https://3001.dev.clacky.com
- * 3. Local dev: http://localhost:3001
+ * 2. Cloud dev: APP_PORT + CLACKY_PREVIEW_DOMAIN_BASE -> https://8000.dev.clacky.com
+ * 3. Local dev: http://localhost:8000
  *
  * Environment variables are mapped through app.config.js to support
  * both system-injected vars (APP_PORT) and Expo format (EXPO_PUBLIC_APP_PORT)
@@ -22,13 +22,13 @@ const getApiBaseUrl = (): string => {
 
   // 2. Cloud dev: Use APP_PORT + CLACKY_PREVIEW_DOMAIN_BASE
   if (extra.CLACKY_PREVIEW_DOMAIN_BASE) {
-    const port = extra.APP_PORT || '3001';
+    const port = extra.APP_PORT || '8000';
     const domainBase = extra.CLACKY_PREVIEW_DOMAIN_BASE;
     return `https://${port}${domainBase}`;
   }
 
   // 3. Local dev: fallback to localhost
-  const defaultPort = extra.APP_PORT || '3001';
+  const defaultPort = extra.APP_PORT || '8000';
   return `http://localhost:${defaultPort}`;
 };
 
