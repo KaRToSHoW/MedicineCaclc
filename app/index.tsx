@@ -51,11 +51,11 @@ export default function HomeScreen() {
           </View>
           {isAuthenticated ? (
             <Pressable
-              onPress={() => router.push('/settings')}
+              onPress={() => router.push('/dashboard')}
               className="bg-surface rounded-button px-4 py-3 shadow-card active:opacity-80"
             >
               <Text className="text-sm text-primary font-bold">
-                {user?.name || user?.email || 'Профиль'}
+                👤 Личный кабинет
               </Text>
             </Pressable>
           ) : (
@@ -74,26 +74,21 @@ export default function HomeScreen() {
       {/* Quick Actions */}
       <View className="px-6 pt-6 pb-6">
         <View className="flex-row gap-4">
-          <Pressable
-            onPress={() => router.push('/history')}
-            className="flex-1 bg-surface rounded-card p-5 shadow-card-hover active:opacity-80"
-          >
-            <Text className="text-3xl mb-3">📊</Text>
-            <Text className="text-base font-bold text-text-primary">История</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => router.push('/statistics')}
-            className="flex-1 bg-surface rounded-card p-5 shadow-card-hover active:opacity-80"
-          >
-            <Text className="text-3xl mb-3">📈</Text>
-            <Text className="text-base font-bold text-text-primary">Статистика</Text>
-          </Pressable>
+          {isAuthenticated ? (
+            <Pressable
+              onPress={() => router.push('/dashboard')}
+              className="flex-1 bg-surface rounded-card p-5 shadow-card-hover active:opacity-80"
+            >
+              <Text className="text-3xl mb-3">👤</Text>
+              <Text className="text-base font-bold text-text-primary">Личный кабинет</Text>
+            </Pressable>
+          ) : null}
           <Pressable
             onPress={() => router.push('/calculators')}
             className="flex-1 bg-surface rounded-card p-5 shadow-card-hover active:opacity-80"
           >
             <Text className="text-3xl mb-3">🔍</Text>
-            <Text className="text-base font-bold text-text-primary">Все</Text>
+            <Text className="text-base font-bold text-text-primary">Калькуляторы</Text>
           </Pressable>
         </View>
       </View>

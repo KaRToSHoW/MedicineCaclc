@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Медицинский Калькулятор</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { 
+        width: 100%; 
+        height: 100%; 
+        margin: 0; 
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      body { 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .container {
+        text-align: center;
+        padding: 40px;
+      }
+      h1 { margin: 0 0 20px 0; font-size: 32px; }
+      .loading {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      .info {
+        margin-top: 30px;
+        font-size: 14px;
+        opacity: 0.9;
+      }
+      a {
+        color: white;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🏥 Медицинский Калькулятор</h1>
+      <div class="loading"></div>
+      <p>Загрузка приложения...</p>
+      <div class="info">
+        <p>Если приложение не загружается автоматически:</p>
+        <p>
+          <a href="https://3000-4efa08aac5c3-web.clackypaas.com/node_modules/expo-router/entry.bundle?platform=web&dev=true&hot=false&lazy=true&transform.routerRoot=app">
+            Открыть напрямую
+          </a>
+        </p>
+        <p style="margin-top: 20px; font-size: 12px;">
+          Для мобильных устройств: используйте Expo Go приложение
+        </p>
+      </div>
+    </div>
+
+    <script>
+      // Metro Bundler на Expo Router не обслуживает HTML из коробки для веб-платформы
+      // Это лендинг для информирования пользователей
+      console.log('Expo Metro Bundler работает в режиме для нативных платформ');
+      console.log('Для веб-интерфейса требуется запуск с --web флагом');
+      
+      // Показать сообщение о необходимости использовать Expo Go или веб-режим
+      setTimeout(() => {
+        document.body.innerHTML += `
+          <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+                      background: rgba(0,0,0,0.8); padding: 20px; border-radius: 10px; max-width: 500px;">
+            <h3 style="margin-top: 0;">ℹ️ Информация</h3>
+            <p>Это приложение Expo + React Native.</p>
+            <p><strong>Для просмотра в браузере:</strong></p>
+            <ul style="text-align: left;">
+              <li>Запустите: <code style="background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 3px;">npm run web</code></li>
+              <li>Или используйте Expo Go приложение на телефоне</li>
+            </ul>
+            <p><strong>Текущий режим:</strong> Metro Bundler (нативный)</p>
+            <p style="font-size: 12px; opacity: 0.7; margin-bottom: 0;">
+              Манифест доступен по корневому URL для Expo Go
+            </p>
+          </div>
+        `;
+      }, 2000);
+    </script>
+  </body>
+</html>
