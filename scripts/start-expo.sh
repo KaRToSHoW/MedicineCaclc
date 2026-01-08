@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Calculate Expo URL based on environment
-EXPO_PORT="${EXPO_WEB_PORT:-3000}"
+EXPO_PORT="${EXPO_WEB_PORT:-3001}"
 
 # Only set EXPO_PACKAGER_PROXY_URL if CLACKY_PREVIEW_DOMAIN_BASE is defined
 if [ -n "$CLACKY_PREVIEW_DOMAIN_BASE" ]; then
