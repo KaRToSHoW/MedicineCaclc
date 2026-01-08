@@ -39,9 +39,12 @@ class SessionResponse(BaseModel):
 # Calculator schemas
 class CalculatorBase(BaseModel):
     name: str
+    name_ru: Optional[str] = None
     description: Optional[str] = None
+    description_ru: Optional[str] = None
     formula: str
     category: str
+    category_ru: Optional[str] = None
     input_fields: List[Dict[str, Any]]
     interpretation_rules: Optional[List[Dict[str, Any]]] = None
 

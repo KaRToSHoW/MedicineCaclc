@@ -48,9 +48,12 @@ class Calculator(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
+    name_ru = Column(String(255))
     description = Column(Text)
+    description_ru = Column(Text)
     formula = Column(Text, nullable=False)
     category = Column(String(100), index=True)
+    category_ru = Column(String(100))
     input_fields = Column(JSON, nullable=False)
     interpretation_rules = Column(JSON)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

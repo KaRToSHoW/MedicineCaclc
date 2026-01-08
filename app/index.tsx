@@ -37,33 +37,33 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-surface-secondary">
-      {/* Header with Gradient */}
-      <View className="bg-gradient-primary px-6 pt-16 pb-10 shadow-xl">
-        <View className="flex-row items-start justify-between mb-6">
+    <ScrollView className="flex-1 bg-surface-secondary" contentContainerStyle={{ paddingBottom: 80 }}>
+      {/* Header with Gradient - Mobile Optimized */}
+      <View className="bg-gradient-primary px-4 pt-12 pb-6 shadow-xl">
+        <View className="flex-row items-start justify-between mb-4">
           <View className="flex-1">
-            <Text className="text-4xl font-bold text-text-inverse mb-3">
+            <Text className="text-2xl font-bold text-text-inverse mb-2">
               🏥 Медицинский калькулятор
             </Text>
-            <Text className="text-lg text-text-inverse opacity-95">
+            <Text className="text-sm text-text-inverse opacity-95">
               Профессиональные клинические расчеты
             </Text>
           </View>
           {isAuthenticated ? (
             <Pressable
               onPress={() => router.push('/dashboard')}
-              className="bg-surface rounded-button px-4 py-3 shadow-card active:opacity-80"
+              className="bg-surface rounded-button px-3 py-2 shadow-card active:opacity-80"
             >
-              <Text className="text-sm text-primary font-bold">
-                👤 Личный кабинет
+              <Text className="text-xs text-primary font-bold">
+                👤 Кабинет
               </Text>
             </Pressable>
           ) : (
             <Pressable
               onPress={() => router.push('/(auth)/sign-in')}
-              className="bg-surface rounded-button px-5 py-3 shadow-card active:opacity-80"
+              className="bg-surface rounded-button px-3 py-2 shadow-card active:opacity-80"
             >
-              <Text className="text-sm text-primary font-bold">
+              <Text className="text-xs text-primary font-bold">
                 Войти
               </Text>
             </Pressable>
@@ -71,34 +71,34 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Quick Actions */}
-      <View className="px-6 pt-6 pb-6">
-        <View className="flex-row gap-4">
+      {/* Quick Actions - Mobile Optimized */}
+      <View className="px-4 pt-4 pb-4">
+        <View className="flex-row gap-3">
           {isAuthenticated ? (
             <Pressable
               onPress={() => router.push('/dashboard')}
-              className="flex-1 bg-surface rounded-card p-5 shadow-card-hover active:opacity-80"
+              className="flex-1 bg-surface rounded-card p-4 shadow-card-hover active:opacity-80"
             >
-              <Text className="text-3xl mb-3">👤</Text>
-              <Text className="text-base font-bold text-text-primary">Личный кабинет</Text>
+              <Text className="text-2xl mb-2">👤</Text>
+              <Text className="text-sm font-bold text-text-primary">Личный кабинет</Text>
             </Pressable>
           ) : null}
           <Pressable
             onPress={() => router.push('/calculators')}
-            className="flex-1 bg-surface rounded-card p-5 shadow-card-hover active:opacity-80"
+            className="flex-1 bg-surface rounded-card p-4 shadow-card-hover active:opacity-80"
           >
-            <Text className="text-3xl mb-3">🔍</Text>
-            <Text className="text-base font-bold text-text-primary">Калькуляторы</Text>
+            <Text className="text-2xl mb-2">🔍</Text>
+            <Text className="text-sm font-bold text-text-primary">Калькуляторы</Text>
           </Pressable>
         </View>
       </View>
 
-      {/* Categories */}
-      <View className="px-6 pb-6">
-        <Text className="text-xl font-bold text-text-primary mb-5">
+      {/* Categories - Mobile Optimized */}
+      <View className="px-4 pb-4">
+        <Text className="text-lg font-bold text-text-primary mb-3">
           Категории
         </Text>
-        <View className="flex-row flex-wrap gap-4">
+        <View className="flex-row flex-wrap gap-2">
           {categories.map((category) => (
             <Pressable
               key={category.id}
@@ -112,10 +112,10 @@ export default function HomeScreen() {
                           category.id === 'Obstetrics' ? 'bg-gradient-success' :
                             category.id === 'Hematology' ? 'bg-gradient-danger' :
                               'bg-gradient-accent'
-              } rounded-card px-6 py-5 flex-row items-center shadow-card-hover active:opacity-90 min-w-[45%]`}
+              } rounded-card px-3 py-3 flex-row items-center shadow-card-hover active:opacity-90 min-w-[47%]`}
             >
-              <Text className="text-4xl mr-4">{category.icon}</Text>
-              <Text className="text-lg font-bold text-text-inverse flex-shrink">
+              <Text className="text-2xl mr-2">{category.icon}</Text>
+              <Text className="text-sm font-bold text-text-inverse flex-shrink">
                 {category.name}
               </Text>
             </Pressable>
@@ -123,15 +123,15 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Popular Calculators */}
-      <View className="px-6 pb-8">
-        <View className="flex-row items-center justify-between mb-5">
-          <Text className="text-xl font-bold text-text-primary">
+      {/* Popular Calculators - Mobile Optimized */}
+      <View className="px-4 pb-6">
+        <View className="flex-row items-center justify-between mb-3">
+          <Text className="text-lg font-bold text-text-primary">
             Популярные калькуляторы
           </Text>
           <Link href="/calculators" asChild>
             <Pressable className="active:opacity-70">
-              <Text className="text-base font-bold text-primary">
+              <Text className="text-sm font-bold text-primary">
                 Все →
               </Text>
             </Pressable>
@@ -139,24 +139,24 @@ export default function HomeScreen() {
         </View>
 
         {loading ? (
-          <View className="bg-surface rounded-card p-6 shadow-card">
-            <Text className="text-center text-text-secondary">Загрузка калькуляторов...</Text>
+          <View className="bg-surface rounded-card p-4 shadow-card">
+            <Text className="text-center text-text-secondary text-sm">Загрузка калькуляторов...</Text>
           </View>
         ) : error ? (
-          <View className="bg-danger-bg border-2 border-danger rounded-card p-5 shadow-soft">
-            <Text className="text-danger-text text-base font-medium">{error}</Text>
+          <View className="bg-danger-bg border-2 border-danger rounded-card p-3 shadow-soft">
+            <Text className="text-danger-text text-sm font-medium">{error}</Text>
           </View>
         ) : (
-          <View className="gap-4">
+          <View className="gap-2">
             {calculators.slice(0, 5).map((calculator) => (
               <Pressable
                 key={calculator.id}
                 onPress={() => handleCalculatorPress(calculator.id)}
-                className="bg-surface rounded-card p-5 shadow-card-hover active:opacity-90"
+                className="bg-surface rounded-card p-3 shadow-card-hover active:opacity-90"
               >
                 <View className="flex-row items-start">
-                  <View className="w-14 h-14 rounded-pill bg-gradient-soft items-center justify-center mr-4 shadow-soft">
-                    <Text className="text-3xl">
+                  <View className="w-10 h-10 rounded-pill bg-gradient-soft items-center justify-center mr-3 shadow-soft">
+                    <Text className="text-xl">
                       {calculator.category === 'Cardiology' ? '❤️' :
                         calculator.category === 'Neurology' ? '🧠' :
                           calculator.category === 'Pediatrics' ? '👶' :
@@ -168,14 +168,14 @@ export default function HomeScreen() {
                     </Text>
                   </View>
                   <View className="flex-1">
-                    <Text className="text-lg font-bold text-text-primary mb-1">
+                    <Text className="text-sm font-bold text-text-primary mb-0.5">
                       {calculator.nameRu || calculator.name}
                     </Text>
-                    <Text className="text-sm text-text-secondary capitalize">
+                    <Text className="text-xs text-text-secondary capitalize">
                       {calculator.categoryRu || calculator.category}
                     </Text>
                   </View>
-                  <Text className="text-text-muted text-2xl">→</Text>
+                  <Text className="text-text-muted text-xl">→</Text>
                 </View>
               </Pressable>
             ))}
@@ -183,16 +183,16 @@ export default function HomeScreen() {
         )}
       </View>
 
-      {/* Info Note */}
-      <View className="px-6 pb-8">
-        <View className="bg-info-bg border-2 border-info rounded-card p-5 shadow-soft">
+      {/* Info Note - Mobile Optimized */}
+      <View className="px-4 pb-6">
+        <View className="bg-info-bg border-2 border-info rounded-card p-3 shadow-soft">
           <View className="flex-row items-start">
-            <Text className="text-2xl mr-3">ℹ️</Text>
+            <Text className="text-xl mr-2">ℹ️</Text>
             <View className="flex-1">
-              <Text className="text-base font-bold text-info-text mb-2">
+              <Text className="text-sm font-bold text-info-text mb-1">
                 Медицинский дисклеймер
               </Text>
-              <Text className="text-sm text-text-secondary leading-5">
+              <Text className="text-xs text-text-secondary leading-4">
                 Эти калькуляторы предоставляют оценки на основе стандартных медицинских формул.
                 {' '}Всегда консультируйтесь с квалифицированным медицинским специалистом.
               </Text>

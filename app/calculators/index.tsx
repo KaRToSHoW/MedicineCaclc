@@ -46,43 +46,43 @@ export default function CalculatorsListScreen() {
 
   return (
     <View className="flex-1 bg-surface">
-      {/* Header */}
-      <View className="bg-primary px-6 pt-16 pb-6">
-        <Text className="text-2xl font-bold text-text-inverse mb-2">
+      {/* Header - Mobile Optimized */}
+      <View className="bg-primary px-4 pt-12 pb-4">
+        <Text className="text-xl font-bold text-text-inverse mb-1">
           Все калькуляторы
         </Text>
-        <Text className="text-sm text-text-inverse opacity-90">
+        <Text className="text-xs text-text-inverse opacity-90">
           Доступно {filteredCalculators.length} калькуляторов
         </Text>
       </View>
 
-      {/* Search Bar */}
-      <View className="px-6 pt-4 pb-3">
+      {/* Search Bar - Mobile Optimized */}
+      <View className="px-4 pt-3 pb-2">
         <TextInput
           value={searchQuery}
           onChangeText={setSearchQuery}
           placeholder="Поиск калькуляторов..."
           placeholderTextColor="#A0A0A0"
-          className="bg-surface-elevated border border-border rounded-xl px-4 py-3 text-base text-text-primary"
+          className="bg-surface-elevated border border-border rounded-xl px-3 py-2.5 text-sm text-text-primary"
         />
       </View>
 
-      {/* Category Filter */}
-      <View className="px-6 pb-4">
+      {/* Category Filter - Mobile Optimized */}
+      <View className="px-4 pb-3">
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View className="flex-row gap-2">
             {categories.map((category) => (
               <Pressable
                 key={category.id}
                 onPress={() => setSelectedCategory(category.id)}
-                className={`rounded-full px-5 py-2 border ${
+                className={`rounded-full px-4 py-1.5 border ${
                   selectedCategory === category.id
                     ? 'bg-primary border-primary'
                     : 'bg-surface-elevated border-border'
                 } active:opacity-70`}
               >
                 <Text
-                  className={`text-sm font-medium ${
+                  className={`text-xs font-medium ${
                     selectedCategory === category.id
                       ? 'text-text-inverse'
                       : 'text-text-secondary'
@@ -96,24 +96,24 @@ export default function CalculatorsListScreen() {
         </ScrollView>
       </View>
 
-      {/* Calculators List */}
-      <ScrollView className="flex-1 px-6">
+      {/* Calculators List - Mobile Optimized */}
+      <ScrollView className="flex-1 px-4" contentContainerStyle={{ paddingBottom: 80 }}>
         {loading ? (
-          <View className="bg-surface-elevated rounded-2xl p-6 border border-border">
-            <Text className="text-center text-text-secondary">Загрузка калькуляторов...</Text>
+          <View className="bg-surface-elevated rounded-2xl p-4 border border-border">
+            <Text className="text-center text-text-secondary text-sm">Загрузка калькуляторов...</Text>
           </View>
         ) : error ? (
-          <View className="bg-danger-bg border border-danger rounded-xl p-4">
-            <Text className="text-danger-text text-sm">{error}</Text>
+          <View className="bg-danger-bg border border-danger rounded-xl p-3">
+            <Text className="text-danger-text text-xs">{error}</Text>
           </View>
         ) : filteredCalculators.length === 0 ? (
-          <View className="bg-surface-elevated rounded-2xl p-6 border border-border">
-            <Text className="text-center text-text-secondary">
+          <View className="bg-surface-elevated rounded-2xl p-4 border border-border">
+            <Text className="text-center text-text-secondary text-sm">
               Нет калькуляторов, соответствующих вашему запросу.
             </Text>
           </View>
         ) : (
-          <View className="gap-3 pb-6">
+          <View className="gap-2 pb-4">
             {/* Group calculators by category */}
             {Object.entries(
               filteredCalculators.reduce((acc: Record<string, any[]>, calc) => {
@@ -123,8 +123,8 @@ export default function CalculatorsListScreen() {
                 return acc;
               }, {})
             ).map(([categoryId, items]) => (
-              <View key={categoryId} className="mb-6">
-                <Text className="text-sm font-semibold text-text-primary mb-3 uppercase tracking-wide">
+              <View key={categoryId} className="mb-3">
+                <Text className="text-xs font-semibold text-text-primary mb-2 uppercase tracking-wide">
                   {categoryId === 'General Health' ? '⚕️ Общее здоровье'
                     : categoryId === 'Cardiology' ? '❤️ Кардиология' 
                       : categoryId === 'Nephrology' ? '🫘 Нефрология'
@@ -139,11 +139,11 @@ export default function CalculatorsListScreen() {
                   <Pressable
                     key={calculator.id}
                     onPress={() => handleCalculatorPress(calculator.id)}
-                    className="bg-surface-elevated rounded-2xl p-5 border border-border active:opacity-70 mb-3"
+                    className="bg-surface-elevated rounded-2xl p-3 border border-border active:opacity-70 mb-2"
                   >
-                    <View className="flex-row items-start mb-3">
-                      <View className="w-12 h-12 rounded-full bg-primary-50 items-center justify-center mr-4">
-                        <Text className="text-2xl">
+                    <View className="flex-row items-start mb-2">
+                      <View className="w-10 h-10 rounded-full bg-primary-50 items-center justify-center mr-3">
+                        <Text className="text-xl">
                           {(() => {
                             if (categoryId === 'General Health') return '⚕️';
                             if (categoryId === 'Cardiology') return '❤️';
@@ -158,17 +158,17 @@ export default function CalculatorsListScreen() {
                         </Text>
                       </View>
                       <View className="flex-1">
-                        <Text className="text-base font-semibold text-text-primary mb-1">
+                        <Text className="text-sm font-semibold text-text-primary mb-0.5">
                           {calculator.nameRu || calculator.name}
                         </Text>
-                        <Text className="text-xs text-text-secondary capitalize mb-2">
+                        <Text className="text-xs text-text-secondary capitalize mb-1">
                           {calculator.categoryRu || calculator.category}
                         </Text>
-                        <Text className="text-sm text-text-secondary" numberOfLines={2}>
+                        <Text className="text-xs text-text-secondary" numberOfLines={2}>
                           {calculator.descriptionRu || calculator.description}
                         </Text>
                       </View>
-                      <Text className="text-text-muted text-lg ml-2">→</Text>
+                      <Text className="text-text-muted text-base ml-2">→</Text>
                     </View>
                   </Pressable>
                 ))}

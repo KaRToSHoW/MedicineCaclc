@@ -1,0 +1,2351 @@
+[
+  {
+    "id": "1",
+    "name": "BMI Calculator",
+    "nameRu": "Калькулятор ИМТ",
+    "description": "Calculate Body Mass Index",
+    "descriptionRu": "Рассчитать индекс массы тела",
+    "category": "General Health",
+    "categoryRu": "Общее здоровье",
+    "formula": "{weight} / (({height} / 100) ** 2)",
+    "inputFields": [
+      {
+        "name": "weight",
+        "label": "Weight (kg)",
+        "labelRu": "Вес (кг)",
+        "type": "number",
+        "required": true,
+        "min": 20,
+        "max": 300
+      },
+      {
+        "name": "height",
+        "label": "Height (cm)",
+        "labelRu": "Рост (см)",
+        "type": "number",
+        "required": true,
+        "min": 100,
+        "max": 250
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 18.5",
+        "interpretation": "Underweight",
+        "interpretationRu": "Недостаточный вес"
+      },
+      {
+        "condition": ">= 18.5 and < 25",
+        "interpretation": "Normal weight",
+        "interpretationRu": "Нормальный вес"
+      },
+      {
+        "condition": ">= 25 and < 30",
+        "interpretation": "Overweight",
+        "interpretationRu": "Избыточный вес"
+      },
+      {
+        "condition": ">= 30",
+        "interpretation": "Obese",
+        "interpretationRu": "Ожирение"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "APGAR Score",
+    "nameRu": "Шкала Апгар",
+    "description": "Assess newborn health status",
+    "descriptionRu": "Оценка состояния новорожденного",
+    "category": "Pediatrics",
+    "categoryRu": "Педиатрия",
+    "formula": "{appearance} + {pulse} + {grimace} + {activity} + {respiration}",
+    "inputFields": [
+      {
+        "name": "appearance",
+        "label": "Appearance (color)",
+        "labelRu": "Внешний вид (цвет)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "Blue/pale", "labelRu": "Синий/бледный"},
+          {"value": 1, "label": "Body pink, extremities blue", "labelRu": "Тело розовое, конечности синие"},
+          {"value": 2, "label": "All pink", "labelRu": "Весь розовый"}
+        ]
+      },
+      {
+        "name": "pulse",
+        "label": "Pulse (heart rate)",
+        "labelRu": "Пульс (ЧСС)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "Absent", "labelRu": "Отсутствует"},
+          {"value": 1, "label": "< 100 bpm", "labelRu": "< 100 уд/мин"},
+          {"value": 2, "label": "≥ 100 bpm", "labelRu": "≥ 100 уд/мин"}
+        ]
+      },
+      {
+        "name": "grimace",
+        "label": "Grimace (reflex)",
+        "labelRu": "Гримаса (рефлекс)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No response", "labelRu": "Нет ответа"},
+          {"value": 1, "label": "Grimace", "labelRu": "Гримаса"},
+          {"value": 2, "label": "Cry", "labelRu": "Плач"}
+        ]
+      },
+      {
+        "name": "activity",
+        "label": "Activity (muscle tone)",
+        "labelRu": "Активность (мышечный тонус)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "Limp", "labelRu": "Вялый"},
+          {"value": 1, "label": "Some flexion", "labelRu": "Слабое сгибание"},
+          {"value": 2, "label": "Active movement", "labelRu": "Активные движения"}
+        ]
+      },
+      {
+        "name": "respiration",
+        "label": "Respiration",
+        "labelRu": "Дыхание",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "Absent", "labelRu": "Отсутствует"},
+          {"value": 1, "label": "Weak/irregular", "labelRu": "Слабое/нерегулярное"},
+          {"value": 2, "label": "Strong/crying", "labelRu": "Сильное/крик"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 3",
+        "interpretation": "Critically low - immediate resuscitation needed",
+        "interpretationRu": "Критически низкий - требуется немедленная реанимация"
+      },
+      {
+        "condition": ">= 4 and <= 6",
+        "interpretation": "Moderately abnormal - needs assistance",
+        "interpretationRu": "Умеренно патологический - нужна помощь"
+      },
+      {
+        "condition": ">= 7 and <= 10",
+        "interpretation": "Normal condition",
+        "interpretationRu": "Нормальное состояние"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "QTc Interval (Bazett)",
+    "nameRu": "Корригированный интервал QT (Базетт)",
+    "description": "Calculate corrected QT interval",
+    "descriptionRu": "Рассчитать корригированный интервал QT",
+    "category": "Cardiology",
+    "categoryRu": "Кардиология",
+    "formula": "{qt_interval} / (({rr_interval} / 1000) ** 0.5)",
+    "inputFields": [
+      {
+        "name": "qt_interval",
+        "label": "QT Interval (ms)",
+        "labelRu": "Интервал QT (мс)",
+        "type": "number",
+        "required": true,
+        "min": 200,
+        "max": 700
+      },
+      {
+        "name": "rr_interval",
+        "label": "RR Interval (ms)",
+        "labelRu": "Интервал RR (мс)",
+        "type": "number",
+        "required": true,
+        "min": 400,
+        "max": 2000
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 390",
+        "interpretation": "Normal QTc for males",
+        "interpretationRu": "Нормальный QTc для мужчин"
+      },
+      {
+        "condition": ">= 390 and < 450",
+        "interpretation": "Borderline QTc",
+        "interpretationRu": "Пограничный QTc"
+      },
+      {
+        "condition": ">= 450 and < 500",
+        "interpretation": "Prolonged QTc - monitor",
+        "interpretationRu": "Удлиненный QTc - наблюдение"
+      },
+      {
+        "condition": ">= 500",
+        "interpretation": "Severely prolonged - high risk",
+        "interpretationRu": "Значительно удлинен - высокий риск"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "Framingham Risk Score",
+    "nameRu": "Шкала риска Фрамингема",
+    "description": "10-year cardiovascular disease risk",
+    "descriptionRu": "10-летний риск сердечно-сосудистых заболеваний",
+    "category": "Cardiology",
+    "categoryRu": "Кардиология",
+    "formula": "{age_points} + {hdl_points} + {total_chol_points} + {sbp_points} + {smoking_points} + {diabetes_points}",
+    "inputFields": [
+      {
+        "name": "age_points",
+        "label": "Age Points",
+        "labelRu": "Баллы за возраст",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 12
+      },
+      {
+        "name": "hdl_points",
+        "label": "HDL Points",
+        "labelRu": "Баллы за ЛПВП",
+        "type": "number",
+        "required": true,
+        "min": -2,
+        "max": 2
+      },
+      {
+        "name": "total_chol_points",
+        "label": "Total Cholesterol Points",
+        "labelRu": "Баллы за холестерин",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 5
+      },
+      {
+        "name": "sbp_points",
+        "label": "SBP Points",
+        "labelRu": "Баллы за АД",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 5
+      },
+      {
+        "name": "smoking_points",
+        "label": "Smoking Points",
+        "labelRu": "Баллы за курение",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 4
+      },
+      {
+        "name": "diabetes_points",
+        "label": "Diabetes Points",
+        "labelRu": "Баллы за диабет",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 10",
+        "interpretation": "Low risk (<10% in 10 years)",
+        "interpretationRu": "Низкий риск (<10% за 10 лет)"
+      },
+      {
+        "condition": ">= 10 and < 20",
+        "interpretation": "Moderate risk (10-20% in 10 years)",
+        "interpretationRu": "Умеренный риск (10-20% за 10 лет)"
+      },
+      {
+        "condition": ">= 20",
+        "interpretation": "High risk (>20% in 10 years)",
+        "interpretationRu": "Высокий риск (>20% за 10 лет)"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "Cardiac Output",
+    "nameRu": "Сердечный выброс",
+    "description": "Calculate cardiac output",
+    "descriptionRu": "Рассчитать сердечный выброс",
+    "category": "Cardiology",
+    "categoryRu": "Кардиология",
+    "formula": "{heart_rate} * {stroke_volume} / 1000",
+    "inputFields": [
+      {
+        "name": "heart_rate",
+        "label": "Heart Rate (bpm)",
+        "labelRu": "ЧСС (уд/мин)",
+        "type": "number",
+        "required": true,
+        "min": 40,
+        "max": 200
+      },
+      {
+        "name": "stroke_volume",
+        "label": "Stroke Volume (mL)",
+        "labelRu": "Ударный объем (мл)",
+        "type": "number",
+        "required": true,
+        "min": 30,
+        "max": 150
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 4",
+        "interpretation": "Low cardiac output",
+        "interpretationRu": "Низкий сердечный выброс"
+      },
+      {
+        "condition": ">= 4 and < 8",
+        "interpretation": "Normal cardiac output",
+        "interpretationRu": "Нормальный сердечный выброс"
+      },
+      {
+        "condition": ">= 8",
+        "interpretation": "High cardiac output",
+        "interpretationRu": "Высокий сердечный выброс"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "name": "eGFR (MDRD)",
+    "nameRu": "СКФ (MDRD)",
+    "description": "Estimated glomerular filtration rate",
+    "descriptionRu": "Скорость клубочковой фильтрации",
+    "category": "Nephrology",
+    "categoryRu": "Нефрология",
+    "formula": "175 * ({creatinine} ** -1.154) * ({age} ** -0.203) * ({is_female} ? 0.742 : 1) * ({is_black} ? 1.212 : 1)",
+    "inputFields": [
+      {
+        "name": "creatinine",
+        "label": "Serum Creatinine (mg/dL)",
+        "labelRu": "Креатинин сыворотки (мг/дл)",
+        "type": "number",
+        "required": true,
+        "min": 0.5,
+        "max": 15
+      },
+      {
+        "name": "age",
+        "label": "Age (years)",
+        "labelRu": "Возраст (лет)",
+        "type": "number",
+        "required": true,
+        "min": 18,
+        "max": 120
+      },
+      {
+        "name": "is_female",
+        "label": "Female?",
+        "labelRu": "Женщина?",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "is_black",
+        "label": "African American?",
+        "labelRu": "Афроамериканец?",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 15",
+        "interpretation": "Stage 5 CKD (kidney failure)",
+        "interpretationRu": "ХБП 5 стадии (почечная недостаточность)"
+      },
+      {
+        "condition": ">= 15 and < 30",
+        "interpretation": "Stage 4 CKD (severe)",
+        "interpretationRu": "ХБП 4 стадии (тяжелая)"
+      },
+      {
+        "condition": ">= 30 and < 60",
+        "interpretation": "Stage 3 CKD (moderate)",
+        "interpretationRu": "ХБП 3 стадии (умеренная)"
+      },
+      {
+        "condition": ">= 60 and < 90",
+        "interpretation": "Stage 2 CKD (mild)",
+        "interpretationRu": "ХБП 2 стадии (легкая)"
+      },
+      {
+        "condition": ">= 90",
+        "interpretation": "Normal kidney function",
+        "interpretationRu": "Нормальная функция почек"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "name": "HbA1c to Average Glucose",
+    "nameRu": "HbA1c в средний уровень глюкозы",
+    "description": "Convert HbA1c to average glucose",
+    "descriptionRu": "Преобразование HbA1c в среднюю глюкозу",
+    "category": "Endocrinology",
+    "categoryRu": "Эндокринология",
+    "formula": "28.7 * {hba1c} - 46.7",
+    "inputFields": [
+      {
+        "name": "hba1c",
+        "label": "HbA1c (%)",
+        "labelRu": "HbA1c (%)",
+        "type": "number",
+        "required": true,
+        "min": 4,
+        "max": 15
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 5.7",
+        "interpretation": "Normal glucose control",
+        "interpretationRu": "Нормальный контроль глюкозы"
+      },
+      {
+        "condition": ">= 5.7 and < 6.5",
+        "interpretation": "Prediabetes",
+        "interpretationRu": "Преддиабет"
+      },
+      {
+        "condition": ">= 6.5",
+        "interpretation": "Diabetes mellitus",
+        "interpretationRu": "Сахарный диабет"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "name": "APACHE II Score",
+    "nameRu": "Шкала APACHE II",
+    "description": "ICU mortality prediction",
+    "descriptionRu": "Прогноз смертности в ОРИТ",
+    "category": "ICU",
+    "categoryRu": "Интенсивная терапия",
+    "formula": "{acute_physiology} + {age_points} + {chronic_health}",
+    "inputFields": [
+      {
+        "name": "acute_physiology",
+        "label": "Acute Physiology Score (0-60)",
+        "labelRu": "Оценка острой физиологии (0-60)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 60
+      },
+      {
+        "name": "age_points",
+        "label": "Age Points (0-6)",
+        "labelRu": "Баллы за возраст (0-6)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 6
+      },
+      {
+        "name": "chronic_health",
+        "label": "Chronic Health Points (0-5)",
+        "labelRu": "Баллы за хронические заболевания (0-5)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 5
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 15",
+        "interpretation": "Low mortality risk (<15%)",
+        "interpretationRu": "Низкий риск смертности (<15%)"
+      },
+      {
+        "condition": ">= 15 and < 25",
+        "interpretation": "Moderate mortality risk (15-40%)",
+        "interpretationRu": "Умеренный риск смертности (15-40%)"
+      },
+      {
+        "condition": ">= 25 and < 35",
+        "interpretation": "High mortality risk (40-80%)",
+        "interpretationRu": "Высокий риск смертности (40-80%)"
+      },
+      {
+        "condition": ">= 35",
+        "interpretation": "Very high mortality risk (>80%)",
+        "interpretationRu": "Очень высокий риск смертности (>80%)"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "name": "SOFA Score",
+    "nameRu": "Шкала SOFA",
+    "description": "Sequential Organ Failure Assessment",
+    "descriptionRu": "Оценка органной дисфункции",
+    "category": "ICU",
+    "categoryRu": "Интенсивная терапия",
+    "formula": "{respiration} + {coagulation} + {liver} + {cardiovascular} + {cns} + {renal}",
+    "inputFields": [
+      {
+        "name": "respiration",
+        "label": "Respiration (0-4)",
+        "labelRu": "Дыхание (0-4)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 4
+      },
+      {
+        "name": "coagulation",
+        "label": "Coagulation (0-4)",
+        "labelRu": "Коагуляция (0-4)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 4
+      },
+      {
+        "name": "liver",
+        "label": "Liver (0-4)",
+        "labelRu": "Печень (0-4)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 4
+      },
+      {
+        "name": "cardiovascular",
+        "label": "Cardiovascular (0-4)",
+        "labelRu": "ССС (0-4)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 4
+      },
+      {
+        "name": "cns",
+        "label": "Central Nervous System (0-4)",
+        "labelRu": "ЦНС (0-4)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 4
+      },
+      {
+        "name": "renal",
+        "label": "Renal (0-4)",
+        "labelRu": "Почки (0-4)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 4
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 2",
+        "interpretation": "Minimal organ dysfunction",
+        "interpretationRu": "Минимальная органная дисфункция"
+      },
+      {
+        "condition": ">= 2 and < 6",
+        "interpretation": "Mild organ dysfunction",
+        "interpretationRu": "Легкая органная дисфункция"
+      },
+      {
+        "condition": ">= 6 and < 10",
+        "interpretation": "Moderate organ dysfunction",
+        "interpretationRu": "Умеренная органная дисфункция"
+      },
+      {
+        "condition": ">= 10",
+        "interpretation": "Severe organ dysfunction",
+        "interpretationRu": "Тяжелая органная дисфункция"
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "name": "Alveolar-arterial Gradient",
+    "nameRu": "Альвеолярно-артериальный градиент",
+    "description": "A-a gradient for oxygenation assessment",
+    "descriptionRu": "A-a градиент для оценки оксигенации",
+    "category": "Pulmonology",
+    "categoryRu": "Пульмонология",
+    "formula": "(({fio2} * ({patm} - 47)) - ({paco2} / 0.8)) - {pao2}",
+    "inputFields": [
+      {
+        "name": "fio2",
+        "label": "FiO2 (fraction, 0.21-1.0)",
+        "labelRu": "FiO2 (доля, 0.21-1.0)",
+        "type": "number",
+        "required": true,
+        "min": 0.21,
+        "max": 1.0
+      },
+      {
+        "name": "patm",
+        "label": "Atmospheric Pressure (mmHg)",
+        "labelRu": "Атмосферное давление (мм рт.ст.)",
+        "type": "number",
+        "required": true,
+        "min": 700,
+        "max": 780
+      },
+      {
+        "name": "paco2",
+        "label": "PaCO2 (mmHg)",
+        "labelRu": "PaCO2 (мм рт.ст.)",
+        "type": "number",
+        "required": true,
+        "min": 20,
+        "max": 100
+      },
+      {
+        "name": "pao2",
+        "label": "PaO2 (mmHg)",
+        "labelRu": "PaO2 (мм рт.ст.)",
+        "type": "number",
+        "required": true,
+        "min": 40,
+        "max": 600
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 10",
+        "interpretation": "Normal A-a gradient",
+        "interpretationRu": "Нормальный A-a градиент"
+      },
+      {
+        "condition": "> 10 and <= 20",
+        "interpretation": "Mild hypoxemia",
+        "interpretationRu": "Легкая гипоксемия"
+      },
+      {
+        "condition": "> 20 and <= 50",
+        "interpretation": "Moderate hypoxemia",
+        "interpretationRu": "Умеренная гипоксемия"
+      },
+      {
+        "condition": "> 50",
+        "interpretation": "Severe hypoxemia",
+        "interpretationRu": "Тяжелая гипоксемия"
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "name": "CURB-65 Score",
+    "nameRu": "Шкала CURB-65",
+    "description": "Pneumonia severity assessment",
+    "descriptionRu": "Оценка тяжести пневмонии",
+    "category": "Pulmonology",
+    "categoryRu": "Пульмонология",
+    "formula": "{confusion} + {urea} + {respiratory_rate} + {blood_pressure} + {age}",
+    "inputFields": [
+      {
+        "name": "confusion",
+        "label": "Confusion (0-1)",
+        "labelRu": "Спутанность сознания (0-1)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "name": "urea",
+        "label": "Urea >7 mmol/L (0-1)",
+        "labelRu": "Мочевина >7 ммоль/л (0-1)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "name": "respiratory_rate",
+        "label": "Respiratory Rate ≥30 (0-1)",
+        "labelRu": "ЧД ≥30 (0-1)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "name": "blood_pressure",
+        "label": "Low Blood Pressure (0-1)",
+        "labelRu": "Низкое АД (0-1)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "name": "age",
+        "label": "Age ≥65 (0-1)",
+        "labelRu": "Возраст ≥65 (0-1)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 1
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 1",
+        "interpretation": "Low risk - outpatient treatment",
+        "interpretationRu": "Низкий риск - амбулаторное лечение"
+      },
+      {
+        "condition": "== 2",
+        "interpretation": "Moderate risk - short hospitalization or close monitoring",
+        "interpretationRu": "Умеренный риск - краткая госпитализация или тщательный мониторинг"
+      },
+      {
+        "condition": ">= 3",
+        "interpretation": "High risk - hospitalization recommended",
+        "interpretationRu": "Высокий риск - госпитализация рекомендована"
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "name": "Corrected Reticulocyte Count",
+    "nameRu": "Скорректированный подсчет ретикулоцитов",
+    "description": "Assess red blood cell production",
+    "descriptionRu": "Оценка продукции эритроцитов",
+    "category": "Hematology",
+    "categoryRu": "Гематология",
+    "formula": "({reticulocyte_percent} * {hematocrit}) / 45",
+    "inputFields": [
+      {
+        "name": "reticulocyte_percent",
+        "label": "Reticulocyte % (0-10)",
+        "labelRu": "Ретикулоциты % (0-10)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 10
+      },
+      {
+        "name": "hematocrit",
+        "label": "Hematocrit % (20-60)",
+        "labelRu": "Гематокрит % (20-60)",
+        "type": "number",
+        "required": true,
+        "min": 20,
+        "max": 60
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 2",
+        "interpretation": "Inadequate red blood cell production",
+        "interpretationRu": "Недостаточная продукция эритроцитов"
+      },
+      {
+        "condition": ">= 2 and < 3",
+        "interpretation": "Adequate red blood cell production",
+        "interpretationRu": "Адекватная продукция эритроцитов"
+      },
+      {
+        "condition": ">= 3",
+        "interpretation": "Increased red blood cell production",
+        "interpretationRu": "Повышенная продукция эритроцитов"
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "name": "Anion Gap",
+    "nameRu": "Анионная разница",
+    "description": "Calculate anion gap for metabolic acidosis",
+    "descriptionRu": "Расчет анионной разницы при метаболическом ацидозе",
+    "category": "Emergency Medicine",
+    "categoryRu": "Неотложная медицина",
+    "formula": "{sodium} - ({chloride} + {bicarbonate})",
+    "inputFields": [
+      {
+        "name": "sodium",
+        "label": "Sodium (mEq/L)",
+        "labelRu": "Натрий (мЭкв/л)",
+        "type": "number",
+        "required": true,
+        "min": 120,
+        "max": 160
+      },
+      {
+        "name": "chloride",
+        "label": "Chloride (mEq/L)",
+        "labelRu": "Хлорид (мЭкв/л)",
+        "type": "number",
+        "required": true,
+        "min": 80,
+        "max": 120
+      },
+      {
+        "name": "bicarbonate",
+        "label": "Bicarbonate (mEq/L)",
+        "labelRu": "Бикарбонат (мЭкв/л)",
+        "type": "number",
+        "required": true,
+        "min": 5,
+        "max": 40
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 12",
+        "interpretation": "Normal anion gap",
+        "interpretationRu": "Нормальная анионная разница"
+      },
+      {
+        "condition": ">= 12 and < 20",
+        "interpretation": "Elevated anion gap - investigate cause",
+        "interpretationRu": "Повышенная анионная разница - выяснить причину"
+      },
+      {
+        "condition": ">= 20",
+        "interpretation": "High anion gap metabolic acidosis",
+        "interpretationRu": "Метаболический ацидоз с высокой анионной разницей"
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "name": "Shock Index",
+    "nameRu": "Индекс шока",
+    "description": "Assess hemodynamic instability",
+    "descriptionRu": "Оценка гемодинамической нестабильности",
+    "category": "Emergency Medicine",
+    "categoryRu": "Неотложная медицина",
+    "formula": "{heart_rate} / {systolic_bp}",
+    "inputFields": [
+      {
+        "name": "heart_rate",
+        "label": "Heart Rate (bpm)",
+        "labelRu": "ЧСС (уд/мин)",
+        "type": "number",
+        "required": true,
+        "min": 40,
+        "max": 200
+      },
+      {
+        "name": "systolic_bp",
+        "label": "Systolic BP (mmHg)",
+        "labelRu": "Систолическое АД (мм рт.ст.)",
+        "type": "number",
+        "required": true,
+        "min": 60,
+        "max": 250
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 0.6",
+        "interpretation": "Normal hemodynamics",
+        "interpretationRu": "Нормальная гемодинамика"
+      },
+      {
+        "condition": ">= 0.6 and < 1.0",
+        "interpretation": "Possible early shock - monitor closely",
+        "interpretationRu": "Возможный ранний шок - тщательный мониторинг"
+      },
+      {
+        "condition": ">= 1.0",
+        "interpretation": "Shock likely - immediate intervention",
+        "interpretationRu": "Вероятен шок - немедленное вмешательство"
+      }
+    ]
+  },
+  {
+    "id": "15",
+    "name": "NIHSS Score",
+    "nameRu": "Шкала инсульта NIH",
+    "description": "Stroke severity assessment",
+    "descriptionRu": "Оценка тяжести инсульта",
+    "category": "Neurology",
+    "categoryRu": "Неврология",
+    "formula": "{consciousness} + {gaze} + {visual} + {facial} + {motor_arm} + {motor_leg} + {limb_ataxia} + {sensory} + {language} + {dysarthria} + {extinction}",
+    "inputFields": [
+      {
+        "name": "consciousness",
+        "label": "Level of Consciousness (0-3)",
+        "labelRu": "Уровень сознания (0-3)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      },
+      {
+        "name": "gaze",
+        "label": "Best Gaze (0-2)",
+        "labelRu": "Взор (0-2)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 2
+      },
+      {
+        "name": "visual",
+        "label": "Visual Fields (0-3)",
+        "labelRu": "Поля зрения (0-3)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      },
+      {
+        "name": "facial",
+        "label": "Facial Palsy (0-3)",
+        "labelRu": "Парез лица (0-3)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      },
+      {
+        "name": "motor_arm",
+        "label": "Motor Arm (0-4)",
+        "labelRu": "Двигательная рука (0-4)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 4
+      },
+      {
+        "name": "motor_leg",
+        "label": "Motor Leg (0-4)",
+        "labelRu": "Двигательная нога (0-4)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 4
+      },
+      {
+        "name": "limb_ataxia",
+        "label": "Limb Ataxia (0-2)",
+        "labelRu": "Атаксия конечностей (0-2)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 2
+      },
+      {
+        "name": "sensory",
+        "label": "Sensory (0-2)",
+        "labelRu": "Чувствительность (0-2)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 2
+      },
+      {
+        "name": "language",
+        "label": "Language/Aphasia (0-3)",
+        "labelRu": "Речь/Афазия (0-3)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      },
+      {
+        "name": "dysarthria",
+        "label": "Dysarthria (0-2)",
+        "labelRu": "Дизартрия (0-2)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 2
+      },
+      {
+        "name": "extinction",
+        "label": "Extinction/Inattention (0-2)",
+        "labelRu": "Игнорирование/Невнимание (0-2)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 2
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "== 0",
+        "interpretation": "No stroke symptoms",
+        "interpretationRu": "Нет симптомов инсульта"
+      },
+      {
+        "condition": ">= 1 and <= 4",
+        "interpretation": "Minor stroke",
+        "interpretationRu": "Малый инсульт"
+      },
+      {
+        "condition": ">= 5 and <= 15",
+        "interpretation": "Moderate stroke",
+        "interpretationRu": "Умеренный инсульт"
+      },
+      {
+        "condition": ">= 16 and <= 20",
+        "interpretation": "Moderate to severe stroke",
+        "interpretationRu": "Умеренно-тяжелый инсульт"
+      },
+      {
+        "condition": "> 20",
+        "interpretation": "Severe stroke",
+        "interpretationRu": "Тяжелый инсульт"
+      }
+    ]
+  },
+  {
+    "id": "16",
+    "name": "Child-Pugh Score",
+    "nameRu": "Шкала Чайлд-Пью",
+    "description": "Liver cirrhosis severity",
+    "descriptionRu": "Тяжесть цирроза печени",
+    "category": "Gastroenterology",
+    "categoryRu": "Гастроэнтерология",
+    "formula": "{bilirubin_points} + {albumin_points} + {inr_points} + {ascites_points} + {encephalopathy_points}",
+    "inputFields": [
+      {
+        "name": "bilirubin_points",
+        "label": "Bilirubin Points (1-3)",
+        "labelRu": "Баллы за билирубин (1-3)",
+        "type": "number",
+        "required": true,
+        "min": 1,
+        "max": 3
+      },
+      {
+        "name": "albumin_points",
+        "label": "Albumin Points (1-3)",
+        "labelRu": "Баллы за альбумин (1-3)",
+        "type": "number",
+        "required": true,
+        "min": 1,
+        "max": 3
+      },
+      {
+        "name": "inr_points",
+        "label": "INR Points (1-3)",
+        "labelRu": "Баллы за МНО (1-3)",
+        "type": "number",
+        "required": true,
+        "min": 1,
+        "max": 3
+      },
+      {
+        "name": "ascites_points",
+        "label": "Ascites Points (1-3)",
+        "labelRu": "Баллы за асцит (1-3)",
+        "type": "number",
+        "required": true,
+        "min": 1,
+        "max": 3
+      },
+      {
+        "name": "encephalopathy_points",
+        "label": "Encephalopathy Points (1-3)",
+        "labelRu": "Баллы за энцефалопатию (1-3)",
+        "type": "number",
+        "required": true,
+        "min": 1,
+        "max": 3
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": ">= 5 and <= 6",
+        "interpretation": "Class A (well-compensated)",
+        "interpretationRu": "Класс A (хорошо компенсирован)"
+      },
+      {
+        "condition": ">= 7 and <= 9",
+        "interpretation": "Class B (significant functional compromise)",
+        "interpretationRu": "Класс B (значительные нарушения функции)"
+      },
+      {
+        "condition": ">= 10",
+        "interpretation": "Class C (decompensated)",
+        "interpretationRu": "Класс C (декомпенсирован)"
+      }
+    ]
+  },
+  {
+    "id": "17",
+    "name": "MELD Score",
+    "nameRu": "Шкала MELD",
+    "description": "Model for End-Stage Liver Disease",
+    "descriptionRu": "Модель терминальной болезни печени",
+    "category": "Gastroenterology",
+    "categoryRu": "Гастроэнтерология",
+    "formula": "9.57 * Math.log({creatinine}) + 3.78 * Math.log({bilirubin}) + 11.2 * Math.log({inr}) + 6.43",
+    "inputFields": [
+      {
+        "name": "creatinine",
+        "label": "Serum Creatinine (mg/dL)",
+        "labelRu": "Креатинин сыворотки (мг/дл)",
+        "type": "number",
+        "required": true,
+        "min": 0.5,
+        "max": 10
+      },
+      {
+        "name": "bilirubin",
+        "label": "Total Bilirubin (mg/dL)",
+        "labelRu": "Общий билирубин (мг/дл)",
+        "type": "number",
+        "required": true,
+        "min": 0.5,
+        "max": 40
+      },
+      {
+        "name": "inr",
+        "label": "INR",
+        "labelRu": "МНО",
+        "type": "number",
+        "required": true,
+        "min": 0.8,
+        "max": 5.0
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 10",
+        "interpretation": "Low priority for transplant",
+        "interpretationRu": "Низкий приоритет для трансплантации"
+      },
+      {
+        "condition": ">= 10 and < 20",
+        "interpretation": "Moderate priority",
+        "interpretationRu": "Умеренный приоритет"
+      },
+      {
+        "condition": ">= 20 and < 30",
+        "interpretation": "High priority",
+        "interpretationRu": "Высокий приоритет"
+      },
+      {
+        "condition": ">= 30",
+        "interpretation": "Critical - urgent transplant needed",
+        "interpretationRu": "Критический - срочная трансплантация"
+      }
+    ]
+  },
+  {
+    "id": "18",
+    "name": "Bishop Score",
+    "nameRu": "Шкала Бишопа",
+    "description": "Cervical readiness for labor induction",
+    "descriptionRu": "Готовность шейки матки к родам",
+    "category": "Obstetrics",
+    "categoryRu": "Акушерство",
+    "formula": "{dilation} + {effacement} + {station} + {consistency} + {position}",
+    "inputFields": [
+      {
+        "name": "dilation",
+        "label": "Cervical Dilation (0-3 points)",
+        "labelRu": "Раскрытие шейки (0-3 балла)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      },
+      {
+        "name": "effacement",
+        "label": "Cervical Effacement (0-3 points)",
+        "labelRu": "Сглаживание шейки (0-3 балла)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      },
+      {
+        "name": "station",
+        "label": "Fetal Station (0-3 points)",
+        "labelRu": "Расположение плода (0-3 балла)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      },
+      {
+        "name": "consistency",
+        "label": "Cervical Consistency (0-2 points)",
+        "labelRu": "Консистенция шейки (0-2 балла)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 2
+      },
+      {
+        "name": "position",
+        "label": "Cervical Position (0-2 points)",
+        "labelRu": "Положение шейки (0-2 балла)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 2
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 5",
+        "interpretation": "Unfavorable cervix - induction likely to fail",
+        "interpretationRu": "Неблагоприятная шейка - индукция вероятно неуспешна"
+      },
+      {
+        "condition": ">= 6 and <= 8",
+        "interpretation": "Intermediate - induction may succeed",
+        "interpretationRu": "Промежуточное состояние - индукция может быть успешной"
+      },
+      {
+        "condition": ">= 9",
+        "interpretation": "Favorable cervix - high success rate",
+        "interpretationRu": "Благоприятная шейка - высокая вероятность успеха"
+      }
+    ]
+  },
+  {
+    "id": "19",
+    "name": "Pediatric Early Warning Score",
+    "nameRu": "Педиатрическая шкала раннего предупреждения",
+    "description": "Identify children at risk of deterioration",
+    "descriptionRu": "Выявление детей с риском ухудшения",
+    "category": "Pediatrics",
+    "categoryRu": "Педиатрия",
+    "formula": "{behavior} + {cardiovascular} + {respiratory}",
+    "inputFields": [
+      {
+        "name": "behavior",
+        "label": "Behavior Points (0-3)",
+        "labelRu": "Баллы за поведение (0-3)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      },
+      {
+        "name": "cardiovascular",
+        "label": "Cardiovascular Points (0-3)",
+        "labelRu": "Баллы за ССС (0-3)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      },
+      {
+        "name": "respiratory",
+        "label": "Respiratory Points (0-3)",
+        "labelRu": "Баллы за дыхание (0-3)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 3
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 2",
+        "interpretation": "Low risk - routine monitoring",
+        "interpretationRu": "Низкий риск - обычный мониторинг"
+      },
+      {
+        "condition": ">= 3 and <= 4",
+        "interpretation": "Moderate risk - increased monitoring",
+        "interpretationRu": "Умеренный риск - усиленный мониторинг"
+      },
+      {
+        "condition": ">= 5",
+        "interpretation": "High risk - urgent medical review",
+        "interpretationRu": "Высокий риск - срочный медицинский осмотр"
+      }
+    ]
+  },
+  {
+    "id": "20",
+    "name": "Protein Requirement",
+    "nameRu": "Потребность в белке",
+    "description": "Daily protein needs",
+    "descriptionRu": "Суточная потребность в белке",
+    "category": "Nutrition",
+    "categoryRu": "Нутрициология",
+    "formula": "{weight} * {protein_factor}",
+    "inputFields": [
+      {
+        "name": "weight",
+        "label": "Weight (kg)",
+        "labelRu": "Вес (кг)",
+        "type": "number",
+        "required": true,
+        "min": 20,
+        "max": 300
+      },
+      {
+        "name": "protein_factor",
+        "label": "Protein Factor (0.8-2.0 g/kg)",
+        "labelRu": "Фактор белка (0.8-2.0 г/кг)",
+        "type": "number",
+        "required": true,
+        "min": 0.8,
+        "max": 2.5
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "",
+        "interpretation": "Daily protein requirement in grams",
+        "interpretationRu": "Суточная потребность в белке в граммах"
+      }
+    ]
+  },
+  {
+    "id": "21",
+    "name": "Wells' Score for DVT",
+    "nameRu": "Шкала Уэллса для ТГВ",
+    "description": "Predict probability of deep vein thrombosis",
+    "descriptionRu": "Прогноз вероятности тромбоза глубоких вен",
+    "category": "Vascular Medicine",
+    "categoryRu": "Сосудистая медицина",
+    "formula": "{active_cancer} + {paralysis} + {bedridden} + {localized_tenderness} + {entire_leg_swollen} + {calf_swelling} + {pitting_edema} + {collateral_veins} + {alternative_diagnosis}",
+    "inputFields": [
+      {
+        "name": "active_cancer",
+        "label": "Active cancer",
+        "labelRu": "Активный рак",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "paralysis",
+        "label": "Paralysis or recent cast",
+        "labelRu": "Паралич или гипс",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "bedridden",
+        "label": "Bedridden >3 days or surgery",
+        "labelRu": "Постельный режим >3 дней",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "localized_tenderness",
+        "label": "Localized tenderness",
+        "labelRu": "Локальная болезненность",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "entire_leg_swollen",
+        "label": "Entire leg swollen",
+        "labelRu": "Отек всей ноги",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "calf_swelling",
+        "label": "Calf swelling >3cm",
+        "labelRu": "Отек икры >3см",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "pitting_edema",
+        "label": "Pitting edema",
+        "labelRu": "Ямочный отек",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "collateral_veins",
+        "label": "Collateral veins",
+        "labelRu": "Коллатеральные вены",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "alternative_diagnosis",
+        "label": "Alternative diagnosis likely",
+        "labelRu": "Альтернативный диагноз",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": -2, "label": "Yes", "labelRu": "Да"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 0",
+        "interpretation": "Low probability of DVT",
+        "interpretationRu": "Низкая вероятность ТГВ"
+      },
+      {
+        "condition": ">= 1 and <= 2",
+        "interpretation": "Moderate probability - consider D-dimer",
+        "interpretationRu": "Средняя вероятность - рассмотреть D-димер"
+      },
+      {
+        "condition": ">= 3",
+        "interpretation": "High probability - imaging recommended",
+        "interpretationRu": "Высокая вероятность - рекомендуется визуализация"
+      }
+    ]
+  },
+  {
+    "id": "22",
+    "name": "CHA2DS2-VASc Score",
+    "nameRu": "Шкала CHA2DS2-VASc",
+    "description": "Stroke risk in atrial fibrillation",
+    "descriptionRu": "Риск инсульта при фибрилляции предсердий",
+    "category": "Cardiology",
+    "categoryRu": "Кардиология",
+    "formula": "{congestive_hf} + {hypertension} + {age_75} + {diabetes} + {stroke} + {vascular_disease} + {age_65_74} + {female}",
+    "inputFields": [
+      {
+        "name": "congestive_hf",
+        "label": "Congestive heart failure",
+        "labelRu": "Сердечная недостаточность",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "hypertension",
+        "label": "Hypertension",
+        "labelRu": "Гипертония",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "age_75",
+        "label": "Age ≥75 years",
+        "labelRu": "Возраст ≥75 лет",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 2, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "diabetes",
+        "label": "Diabetes mellitus",
+        "labelRu": "Сахарный диабет",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "stroke",
+        "label": "Prior stroke/TIA",
+        "labelRu": "Инсульт/ТИА в анамнезе",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 2, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "vascular_disease",
+        "label": "Vascular disease",
+        "labelRu": "Сосудистое заболевание",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "age_65_74",
+        "label": "Age 65-74 years",
+        "labelRu": "Возраст 65-74 года",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "female",
+        "label": "Female gender",
+        "labelRu": "Женский пол",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "== 0",
+        "interpretation": "Low risk - no anticoagulation",
+        "interpretationRu": "Низкий риск - антикоагуляция не требуется"
+      },
+      {
+        "condition": "== 1",
+        "interpretation": "Low-moderate risk - consider anticoagulation",
+        "interpretationRu": "Низко-средний риск - рассмотреть антикоагуляцию"
+      },
+      {
+        "condition": ">= 2",
+        "interpretation": "Moderate-high risk - anticoagulation recommended",
+        "interpretationRu": "Средне-высокий риск - рекомендуется антикоагуляция"
+      }
+    ]
+  },
+  {
+    "id": "23",
+    "name": "Ideal Body Weight (IBW)",
+    "nameRu": "Идеальная масса тела",
+    "description": "Calculate ideal body weight",
+    "descriptionRu": "Расчет идеальной массы тела",
+    "category": "General Health",
+    "categoryRu": "Общее здоровье",
+    "formula": "{base_weight} + ({height} - 152) * {height_factor}",
+    "inputFields": [
+      {
+        "name": "base_weight",
+        "label": "Base weight (50 for males, 45.5 for females)",
+        "labelRu": "Базовый вес (50 мужчины, 45.5 женщины)",
+        "type": "number",
+        "required": true,
+        "min": 40,
+        "max": 60
+      },
+      {
+        "name": "height",
+        "label": "Height (cm)",
+        "labelRu": "Рост (см)",
+        "type": "number",
+        "required": true,
+        "min": 140,
+        "max": 220
+      },
+      {
+        "name": "height_factor",
+        "label": "Height factor (0.91 for males, 0.89 for females)",
+        "labelRu": "Фактор роста (0.91 мужчины, 0.89 женщины)",
+        "type": "number",
+        "required": true,
+        "min": 0.8,
+        "max": 1.0
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "",
+        "interpretation": "Ideal body weight in kg",
+        "interpretationRu": "Идеальная масса тела в кг"
+      }
+    ]
+  },
+  {
+    "id": "24",
+    "name": "Glasgow Coma Scale (GCS)",
+    "nameRu": "Шкала комы Глазго",
+    "description": "Assess level of consciousness",
+    "descriptionRu": "Оценка уровня сознания",
+    "category": "Neurology",
+    "categoryRu": "Неврология",
+    "formula": "{eye_opening} + {verbal_response} + {motor_response}",
+    "inputFields": [
+      {
+        "name": "eye_opening",
+        "label": "Eye Opening",
+        "labelRu": "Открывание глаз",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 1, "label": "None", "labelRu": "Нет"},
+          {"value": 2, "label": "To pain", "labelRu": "На боль"},
+          {"value": 3, "label": "To sound", "labelRu": "На звук"},
+          {"value": 4, "label": "Spontaneous", "labelRu": "Спонтанное"}
+        ]
+      },
+      {
+        "name": "verbal_response",
+        "label": "Verbal Response",
+        "labelRu": "Вербальный ответ",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 1, "label": "None", "labelRu": "Нет"},
+          {"value": 2, "label": "Incomprehensible", "labelRu": "Непонятные звуки"},
+          {"value": 3, "label": "Inappropriate", "labelRu": "Неадекватные слова"},
+          {"value": 4, "label": "Confused", "labelRu": "Спутанная речь"},
+          {"value": 5, "label": "Oriented", "labelRu": "Ориентирован"}
+        ]
+      },
+      {
+        "name": "motor_response",
+        "label": "Motor Response",
+        "labelRu": "Двигательный ответ",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 1, "label": "None", "labelRu": "Нет"},
+          {"value": 2, "label": "Extension", "labelRu": "Разгибание"},
+          {"value": 3, "label": "Abnormal flexion", "labelRu": "Патологическое сгибание"},
+          {"value": 4, "label": "Withdrawal", "labelRu": "Отдергивание"},
+          {"value": 5, "label": "Localizes pain", "labelRu": "Локализация боли"},
+          {"value": 6, "label": "Obeys commands", "labelRu": "Выполняет команды"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 8",
+        "interpretation": "Severe brain injury - coma",
+        "interpretationRu": "Тяжелая ЧМТ - кома"
+      },
+      {
+        "condition": ">= 9 and <= 12",
+        "interpretation": "Moderate brain injury",
+        "interpretationRu": "Умеренная ЧМТ"
+      },
+      {
+        "condition": ">= 13",
+        "interpretation": "Mild brain injury",
+        "interpretationRu": "Легкая ЧМТ"
+      }
+    ]
+  },
+  {
+    "id": "25",
+    "name": "Creatinine Clearance (Cockcroft-Gault)",
+    "nameRu": "Клиренс креатинина (Кокрофт-Голт)",
+    "description": "Estimate creatinine clearance",
+    "descriptionRu": "Оценка клиренса креатинина",
+    "category": "Nephrology",
+    "categoryRu": "Нефрология",
+    "formula": "((140 - {age}) * {weight} * {gender_factor}) / (72 * {creatinine})",
+    "inputFields": [
+      {
+        "name": "age",
+        "label": "Age (years)",
+        "labelRu": "Возраст (лет)",
+        "type": "number",
+        "required": true,
+        "min": 18,
+        "max": 120
+      },
+      {
+        "name": "weight",
+        "label": "Weight (kg)",
+        "labelRu": "Вес (кг)",
+        "type": "number",
+        "required": true,
+        "min": 30,
+        "max": 200
+      },
+      {
+        "name": "creatinine",
+        "label": "Serum Creatinine (mg/dL)",
+        "labelRu": "Креатинин сыворотки (мг/дл)",
+        "type": "number",
+        "required": true,
+        "min": 0.3,
+        "max": 15
+      },
+      {
+        "name": "gender_factor",
+        "label": "Gender factor (1 for male, 0.85 for female)",
+        "labelRu": "Фактор пола (1 мужчина, 0.85 женщина)",
+        "type": "number",
+        "required": true,
+        "min": 0.8,
+        "max": 1.0
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "< 30",
+        "interpretation": "Severe renal impairment",
+        "interpretationRu": "Тяжелая почечная недостаточность"
+      },
+      {
+        "condition": ">= 30 and < 60",
+        "interpretation": "Moderate renal impairment",
+        "interpretationRu": "Умеренная почечная недостаточность"
+      },
+      {
+        "condition": ">= 60 and < 90",
+        "interpretation": "Mild renal impairment",
+        "interpretationRu": "Легкая почечная недостаточность"
+      },
+      {
+        "condition": ">= 90",
+        "interpretation": "Normal renal function",
+        "interpretationRu": "Нормальная функция почек"
+      }
+    ]
+  },
+  {
+    "id": "26",
+    "name": "Caprini Score for VTE",
+    "nameRu": "Шкала Каприни для ВТЭ",
+    "description": "Venous thromboembolism risk",
+    "descriptionRu": "Риск венозной тромбоэмболии",
+    "category": "Vascular Medicine",
+    "categoryRu": "Сосудистая медицина",
+    "formula": "{age_points} + {minor_surgery} + {major_surgery} + {chf} + {sepsis} + {malignancy} + {obesity}",
+    "inputFields": [
+      {
+        "name": "age_points",
+        "label": "Age points (0-5)",
+        "labelRu": "Баллы за возраст (0-5)",
+        "type": "number",
+        "required": true,
+        "min": 0,
+        "max": 5
+      },
+      {
+        "name": "minor_surgery",
+        "label": "Minor surgery",
+        "labelRu": "Малая операция",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "major_surgery",
+        "label": "Major surgery",
+        "labelRu": "Большая операция",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 2, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "chf",
+        "label": "Congestive heart failure",
+        "labelRu": "Сердечная недостаточность",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "sepsis",
+        "label": "Sepsis",
+        "labelRu": "Сепсис",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "malignancy",
+        "label": "Malignancy",
+        "labelRu": "Злокачественное образование",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 2, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "obesity",
+        "label": "Obesity (BMI >25)",
+        "labelRu": "Ожирение (ИМТ >25)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 2",
+        "interpretation": "Low risk - early mobilization",
+        "interpretationRu": "Низкий риск - ранняя мобилизация"
+      },
+      {
+        "condition": ">= 3 and <= 4",
+        "interpretation": "Moderate risk - mechanical prophylaxis",
+        "interpretationRu": "Средний риск - механическая профилактика"
+      },
+      {
+        "condition": ">= 5",
+        "interpretation": "High risk - pharmacological prophylaxis",
+        "interpretationRu": "Высокий риск - фармакологическая профилактика"
+      }
+    ]
+  },
+  {
+    "id": "27",
+    "name": "Revised Cardiac Risk Index",
+    "nameRu": "Пересмотренный кардиальный индекс риска",
+    "description": "Perioperative cardiac risk",
+    "descriptionRu": "Периоперационный кардиальный риск",
+    "category": "Cardiology",
+    "categoryRu": "Кардиология",
+    "formula": "{high_risk_surgery} + {ischemic_heart} + {congestive_hf} + {cerebrovascular} + {insulin_diabetes} + {renal_insufficiency}",
+    "inputFields": [
+      {
+        "name": "high_risk_surgery",
+        "label": "High-risk surgery",
+        "labelRu": "Операция высокого риска",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "ischemic_heart",
+        "label": "Ischemic heart disease",
+        "labelRu": "ИБС",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "congestive_hf",
+        "label": "Congestive heart failure",
+        "labelRu": "Сердечная недостаточность",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "cerebrovascular",
+        "label": "Cerebrovascular disease",
+        "labelRu": "Цереброваскулярное заболевание",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "insulin_diabetes",
+        "label": "Insulin-dependent diabetes",
+        "labelRu": "Инсулинозависимый диабет",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "renal_insufficiency",
+        "label": "Renal insufficiency (Cr >2 mg/dL)",
+        "labelRu": "Почечная недостаточность (Кр >2 мг/дл)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "== 0",
+        "interpretation": "Low risk (0.4% complication rate)",
+        "interpretationRu": "Низкий риск (0.4% осложнений)"
+      },
+      {
+        "condition": "== 1",
+        "interpretation": "Intermediate risk (1% complication rate)",
+        "interpretationRu": "Средний риск (1% осложнений)"
+      },
+      {
+        "condition": "== 2",
+        "interpretation": "High risk (2.4% complication rate)",
+        "interpretationRu": "Высокий риск (2.4% осложнений)"
+      },
+      {
+        "condition": ">= 3",
+        "interpretation": "Very high risk (5.4%+ complication rate)",
+        "interpretationRu": "Очень высокий риск (5.4%+ осложнений)"
+      }
+    ]
+  },
+  {
+    "id": "28",
+    "name": "Ranson's Criteria for Pancreatitis",
+    "nameRu": "Критерии Рэнсона для панкреатита",
+    "description": "Predict severity of acute pancreatitis",
+    "descriptionRu": "Прогноз тяжести острого панкреатита",
+    "category": "Gastroenterology",
+    "categoryRu": "Гастроэнтерология",
+    "formula": "{age} + {wbc} + {glucose} + {ldh} + {ast} + {fluid_sequestration} + {hematocrit_drop} + {bun_elevation} + {calcium} + {pao2} + {base_deficit}",
+    "inputFields": [
+      {
+        "name": "age",
+        "label": "Age >55 years",
+        "labelRu": "Возраст >55 лет",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "wbc",
+        "label": "WBC >16,000/mm³",
+        "labelRu": "Лейкоциты >16,000/мм³",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "glucose",
+        "label": "Glucose >200 mg/dL",
+        "labelRu": "Глюкоза >200 мг/дл",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "ldh",
+        "label": "LDH >350 IU/L",
+        "labelRu": "ЛДГ >350 МЕ/л",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "ast",
+        "label": "AST >250 IU/L",
+        "labelRu": "АСТ >250 МЕ/л",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "fluid_sequestration",
+        "label": "Fluid sequestration >6L",
+        "labelRu": "Секвестрация жидкости >6л",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "hematocrit_drop",
+        "label": "Hematocrit drop >10%",
+        "labelRu": "Падение гематокрита >10%",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "bun_elevation",
+        "label": "BUN elevation >5 mg/dL",
+        "labelRu": "Увеличение мочевины >5 мг/дл",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "calcium",
+        "label": "Calcium <8 mg/dL",
+        "labelRu": "Кальций <8 мг/дл",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "pao2",
+        "label": "PaO2 <60 mmHg",
+        "labelRu": "PaO2 <60 мм рт.ст.",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "base_deficit",
+        "label": "Base deficit >4 mEq/L",
+        "labelRu": "Дефицит оснований >4 мЭкв/л",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 2",
+        "interpretation": "Mild pancreatitis - low mortality (<1%)",
+        "interpretationRu": "Легкий панкреатит - низкая смертность (<1%)"
+      },
+      {
+        "condition": ">= 3 and <= 5",
+        "interpretation": "Severe pancreatitis - 10-20% mortality",
+        "interpretationRu": "Тяжелый панкреатит - 10-20% смертность"
+      },
+      {
+        "condition": ">= 6",
+        "interpretation": "Very severe pancreatitis - >50% mortality",
+        "interpretationRu": "Очень тяжелый панкреатит - >50% смертность"
+      }
+    ]
+  },
+  {
+    "id": "29",
+    "name": "PERC Rule for Pulmonary Embolism",
+    "nameRu": "Правило PERC для ТЭЛА",
+    "description": "Rule out pulmonary embolism",
+    "descriptionRu": "Исключить тромбоэмболию легочной артерии",
+    "category": "Pulmonology",
+    "categoryRu": "Пульмонология",
+    "formula": "{age} + {heart_rate} + {oxygen_sat} + {unilateral_leg_swelling} + {hemoptysis} + {recent_surgery} + {prior_pe_dvt} + {hormone_use}",
+    "inputFields": [
+      {
+        "name": "age",
+        "label": "Age ≥50 years",
+        "labelRu": "Возраст ≥50 лет",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "heart_rate",
+        "label": "Heart rate ≥100 bpm",
+        "labelRu": "ЧСС ≥100 уд/мин",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "oxygen_sat",
+        "label": "Oxygen saturation <95%",
+        "labelRu": "Сатурация кислорода <95%",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "unilateral_leg_swelling",
+        "label": "Unilateral leg swelling",
+        "labelRu": "Односторонний отек ноги",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "hemoptysis",
+        "label": "Hemoptysis",
+        "labelRu": "Кровохарканье",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "recent_surgery",
+        "label": "Recent surgery or trauma",
+        "labelRu": "Недавняя операция или травма",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "prior_pe_dvt",
+        "label": "Prior PE or DVT",
+        "labelRu": "ТЭЛА или ТГВ в анамнезе",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "hormone_use",
+        "label": "Hormone use",
+        "labelRu": "Прием гормонов",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "== 0",
+        "interpretation": "PERC negative - PE unlikely (<2% probability)",
+        "interpretationRu": "PERC отрицательный - ТЭЛА маловероятна (<2%)"
+      },
+      {
+        "condition": ">= 1",
+        "interpretation": "PERC positive - further testing required",
+        "interpretationRu": "PERC положительный - требуется дальнейшее обследование"
+      }
+    ]
+  },
+  {
+    "id": "30",
+    "name": "HAS-BLED Score",
+    "nameRu": "Шкала HAS-BLED",
+    "description": "Bleeding risk in anticoagulated patients",
+    "descriptionRu": "Риск кровотечения у пациентов на антикоагулянтах",
+    "category": "Cardiology",
+    "categoryRu": "Кардиология",
+    "formula": "{hypertension} + {abnormal_renal} + {abnormal_liver} + {stroke} + {bleeding} + {labile_inr} + {elderly} + {drugs} + {alcohol}",
+    "inputFields": [
+      {
+        "name": "hypertension",
+        "label": "Hypertension (SBP >160)",
+        "labelRu": "Гипертония (САД >160)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "abnormal_renal",
+        "label": "Abnormal renal function",
+        "labelRu": "Нарушение функции почек",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "abnormal_liver",
+        "label": "Abnormal liver function",
+        "labelRu": "Нарушение функции печени",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "stroke",
+        "label": "Stroke history",
+        "labelRu": "Инсульт в анамнезе",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "bleeding",
+        "label": "Bleeding history or predisposition",
+        "labelRu": "Кровотечение в анамнезе",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "labile_inr",
+        "label": "Labile INR",
+        "labelRu": "Лабильное МНО",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "elderly",
+        "label": "Elderly (age >65)",
+        "labelRu": "Пожилой (возраст >65)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "drugs",
+        "label": "Drugs (antiplatelet/NSAIDs)",
+        "labelRu": "Препараты (антитромбоциты/НПВП)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      },
+      {
+        "name": "alcohol",
+        "label": "Alcohol use (≥8 drinks/week)",
+        "labelRu": "Употребление алкоголя (≥8 порций/неделю)",
+        "type": "select",
+        "required": true,
+        "options": [
+          {"value": 0, "label": "No", "labelRu": "Нет"},
+          {"value": 1, "label": "Yes", "labelRu": "Да"}
+        ]
+      }
+    ],
+    "interpretationRules": [
+      {
+        "condition": "<= 2",
+        "interpretation": "Low bleeding risk (1.13% per year)",
+        "interpretationRu": "Низкий риск кровотечения (1.13% в год)"
+      },
+      {
+        "condition": "== 3",
+        "interpretation": "Moderate bleeding risk (3.74% per year)",
+        "interpretationRu": "Средний риск кровотечения (3.74% в год)"
+      },
+      {
+        "condition": ">= 4",
+        "interpretation": "High bleeding risk (8.70% per year) - caution with anticoagulation",
+        "interpretationRu": "Высокий риск кровотечения (8.70% в год) - осторожность с антикоагуляцией"
+      }
+    ]
+  }
+]
