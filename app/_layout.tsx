@@ -1,4 +1,4 @@
-import { Slot } from 'expo-router';
+import { Slot, usePathname } from 'expo-router';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { View, Text, Pressable, LogBox } from 'react-native';
@@ -8,6 +8,7 @@ import {
   ErrorStatusBar,
 } from '@/utils/errorHandler';
 import { reloadApp } from '@/utils/reload';
+import BottomNavigation from '@/components/BottomNavigation';
 import '../global.css';
 
 /**
@@ -37,9 +38,17 @@ if (__DEV__ && LogBox) {
 errorHandler.init();
 
 export default function RootLayout() {
+  const pathname = usePathname();
   const [shouldShowDemo, setShouldShowDemo] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
   const [DemoComponent, setDemoComponent] = useState<any>(null);
+
+  // Hide bottom navigation on auth screens, calculator detail, and result screens
+  const hideBottomNav = pathname.includes('/sign-in') || 
+                        pathname.includes('/sign-up') || 
+                        pathname.includes('/forgot-password') ||
+                        pathname.startsWith('/calculator/') ||
+                        pathname.startsWith('/result/');
 
   useEffect(() => {
     // Try to load Demo component at runtime
@@ -105,10 +114,13 @@ export default function RootLayout() {
     <ErrorBoundary>
       <AuthProvider>
         <View className="flex-1">
-          {content}
+          <View className="flex-1">
+            {content}
+          </View>
+          {!shouldShowDemo && !hideBottomNav && <BottomNavigation />}
           <ErrorStatusBar />
-        </View>      </AuthProvider>
-
+        </View>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }

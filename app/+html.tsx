@@ -11,7 +11,17 @@ export default function Root({ children }: PropsWithChildren) {
       <head>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        
+        {/* Mobile Optimization Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, shrink-to-fit=no, viewport-fit=cover" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="theme-color" content="#2d6caa" />
+        
+        {/* PWA Meta Tags */}
+        <meta name="application-name" content="Медицинский Калькулятор" />
+        <meta name="apple-mobile-web-app-title" content="Медкальк" />
 
         {/* 
           Disable body scrolling on web. This makes ScrollView components work closer to how they do on native. 
@@ -20,7 +30,8 @@ export default function Root({ children }: PropsWithChildren) {
         <ScrollViewStyleReset />
 
         {/* Add any additional <head> elements that you want globally available on web... */}
-        <title>Медицинский Калькулятор</title>
+        <title>Медицинский Калькулятор - Профессиональные клинические расчеты</title>
+        <meta name="description" content="Профессиональный медицинский калькулятор с 30+ клиническими расчетами. Кардиология, нефрология, педиатрия и другие." />
       </head>
       <body>{children}</body>
     </html>
