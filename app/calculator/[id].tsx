@@ -151,36 +151,36 @@ export default function CalculatorScreen() {
 
   return (
     <ScrollView className="flex-1 bg-surface">
-      {/* Header */}
-      <View className="bg-primary px-6 pt-16 pb-8">
-        <Pressable onPress={() => router.canGoBack() ? router.back() : router.push('/')} className="mb-4 active:opacity-70">
-          <Text className="text-text-inverse text-lg">← Назад</Text>
+      {/* Header - Mobile Optimized */}
+      <View className="bg-primary px-4 pt-12 pb-6">
+        <Pressable onPress={() => router.canGoBack() ? router.back() : router.push('/')} className="mb-3 active:opacity-70">
+          <Text className="text-text-inverse text-base">← Назад</Text>
         </Pressable>
-        <Text className="text-2xl font-bold text-text-inverse mb-2">
+        <Text className="text-xl font-bold text-text-inverse mb-1">
           {calculator.nameRu || calculator.name}
         </Text>
-        <Text className="text-sm text-text-inverse opacity-90 capitalize">
+        <Text className="text-xs text-text-inverse opacity-90 capitalize">
           {calculator.categoryRu || calculator.category}
         </Text>
       </View>
 
-      <View className="px-6 py-6">
-        {/* Description */}
-        <View className="bg-info-bg border border-info rounded-xl p-4 mb-6">
-          <Text className="text-sm text-text-secondary">
+      <View className="px-4 py-4">
+        {/* Description - Mobile Optimized */}
+        <View className="bg-info-bg border border-info rounded-xl p-3 mb-4">
+          <Text className="text-xs text-text-secondary">
             {calculator.descriptionRu || calculator.description}
           </Text>
         </View>
 
-        {/* Input Fields */}
-        <View className="bg-surface-elevated rounded-2xl p-6 mb-6 border border-border">
-          <Text className="text-lg font-bold text-text-primary mb-4">
+        {/* Input Fields - Mobile Optimized */}
+        <View className="bg-surface-elevated rounded-2xl p-4 mb-4 border border-border">
+          <Text className="text-base font-bold text-text-primary mb-3">
             Введите значения
           </Text>
 
           {calculator.inputFields.map((field: InputField, index: number) => (
-            <View key={field.name} className={index > 0 ? 'mt-4' : ''}>
-              <Text className="text-sm font-medium text-text-primary mb-2">
+            <View key={field.name} className={index > 0 ? 'mt-3' : ''}>
+              <Text className="text-xs font-medium text-text-primary mb-1.5">
                 {field.labelRu || field.label}
                 {field.unit ? ` (${field.unit})` : ''}
               </Text>
@@ -194,14 +194,14 @@ export default function CalculatorScreen() {
                       <Pressable
                         key={optionValue}
                         onPress={() => setInputValues({ ...inputValues, [field.name]: String(optionValue) })}
-                        className={`rounded-xl px-4 py-3 border ${
+                        className={`rounded-xl px-3 py-2.5 border ${
                           inputValues[field.name] === String(optionValue)
                             ? 'bg-primary border-primary'
                             : 'bg-surface border-border'
                         } active:opacity-70`}
                       >
                         <Text
-                          className={`text-base ${
+                          className={`text-sm ${
                             inputValues[field.name] === String(optionValue)
                               ? 'text-text-inverse font-medium'
                               : 'text-text-secondary'
@@ -220,7 +220,7 @@ export default function CalculatorScreen() {
                   keyboardType={field.type === 'number' ? 'numeric' : 'default'}
                   placeholder={`Введите ${(field.labelRu || field.label).toLowerCase()}`}
                   placeholderTextColor="#A0A0A0"
-                  className={`bg-surface border rounded-xl px-4 py-3.5 text-base text-text-primary ${
+                  className={`bg-surface border rounded-xl px-3 py-2.5 text-sm text-text-primary ${
                     errors[field.name] ? 'border-danger' : 'border-border'
                   }`}
                 />
@@ -235,27 +235,27 @@ export default function CalculatorScreen() {
           ))}
 
           {errors.general ? (
-            <View className="bg-danger-bg border border-danger rounded-xl p-3 mt-4">
-              <Text className="text-danger-text text-sm">
+            <View className="bg-danger-bg border border-danger rounded-xl p-2.5 mt-3">
+              <Text className="text-danger-text text-xs">
                 {errors.general}
               </Text>
             </View>
           ) : null}
         </View>
 
-        {/* Action Buttons */}
-        <View className="flex-row gap-3 mb-8">
+        {/* Action Buttons - Mobile Optimized */}
+        <View className="flex-row gap-2 mb-6">
           <Pressable
             onPress={handleCalculate}
             disabled={calculating}
-            className={`flex-1 bg-primary rounded-xl py-4 items-center ${
+            className={`flex-1 bg-primary rounded-xl py-3 items-center ${
               calculating ? 'opacity-50' : 'active:opacity-80'
             }`}
           >
             {calculating ? (
               <ActivityIndicator color="#FFFFFF" />
             ) : (
-              <Text className="text-base font-semibold text-text-inverse">
+              <Text className="text-sm font-semibold text-text-inverse">
                 Рассчитать
               </Text>
             )}
@@ -263,9 +263,9 @@ export default function CalculatorScreen() {
           <Pressable
             onPress={handleReset}
             disabled={calculating}
-            className="bg-surface-secondary border border-border rounded-xl px-6 py-4 items-center active:opacity-70"
+            className="bg-surface-secondary border border-border rounded-xl px-5 py-3 items-center active:opacity-70"
           >
-            <Text className="text-base font-semibold text-text-secondary">
+            <Text className="text-sm font-semibold text-text-secondary">
               Сбросить
             </Text>
           </Pressable>

@@ -37,16 +37,27 @@ def evaluate_formula(formula: str, input_data: dict) -> float:
         )
 
 
-def interpret_result(result_value: float, interpretation_rules: list) -> str:
-    """Interpret result based on rules"""
+def interpret_result(result_value: float, interpretation_rules: list, language: str = "en") -> str:
+    """Interpret result based on rules
+    
+    Args:
+        result_value: The calculated result
+        interpretation_rules: List of interpretation rules
+        language: Language code ('en' or 'ru')
+    
+    Returns:
+        Interpretation string in requested language
+    """
     if not interpretation_rules:
-        return "Result calculated successfully"
+        return "Result calculated successfully" if language == "en" else "Результат успешно рассчитан"
+    
+    interpretation_key = "interpretation_ru" if language == "ru" else "interpretation"
     
     for rule in interpretation_rules:
         condition = rule.get("condition", "")
         
         if not condition:
-            return rule.get("interpretation", "")
+            return rule.get(interpretation_key, rule.get("interpretation", ""))
         
         try:
             # Parse condition and check if result matches
@@ -54,7 +65,15 @@ def interpret_result(result_value: float, interpretation_rules: list) -> str:
                 # Exact match
                 expected = float(condition.split("=")[1].strip())
                 if abs(result_value - expected) < 0.01:
-                    return rule.get("interpretation", "")
+                    return rule.get(interpretation_key, rule.get("interpretation", ""))
+            
+            elif ">=" in condition and "and" in condition and "<=" in condition:
+                # Range: >= X and <= Y
+                parts = condition.split("and")
+                min_val = float(parts[0].split(">=")[1].strip())
+                max_val = float(parts[1].split("<=")[1].strip())
+                if min_val <= result_value <= max_val:
+                    return rule.get(interpretation_key, rule.get("interpretation", ""))
             
             elif ">=" in condition and "and" in condition and "<" in condition:
                 # Range: >= X and < Y
@@ -62,36 +81,36 @@ def interpret_result(result_value: float, interpretation_rules: list) -> str:
                 min_val = float(parts[0].split(">=")[1].strip())
                 max_val = float(parts[1].split("<")[1].strip())
                 if min_val <= result_value < max_val:
-                    return rule.get("interpretation", "")
+                    return rule.get(interpretation_key, rule.get("interpretation", ""))
             
             elif "<=" in condition:
                 # Less than or equal
                 max_val = float(condition.split("<=")[1].strip())
                 if result_value <= max_val:
-                    return rule.get("interpretation", "")
+                    return rule.get(interpretation_key, rule.get("interpretation", ""))
             
             elif ">=" in condition:
                 # Greater than or equal
                 min_val = float(condition.split(">=")[1].strip())
                 if result_value >= min_val:
-                    return rule.get("interpretation", "")
+                    return rule.get(interpretation_key, rule.get("interpretation", ""))
             
             elif "<" in condition:
                 # Less than
                 max_val = float(condition.split("<")[1].strip())
                 if result_value < max_val:
-                    return rule.get("interpretation", "")
+                    return rule.get(interpretation_key, rule.get("interpretation", ""))
             
             elif ">" in condition:
                 # Greater than
                 min_val = float(condition.split(">")[1].strip())
                 if result_value > min_val:
-                    return rule.get("interpretation", "")
+                    return rule.get(interpretation_key, rule.get("interpretation", ""))
         
         except Exception:
             continue
     
-    return "Result calculated"
+    return "Result calculated" if language == "en" else "Результат рассчитан"
 
 
 @router.get("/calculation_results", response_model=List[CalculationResultResponse])
@@ -114,7 +133,8 @@ async def get_calculation_results(
 async def create_calculation_result(
     calculation_data: CalculationResultCreate,
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    language: str = "ru"
 ):
     """Create new calculation result"""
     # Get calculator
@@ -129,8 +149,8 @@ async def create_calculation_result(
     # Calculate result
     result_value = evaluate_formula(calculator.formula, calculation_data.input_data)
     
-    # Interpret result
-    interpretation = interpret_result(result_value, calculator.interpretation_rules or [])
+    # Interpret result with language support
+    interpretation = interpret_result(result_value, calculator.interpretation_rules or [], language)
     
     # Save result
     new_result = CalculationResult(

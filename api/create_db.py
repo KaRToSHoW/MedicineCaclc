@@ -8,12 +8,12 @@ import asyncpg
 async def create_database():
     """Create the database"""
     try:
-        # Connect to postgres database first
+        # Connect to postgres database first (using credentials from middleware)
         conn = await asyncpg.connect(
             host='127.0.0.1',
             port=5432,
             user='postgres',
-            password='DbrFtDsu',
+            password='WSZaTvXx',  # Updated with current middleware password
             database='postgres'
         )
         
