@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { View, Text, Pressable, LogBox } from 'react-native';
@@ -98,9 +98,7 @@ export default function RootLayout() {
       <DemoComponent />
     </>
   ) : (
-    <Stack screenOptions={{
-      headerShown: false,
-    }} />
+    <Slot />
   );
 
   return (
