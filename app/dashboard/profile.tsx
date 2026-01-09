@@ -96,22 +96,25 @@ export default function DashboardProfileScreen() {
 
   return (
     <ScrollView className="flex-1 bg-surface">
-      {/* Header */}
-      <View className="bg-primary px-6 pt-16 pb-8">
-        <Text className="text-2xl font-bold text-text-inverse mb-2">
-          Профиль
-        </Text>
-        <Text className="text-sm text-text-inverse opacity-90">
-          Управление профилем и настройками
-        </Text>
-      </View>
+      <View className="px-6 py-8">
+        {/* Profile Header with Avatar */}
+        <View className="items-center mb-8">
+          <View className="w-28 h-28 bg-primary rounded-full items-center justify-center mb-4 shadow-card">
+            <Text className="text-6xl">👤</Text>
+          </View>
+          <Text className="text-2xl font-bold text-text-primary mb-1">
+            {user?.name || 'Пользователь'}
+          </Text>
+          <Text className="text-base text-text-secondary">
+            {user?.email || 'email@example.com'}
+          </Text>
+        </View>
 
-      <View className="px-6 py-6">
         {/* Profile Section */}
         <View className="bg-surface-elevated rounded-2xl p-6 mb-6 border border-border">
           <View className="flex-row items-center justify-between mb-4">
             <Text className="text-lg font-bold text-text-primary">
-              Информация профиля
+              Личная информация
             </Text>
             {!isEditing ? (
               <Pressable
@@ -119,23 +122,10 @@ export default function DashboardProfileScreen() {
                 className="bg-primary px-4 py-2 rounded-lg active:opacity-80"
               >
                 <Text className="text-sm font-medium text-text-inverse">
-                  Редактировать
+                  Изменить
                 </Text>
               </Pressable>
             ) : null}
-          </View>
-
-          {/* Profile Icon */}
-          <View className="items-center mb-6">
-            <View className="w-24 h-24 bg-primary rounded-full items-center justify-center mb-3 shadow-card">
-              <Text className="text-5xl">👤</Text>
-            </View>
-            <Text className="text-base font-semibold text-text-primary">
-              {user?.name || 'Пользователь'}
-            </Text>
-            <Text className="text-sm text-text-secondary">
-              {user?.email}
-            </Text>
           </View>
 
           {/* Profile Form */}
@@ -212,32 +202,20 @@ export default function DashboardProfileScreen() {
           ) : null}
         </View>
 
-        {/* Quick Links */}
+        {/* Statistics Section */}
         <View className="bg-surface-elevated rounded-2xl p-6 mb-6 border border-border">
           <Text className="text-lg font-bold text-text-primary mb-4">
-            Быстрые действия
+            Статистика
           </Text>
-          <View className="gap-3">
-            <Pressable
-              onPress={() => router.push('/')}
-              className="bg-surface border border-border rounded-xl p-4 flex-row items-center active:opacity-70"
-            >
-              <Text className="text-2xl mr-3">🏠</Text>
-              <Text className="text-base font-medium text-text-primary flex-1">
-                Главная страница
-              </Text>
-              <Text className="text-text-muted">→</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => router.push('/calculators')}
-              className="bg-surface border border-border rounded-xl p-4 flex-row items-center active:opacity-70"
-            >
-              <Text className="text-2xl mr-3">🧮</Text>
-              <Text className="text-base font-medium text-text-primary flex-1">
-                Все калькуляторы
-              </Text>
-              <Text className="text-text-muted">→</Text>
-            </Pressable>
+          <View className="flex-row gap-3">
+            <View className="flex-1 bg-surface border border-border rounded-xl p-4 items-center">
+              <Text className="text-3xl font-bold text-primary mb-1">0</Text>
+              <Text className="text-sm text-text-secondary text-center">Расчётов</Text>
+            </View>
+            <View className="flex-1 bg-surface border border-border rounded-xl p-4 items-center">
+              <Text className="text-3xl font-bold text-primary mb-1">0</Text>
+              <Text className="text-sm text-text-secondary text-center">Сохранено</Text>
+            </View>
           </View>
         </View>
 

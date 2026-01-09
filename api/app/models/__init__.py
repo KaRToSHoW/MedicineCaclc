@@ -42,34 +42,14 @@ class Session(Base):
     user = relationship("User", back_populates="sessions")
 
 
-class Calculator(Base):
-    """Calculator model"""
-    __tablename__ = "calculators"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False)
-    name_ru = Column(String(255))
-    description = Column(Text)
-    description_ru = Column(Text)
-    formula = Column(Text, nullable=False)
-    category = Column(String(100), index=True)
-    category_ru = Column(String(100))
-    input_fields = Column(JSON, nullable=False)
-    interpretation_rules = Column(JSON)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
-    
-    # Relationships
-    calculation_results = relationship("CalculationResult", back_populates="calculator")
-
-
 class CalculationResult(Base):
     """Calculation result model"""
     __tablename__ = "calculation_results"
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    calculator_id = Column(Integer, ForeignKey("calculators.id", ondelete="CASCADE"), nullable=False)
+    calculator_name = Column(String(255), nullable=False, index=True)
+    calculator_name_ru = Column(String(255))
     input_data = Column(JSON, nullable=False)
     result_value = Column(Float, nullable=False)
     interpretation = Column(Text)
@@ -79,7 +59,6 @@ class CalculationResult(Base):
     
     # Relationships
     user = relationship("User", back_populates="calculation_results")
-    calculator = relationship("Calculator", back_populates="calculation_results")
 
 
 class UsageStatistic(Base):
@@ -88,7 +67,7 @@ class UsageStatistic(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
-    calculator_id = Column(Integer, ForeignKey("calculators.id", ondelete="CASCADE"))
+    calculator_name = Column(String(255))
     action = Column(String(100))
     meta_data = Column(JSON)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

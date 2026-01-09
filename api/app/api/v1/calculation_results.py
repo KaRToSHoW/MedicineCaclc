@@ -5,112 +5,16 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from sqlalchemy.orm import selectinload
 from typing import List
-import re
 
 from app.core.database import get_db
 from app.core.security import get_current_user
-from app.models import User, Calculator, CalculationResult
+from app.models import User, CalculationResult
 from app.schemas import CalculationResultCreate, CalculationResultResponse
 from app.services.pdf_export import pdf_exporter
 from app.services.external_integrations import analytics_service
 
 router = APIRouter()
-
-
-def evaluate_formula(formula: str, input_data: dict) -> float:
-    """Evaluate calculator formula with input data"""
-    # Replace variable placeholders with values
-    expression = formula
-    for key, value in input_data.items():
-        expression = expression.replace(f"{{{key}}}", str(value))
-    
-    try:
-        # Safely evaluate mathematical expression
-        result = eval(expression, {"__builtins__": {}}, {})
-        return float(result)
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Error evaluating formula: {str(e)}"
-        )
-
-
-def interpret_result(result_value: float, interpretation_rules: list, language: str = "en") -> str:
-    """Interpret result based on rules
-    
-    Args:
-        result_value: The calculated result
-        interpretation_rules: List of interpretation rules
-        language: Language code ('en' or 'ru')
-    
-    Returns:
-        Interpretation string in requested language
-    """
-    if not interpretation_rules:
-        return "Result calculated successfully" if language == "en" else "Результат успешно рассчитан"
-    
-    interpretation_key = "interpretation_ru" if language == "ru" else "interpretation"
-    
-    for rule in interpretation_rules:
-        condition = rule.get("condition", "")
-        
-        if not condition:
-            return rule.get(interpretation_key, rule.get("interpretation", ""))
-        
-        try:
-            # Parse condition and check if result matches
-            if "=" in condition and ">=" not in condition and "<=" not in condition:
-                # Exact match
-                expected = float(condition.split("=")[1].strip())
-                if abs(result_value - expected) < 0.01:
-                    return rule.get(interpretation_key, rule.get("interpretation", ""))
-            
-            elif ">=" in condition and "and" in condition and "<=" in condition:
-                # Range: >= X and <= Y
-                parts = condition.split("and")
-                min_val = float(parts[0].split(">=")[1].strip())
-                max_val = float(parts[1].split("<=")[1].strip())
-                if min_val <= result_value <= max_val:
-                    return rule.get(interpretation_key, rule.get("interpretation", ""))
-            
-            elif ">=" in condition and "and" in condition and "<" in condition:
-                # Range: >= X and < Y
-                parts = condition.split("and")
-                min_val = float(parts[0].split(">=")[1].strip())
-                max_val = float(parts[1].split("<")[1].strip())
-                if min_val <= result_value < max_val:
-                    return rule.get(interpretation_key, rule.get("interpretation", ""))
-            
-            elif "<=" in condition:
-                # Less than or equal
-                max_val = float(condition.split("<=")[1].strip())
-                if result_value <= max_val:
-                    return rule.get(interpretation_key, rule.get("interpretation", ""))
-            
-            elif ">=" in condition:
-                # Greater than or equal
-                min_val = float(condition.split(">=")[1].strip())
-                if result_value >= min_val:
-                    return rule.get(interpretation_key, rule.get("interpretation", ""))
-            
-            elif "<" in condition:
-                # Less than
-                max_val = float(condition.split("<")[1].strip())
-                if result_value < max_val:
-                    return rule.get(interpretation_key, rule.get("interpretation", ""))
-            
-            elif ">" in condition:
-                # Greater than
-                min_val = float(condition.split(">")[1].strip())
-                if result_value > min_val:
-                    return rule.get(interpretation_key, rule.get("interpretation", ""))
-        
-        except Exception:
-            continue
-    
-    return "Result calculated" if language == "en" else "Результат рассчитан"
 
 
 @router.get("/calculation_results", response_model=List[CalculationResultResponse])
@@ -122,7 +26,6 @@ async def get_calculation_results(
     result = await db.execute(
         select(CalculationResult)
         .where(CalculationResult.user_id == current_user.id)
-        .options(selectinload(CalculationResult.calculator))
         .order_by(CalculationResult.performed_at.desc())
     )
     results = result.scalars().all()
@@ -133,44 +36,26 @@ async def get_calculation_results(
 async def create_calculation_result(
     calculation_data: CalculationResultCreate,
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
-    language: str = "ru"
+    db: AsyncSession = Depends(get_db)
 ):
     """Create new calculation result"""
-    # Get calculator
-    result = await db.execute(
-        select(Calculator).where(Calculator.id == calculation_data.calculator_id)
-    )
-    calculator = result.scalar_one_or_none()
-    
-    if not calculator:
-        raise HTTPException(status_code=404, detail="Calculator not found")
-    
-    # Calculate result
-    result_value = evaluate_formula(calculator.formula, calculation_data.input_data)
-    
-    # Interpret result with language support
-    interpretation = interpret_result(result_value, calculator.interpretation_rules or [], language)
-    
-    # Save result
+    # Save result (calculation already done on frontend)
     new_result = CalculationResult(
         user_id=current_user.id,
-        calculator_id=calculator.id,
+        calculator_name=calculation_data.calculator_name,
+        calculator_name_ru=calculation_data.calculator_name_ru,
         input_data=calculation_data.input_data,
-        result_value=result_value,
-        interpretation=interpretation
+        result_value=calculation_data.result_value,
+        interpretation=calculation_data.interpretation
     )
     db.add(new_result)
     await db.commit()
     await db.refresh(new_result)
     
-    # Load calculator relationship
-    await db.refresh(new_result, ["calculator"])
-    
     # Track analytics event
     analytics_service.track_calculation(
-        calculator_name=calculator.name,
-        calculator_category=calculator.category,
+        calculator_name=calculation_data.calculator_name,
+        calculator_category="medical",
         user_id=current_user.id
     )
     
@@ -190,7 +75,6 @@ async def get_calculation_result(
             CalculationResult.id == result_id,
             CalculationResult.user_id == current_user.id
         )
-        .options(selectinload(CalculationResult.calculator))
     )
     calc_result = result.scalar_one_or_none()
     
@@ -214,7 +98,6 @@ async def export_calculation_result_pdf(
             CalculationResult.id == result_id,
             CalculationResult.user_id == current_user.id
         )
-        .options(selectinload(CalculationResult.calculator))
     )
     calc_result = result.scalar_one_or_none()
     
@@ -223,13 +106,13 @@ async def export_calculation_result_pdf(
     
     # Generate PDF
     pdf_buffer = pdf_exporter.generate_result_pdf(
-        calculator_name=calc_result.calculator.name,
-        calculator_category=calc_result.calculator.category,
+        calculator_name=calc_result.calculator_name,
+        calculator_category="medical",
         input_data=calc_result.input_data,
         result_value=calc_result.result_value,
         interpretation=calc_result.interpretation,
         performed_at=calc_result.performed_at,
-        user_name=f"{current_user.full_name or 'User'}"
+        user_name=f"{current_user.name or 'User'}"
     )
     
     # Track analytics event
@@ -237,7 +120,7 @@ async def export_calculation_result_pdf(
         'pdf_export',
         user_id=current_user.id,
         properties={
-            'calculator_name': calc_result.calculator.name,
+            'calculator_name': calc_result.calculator_name,
             'result_id': result_id
         }
     )

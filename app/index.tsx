@@ -1,40 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
-import { Link, router } from 'expo-router';
-import { useCalculatorsStore } from '@/stores/calculatorsStore';
+import { router } from 'expo-router';
 import { useAuth } from '@/hooks/useAuth';
 
 /**
  * Home Screen - Main Entry Point
- * Displays calculator categories and popular calculators
  */
-
-const categories = [
-  { id: 'General Health', name: 'Общее здоровье', icon: '⚕️' },
-  { id: 'Cardiology', name: 'Кардиология', icon: '❤️' },
-  { id: 'Nephrology', name: 'Нефрология', icon: '🫘' },
-  { id: 'Neurology', name: 'Неврология', icon: '🧠' },
-  { id: 'Pediatrics', name: 'Педиатрия', icon: '👶' },
-  { id: 'Obstetrics', name: 'Акушерство', icon: '🤰' },
-  { id: 'Hematology', name: 'Гематология', icon: '💉' },
-  { id: 'Laboratory', name: 'Лабораторная', icon: '🔬' },
-];
 
 export default function HomeScreen() {
   const { user, isAuthenticated } = useAuth();
-  const { items: calculators, loading, error, fetchAll } = useCalculatorsStore();
-
-  useEffect(() => {
-    fetchAll();
-  }, []);
-
-  const handleCategoryPress = (category: string) => {
-    router.push(`/calculators?category=${category}`);
-  };
-
-  const handleCalculatorPress = (id: string | number) => {
-    router.push(`/calculator/${id}`);
-  };
 
   return (
     <ScrollView className="flex-1 bg-surface-secondary" contentContainerStyle={{ paddingBottom: 80 }}>
@@ -71,8 +45,49 @@ export default function HomeScreen() {
         </View>
       </View>
 
+      {/* Welcome Message */}
+      <View className="px-4 pt-6 pb-4">
+        <View className="bg-surface rounded-card p-6 shadow-card">
+          <Text className="text-xl font-bold text-text-primary mb-3 text-center">
+            Добро пожаловать! 👋
+          </Text>
+          <Text className="text-sm text-text-secondary text-center leading-5">
+            Система готова к работе. Здесь будут отображаться основные функции приложения.
+          </Text>
+        </View>
+      </View>
+
+      {/* Calculators Section */}
+      <View className="px-4 pb-4">
+        <Text className="text-lg font-bold text-text-primary mb-3">
+          Калькуляторы
+        </Text>
+        <Pressable
+          onPress={() => router.push('/cockcroft-gault')}
+          className="bg-surface rounded-card p-4 shadow-card-hover active:opacity-80 mb-3"
+        >
+          <View className="flex-row items-center">
+            <View className="bg-primary-light rounded-xl p-3 mr-3">
+              <Text className="text-2xl">🫀</Text>
+            </View>
+            <View className="flex-1">
+              <Text className="text-base font-bold text-text-primary mb-1">
+                Клиренс креатинина (Cockcroft-Gault)
+              </Text>
+              <Text className="text-sm text-text-secondary">
+                Оценка функции почек для коррекции доз лекарств
+              </Text>
+            </View>
+            <Text className="text-2xl text-text-secondary">›</Text>
+          </View>
+        </Pressable>
+      </View>
+
       {/* Quick Actions - Mobile Optimized */}
-      <View className="px-4 pt-4 pb-4">
+      <View className="px-4 pb-4">
+        <Text className="text-lg font-bold text-text-primary mb-3">
+          Быстрые действия
+        </Text>
         <View className="flex-row gap-3">
           {isAuthenticated ? (
             <Pressable
@@ -82,105 +97,23 @@ export default function HomeScreen() {
               <Text className="text-2xl mb-2">👤</Text>
               <Text className="text-sm font-bold text-text-primary">Личный кабинет</Text>
             </Pressable>
-          ) : null}
+          ) : (
+            <Pressable
+              onPress={() => router.push('/(auth)/sign-in')}
+              className="flex-1 bg-surface rounded-card p-4 shadow-card-hover active:opacity-80"
+            >
+              <Text className="text-2xl mb-2">🔑</Text>
+              <Text className="text-sm font-bold text-text-primary">Войти</Text>
+            </Pressable>
+          )}
           <Pressable
-            onPress={() => router.push('/calculators')}
+            onPress={() => router.push('/settings')}
             className="flex-1 bg-surface rounded-card p-4 shadow-card-hover active:opacity-80"
           >
-            <Text className="text-2xl mb-2">🔍</Text>
-            <Text className="text-sm font-bold text-text-primary">Калькуляторы</Text>
+            <Text className="text-2xl mb-2">⚙️</Text>
+            <Text className="text-sm font-bold text-text-primary">Настройки</Text>
           </Pressable>
         </View>
-      </View>
-
-      {/* Categories - Mobile Optimized */}
-      <View className="px-4 pb-4">
-        <Text className="text-lg font-bold text-text-primary mb-3">
-          Категории
-        </Text>
-        <View className="flex-row flex-wrap gap-2">
-          {categories.map((category) => (
-            <Pressable
-              key={category.id}
-              onPress={() => handleCategoryPress(category.id)}
-              className={`${
-                category.id === 'General Health' ? 'bg-gradient-primary' :
-                  category.id === 'Cardiology' ? 'bg-gradient-danger' :
-                    category.id === 'Nephrology' ? 'bg-gradient-secondary' :
-                      category.id === 'Neurology' ? 'bg-gradient-accent' :
-                        category.id === 'Pediatrics' ? 'bg-gradient-info' :
-                          category.id === 'Obstetrics' ? 'bg-gradient-success' :
-                            category.id === 'Hematology' ? 'bg-gradient-danger' :
-                              'bg-gradient-accent'
-              } rounded-card px-3 py-3 flex-row items-center shadow-card-hover active:opacity-90 min-w-[47%]`}
-            >
-              <Text className="text-2xl mr-2">{category.icon}</Text>
-              <Text className="text-sm font-bold text-text-inverse flex-shrink">
-                {category.name}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-      </View>
-
-      {/* Popular Calculators - Mobile Optimized */}
-      <View className="px-4 pb-6">
-        <View className="flex-row items-center justify-between mb-3">
-          <Text className="text-lg font-bold text-text-primary">
-            Популярные калькуляторы
-          </Text>
-          <Link href="/calculators" asChild>
-            <Pressable className="active:opacity-70">
-              <Text className="text-sm font-bold text-primary">
-                Все →
-              </Text>
-            </Pressable>
-          </Link>
-        </View>
-
-        {loading ? (
-          <View className="bg-surface rounded-card p-4 shadow-card">
-            <Text className="text-center text-text-secondary text-sm">Загрузка калькуляторов...</Text>
-          </View>
-        ) : error ? (
-          <View className="bg-danger-bg border-2 border-danger rounded-card p-3 shadow-soft">
-            <Text className="text-danger-text text-sm font-medium">{error}</Text>
-          </View>
-        ) : (
-          <View className="gap-2">
-            {calculators.slice(0, 5).map((calculator) => (
-              <Pressable
-                key={calculator.id}
-                onPress={() => handleCalculatorPress(calculator.id)}
-                className="bg-surface rounded-card p-3 shadow-card-hover active:opacity-90"
-              >
-                <View className="flex-row items-start">
-                  <View className="w-10 h-10 rounded-pill bg-gradient-soft items-center justify-center mr-3 shadow-soft">
-                    <Text className="text-xl">
-                      {calculator.category === 'Cardiology' ? '❤️' :
-                        calculator.category === 'Neurology' ? '🧠' :
-                          calculator.category === 'Pediatrics' ? '👶' :
-                            calculator.category === 'General Health' ? '⚕️' :
-                              calculator.category === 'Nephrology' ? '🫘' :
-                                calculator.category === 'Obstetrics' ? '🤰' :
-                                  calculator.category === 'Hematology' ? '💉' :
-                                    calculator.category === 'Laboratory' ? '🔬' : '⚕️'}
-                    </Text>
-                  </View>
-                  <View className="flex-1">
-                    <Text className="text-sm font-bold text-text-primary mb-0.5">
-                      {calculator.nameRu || calculator.name}
-                    </Text>
-                    <Text className="text-xs text-text-secondary capitalize">
-                      {calculator.categoryRu || calculator.category}
-                    </Text>
-                  </View>
-                  <Text className="text-text-muted text-xl">→</Text>
-                </View>
-              </Pressable>
-            ))}
-          </View>
-        )}
       </View>
 
       {/* Info Note - Mobile Optimized */}

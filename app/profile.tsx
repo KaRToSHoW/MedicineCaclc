@@ -126,18 +126,18 @@ export default function ProfileScreen() {
                     <Text className="flex-1 text-sm font-medium text-text-primary">
                       {item.label}
                     </Text>
-                    {item.badge && (
+                    {item.badge ? (
                       <View className="bg-primary-light px-2 py-0.5 rounded-full mr-2">
                         <Text className="text-xs font-medium text-primary">
                           {item.badge}
                         </Text>
                       </View>
-                    )}
+                    ) : null}
                     <Text className="text-lg text-text-muted">›</Text>
                   </Pressable>
-                  {itemIndex < section.items.length - 1 && (
+                  {itemIndex < section.items.length - 1 ? (
                     <View className="h-px bg-border ml-16" />
-                  )}
+                  ) : null}
                 </View>
               ))}
             </View>
