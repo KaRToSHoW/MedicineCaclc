@@ -117,7 +117,7 @@ export default function RootLayout() {
           <View className="flex-1">
             {content}
           </View>
-          {!shouldShowDemo && !hideBottomNav && <BottomNavigation />}
+          {!shouldShowDemo && !hideBottomNav ? <BottomNavigation /> : null}
           <ErrorStatusBar />
         </View>
       </AuthProvider>

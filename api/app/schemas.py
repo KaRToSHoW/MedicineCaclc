@@ -36,47 +36,24 @@ class SessionResponse(BaseModel):
     user: UserResponse
 
 
-# Calculator schemas
-class CalculatorBase(BaseModel):
-    name: str
-    name_ru: Optional[str] = None
-    description: Optional[str] = None
-    description_ru: Optional[str] = None
-    formula: str
-    category: str
-    category_ru: Optional[str] = None
-    input_fields: List[Dict[str, Any]]
-    interpretation_rules: Optional[List[Dict[str, Any]]] = None
-
-
-class CalculatorCreate(CalculatorBase):
-    pass
-
-
-class CalculatorResponse(CalculatorBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
-    
-    class Config:
-        from_attributes = True
-
-
 # Calculation Result schemas
 class CalculationResultCreate(BaseModel):
-    calculator_id: int
+    calculator_name: str
+    calculator_name_ru: Optional[str] = None
     input_data: Dict[str, Any]
+    result_value: float
+    interpretation: Optional[str] = None
 
 
 class CalculationResultResponse(BaseModel):
     id: int
     user_id: int
-    calculator_id: int
+    calculator_name: str
+    calculator_name_ru: Optional[str] = None
     input_data: Dict[str, Any]
     result_value: float
     interpretation: Optional[str] = None
     performed_at: datetime
-    calculator: Optional[CalculatorResponse] = None
     
     class Config:
         from_attributes = True

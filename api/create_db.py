@@ -13,7 +13,7 @@ async def create_database():
             host='127.0.0.1',
             port=5432,
             user='postgres',
-            password='WSZaTvXx',  # Updated with current middleware password
+            password='iZVaHaHh',  # Updated with current middleware password
             database='postgres'
         )
         

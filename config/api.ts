@@ -15,21 +15,33 @@ import Constants from 'expo-constants';
 const getApiBaseUrl = (): string => {
   const extra = Constants.expoConfig?.extra || {};
 
+  console.log('[API Config] Environment variables:', {
+    APP_PORT: extra.APP_PORT,
+    PUBLIC_HOST: extra.PUBLIC_HOST,
+    CLACKY_PREVIEW_DOMAIN_BASE: extra.CLACKY_PREVIEW_DOMAIN_BASE
+  });
+
   // 1. Production: Use PUBLIC_HOST if set
   if (extra.PUBLIC_HOST) {
-    return `https://${extra.PUBLIC_HOST}`;
+    const url = `https://${extra.PUBLIC_HOST}`;
+    console.log('[API Config] Using PUBLIC_HOST:', url);
+    return url;
   }
 
   // 2. Cloud dev: Use APP_PORT + CLACKY_PREVIEW_DOMAIN_BASE
   if (extra.CLACKY_PREVIEW_DOMAIN_BASE) {
     const port = extra.APP_PORT || '8000';
     const domainBase = extra.CLACKY_PREVIEW_DOMAIN_BASE;
-    return `https://${port}${domainBase}`;
+    const url = `https://${port}${domainBase}`;
+    console.log('[API Config] Using Cloud dev:', url, { port, domainBase });
+    return url;
   }
 
   // 3. Local dev: fallback to localhost
   const defaultPort = extra.APP_PORT || '8000';
-  return `http://localhost:${defaultPort}`;
+  const url = `http://localhost:${defaultPort}`;
+  console.log('[API Config] Using localhost:', url);
+  return url;
 };
 
 export const API_BASE_URL = getApiBaseUrl();

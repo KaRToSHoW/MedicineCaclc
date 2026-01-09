@@ -10,11 +10,13 @@
       "@/utils/*": ["utils/*"],
       "@/components/*": ["components/*"],
       "@/services/*": ["services/*"],
+      "@/stores/*": ["stores/*"],
       "@/contexts/*": ["contexts/*"],
       "@/config/*": ["config/*"],
       "@/types/*": ["types/*"],
       "@/hooks/*": ["hooks/*"],
       "@/data/*": ["data/*"],
+      "@/lib/*": ["lib/*"],
       "@/*": ["./"]
     }
   },

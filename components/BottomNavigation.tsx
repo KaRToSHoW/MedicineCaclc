@@ -17,17 +17,16 @@ export default function BottomNavigation() {
   const tabs = [
     { name: 'Главная', iconType: 'home' as const, route: '/', activeRoutes: ['/'] },
     {
-      name: 'Калькуляторы',
-      iconType: 'calculator' as const,
-      route: '/calculators',
-      activeRoutes: ['/calculators', '/calculator'],
+      name: 'История',
+      iconType: 'history' as const,
+      route: '/dashboard/history',
+      activeRoutes: ['/dashboard/history'],
     },
-    { name: 'Избранное', iconType: 'favorite' as const, route: '/favorites', activeRoutes: ['/favorites'] },
     {
       name: 'Профиль',
       iconType: 'profile' as const,
-      route: '/profile',
-      activeRoutes: ['/profile', '/settings'],
+      route: '/dashboard/profile',
+      activeRoutes: ['/dashboard/profile', '/profile', '/settings', '/dashboard'],
     },
   ];
 
@@ -74,6 +73,7 @@ export default function BottomNavigation() {
         }),
       ]),
     ]).start();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
 
   return (
