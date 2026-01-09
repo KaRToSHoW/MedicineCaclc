@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import Svg, { Path, Circle, Rect, G } from 'react-native-svg';
 
 interface TabIconProps {
-  type: 'home' | 'calculator' | 'favorite' | 'profile';
+  type: 'home' | 'calculator' | 'favorite' | 'profile' | 'history';
   active: boolean;
   size?: number;
 }
@@ -98,6 +98,28 @@ export function TabIcon({ type, active, size = 24 }: TabIconProps) {
           />
           <Path
             d="M5 20C5 17.2386 7.23858 15 10 15H14C16.7614 15 19 17.2386 19 20"
+            stroke={color}
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+
+    case 'history':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Circle
+            cx="12"
+            cy="12"
+            r="9"
+            stroke={color}
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <Path
+            d="M12 7V12L15 15"
             stroke={color}
             strokeWidth={strokeWidth}
             strokeLinecap="round"

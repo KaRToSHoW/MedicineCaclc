@@ -2,6 +2,9 @@
 
 # Start both Metro Bundler and Web Proxy Server concurrently
 
+# Set backend API port for frontend config
+export APP_PORT=8000
+
 # Start Metro Bundler in background
 echo "🚀 Starting Metro Bundler on port 3001..."
 ./scripts/start-expo.sh > /tmp/metro.log 2>&1 &

@@ -13,7 +13,7 @@ npm run start
 
 **Backend (Python FastAPI):**
 ```bash
-npm run start-backend    # Starts Python API (port 3001)
+npm run start-backend    # Starts Python API (port 8000)
 ```
 
 ## When to Restart Frontend Development Server
@@ -46,7 +46,7 @@ Restarting the Expo dev server is unnecessary because it automatically hot-reloa
 ## Port Configuration
 
 - **Frontend (Expo web)**: 3000 (configurable via EXPO_WEB_PORT, default is 3000)
-- **Backend (Python API)**: 3001
+- **Backend (Python API)**: 8000
 
 ## Cross-Platform Rules (iOS + Android + Web)
 
@@ -297,7 +297,7 @@ python3 seed_data.py
 # Start server
 npm run start-backend
 # or directly:
-cd api && python3 -m uvicorn main:app --host 0.0.0.0 --port 3001 --reload
+cd api && python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 ## Important Notes

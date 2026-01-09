@@ -6,30 +6,29 @@
  * Backend returns snake_case, but services/api.ts converts to camelCase automatically.
  */
 
-import { Calculator } from './calculators';
-
 export interface CalculationResult {
-  id: string | number;
-  userId: string | number;
-  calculatorId: string | number;
+  id: number;
+  userId: number;
+  calculatorName: string;
+  calculatorNameRu?: string;
   inputData: Record<string, any>;
   resultValue: number;
-  interpretation: string;
+  interpretation?: string;
   performedAt: string;
-  calculator?: Partial<Calculator>;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CreateCalculationResultInput {
-  calculatorId: string | number;
+  calculatorName: string;
+  calculatorNameRu?: string;
   inputData: Record<string, any>;
+  resultValue: number;
+  interpretation?: string;
 }
 
-export type CreateCalculationResultInputOrFormData = CreateCalculationResultInput | FormData;
-
 export interface UpdateCalculationResultInput {
-  // Calculation results are typically immutable
+  inputData?: Record<string, any>;
 }
 
 export type CalculationResultResponse = CalculationResult;

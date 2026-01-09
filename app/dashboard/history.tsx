@@ -1,25 +1,17 @@
 /**
  * Dashboard History Screen
- * Displays user's calculation history with filtering and search
+ * Shows user's calculation history with real data
  */
 
-import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Pressable, TextInput } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
-import { useCalculationResultsStore } from '@/stores/calculationResultsStore';
 import { useAuth } from '@/hooks/useAuth';
+import { useCalculationResultsStore } from '@/stores/calculationResultsStore';
 
 export default function DashboardHistoryScreen() {
   const { isAuthenticated } = useAuth();
-  const { items: results, loading, error, fetchAll } = useCalculationResultsStore();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterCategory, setFilterCategory] = useState('all');
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchAll();
-    }
-  }, [isAuthenticated]);
+  const { items, loading, fetchAll } = useCalculationResultsStore();
 
   // Redirect if not authenticated
   if (!isAuthenticated) {
@@ -27,168 +19,130 @@ export default function DashboardHistoryScreen() {
     return null;
   }
 
-  const categories = ['all', ...new Set(results.map((r) => r.calculator?.category).filter(Boolean))];
+  // Load calculation history on mount
+  useEffect(() => {
+    fetchAll();
+  }, [fetchAll]);
 
-  const filteredResults = results.filter((result) => {
-    const matchesSearch = 
-      result.calculator?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      result.interpretation.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = 
-      filterCategory === 'all' || result.calculator?.category === filterCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInHours / 24);
 
-  const handleResultPress = (id: string | number) => {
-    router.push(`/result/${id}`);
-  };
-
-  const getResultIcon = (interpretation: string) => {
-    const lower = interpretation.toLowerCase();
-    if (lower.includes('critical') || lower.includes('severe')) return '🚨';
-    if (lower.includes('danger') || lower.includes('class ii')) return '⚠️';
-    if (lower.includes('warning') || lower.includes('caution')) return '⚡';
-    if (lower.includes('normal') || lower.includes('healthy')) return '✅';
-    return 'ℹ️';
-  };
-
-  const getResultColor = (interpretation: string) => {
-    const lower = interpretation.toLowerCase();
-    if (lower.includes('critical') || lower.includes('severe') || lower.includes('danger')) {
-      return 'bg-danger-bg border-danger';
+    if (diffInHours < 1) {
+      return 'Менее часа назад';
+    } else if (diffInHours < 24) {
+      return `${diffInHours} ч. назад`;
+    } else if (diffInDays < 7) {
+      return `${diffInDays} д. назад`;
+    } else {
+      return date.toLocaleDateString('ru-RU', {
+        day: 'numeric',
+        month: 'short',
+        year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
+      });
     }
-    if (lower.includes('warning') || lower.includes('caution')) {
-      return 'bg-warning-bg border-warning';
-    }
-    if (lower.includes('normal') || lower.includes('healthy')) {
-      return 'bg-success-bg border-success';
-    }
-    return 'bg-info-bg border-info';
   };
 
   return (
     <View className="flex-1 bg-surface">
-      {/* Header */}
-      <View className="bg-primary px-6 pt-16 pb-6">
-        <Text className="text-2xl font-bold text-text-inverse mb-2">
-          История расчетов
+      <ScrollView className="flex-1 px-6 py-8">
+        {/* Page Title */}
+        <Text className="text-3xl font-bold text-text-primary mb-2">
+          История
         </Text>
-        <Text className="text-sm text-text-inverse opacity-90">
-          Найдено {filteredResults.length} расчетов
+        <Text className="text-base text-text-secondary mb-6">
+          Все ваши расчёты
         </Text>
-      </View>
 
-      {/* Search Bar */}
-      <View className="px-6 pt-4 pb-3">
-        <TextInput
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="Поиск по истории..."
-          placeholderTextColor="#A0A0A0"
-          className="bg-surface-elevated border border-border rounded-xl px-4 py-3 text-base text-text-primary"
-        />
-      </View>
-
-      {/* Category Filter */}
-      <View className="px-6 pb-4">
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View className="flex-row gap-2">
-            {categories.map((category) => (
-              <Pressable
-                key={category}
-                onPress={() => setFilterCategory(category as string)}
-                className={`rounded-full px-5 py-2 border ${
-                  filterCategory === category
-                    ? 'bg-primary border-primary'
-                    : 'bg-surface-elevated border-border'
-                } active:opacity-70`}
-              >
-                <Text
-                  className={`text-sm font-medium capitalize ${
-                    filterCategory === category
-                      ? 'text-text-inverse'
-                      : 'text-text-secondary'
-                  }`}
-                >
-                  {category}
-                </Text>
-              </Pressable>
-            ))}
+        {/* Loading State */}
+        {loading && items.length === 0 ? (
+          <View className="items-center justify-center py-12">
+            <ActivityIndicator size="large" color="hsl(210, 75%, 45%)" />
+            <Text className="text-text-secondary mt-4">Загрузка...</Text>
           </View>
-        </ScrollView>
-      </View>
-
-      {/* Results List */}
-      <ScrollView className="flex-1 px-6">
-        {loading ? (
-          <View className="bg-surface-elevated rounded-2xl p-6 border border-border">
-            <Text className="text-center text-text-secondary">Загрузка истории...</Text>
-          </View>
-        ) : error ? (
-          <View className="bg-danger-bg border border-danger rounded-xl p-4">
-            <Text className="text-danger-text text-sm">{error}</Text>
-          </View>
-        ) : filteredResults.length === 0 ? (
-          <View className="bg-surface-elevated rounded-2xl p-6 border border-border">
-            <Text className="text-center text-text-secondary mb-2">
-              {searchQuery || filterCategory !== 'all' 
-                ? 'Нет расчетов, соответствующих запросу'
-                : 'Пока нет расчетов'}
+        ) : items.length === 0 ? (
+          /* Empty State */
+          <View className="bg-surface-elevated rounded-2xl p-8 border border-border items-center">
+            <Text className="text-5xl mb-4">📅</Text>
+            <Text className="text-lg font-semibold text-text-primary mb-2 text-center">
+              Пока нет истории
             </Text>
-            {!searchQuery && filterCategory === 'all' ? (
-              <Pressable onPress={() => router.push('/')} className="mt-4 active:opacity-70">
-                <Text className="text-center text-primary font-medium">
-                  Начать расчеты
-                </Text>
-              </Pressable>
-            ) : null}
+            <Text className="text-sm text-text-secondary mb-6 text-center">
+              Выполните первый расчёт
+            </Text>
+            <Pressable
+              onPress={() => router.push('/')}
+              className="bg-primary px-6 py-3 rounded-xl active:opacity-80"
+            >
+              <Text className="text-base font-semibold text-text-inverse">
+                К калькуляторам
+              </Text>
+            </Pressable>
           </View>
         ) : (
-          <View className="gap-3 pb-6">
-            {filteredResults.map((result) => (
-              <Pressable
+          /* Calculation History List */
+          <View className="gap-4">
+            {items.map((result) => (
+              <View
                 key={result.id}
-                onPress={() => handleResultPress(result.id)}
-                className={`rounded-2xl p-5 border ${getResultColor(result.interpretation)} active:opacity-70`}
+                className="bg-surface-elevated rounded-2xl p-5 border border-border"
               >
-                <View className="flex-row items-start mb-3">
+                <View className="flex-row items-start justify-between mb-3">
                   <View className="flex-1">
-                    <View className="flex-row items-center mb-2">
-                      <Text className="text-xl mr-2">
-                        {getResultIcon(result.interpretation)}
-                      </Text>
-                      <Text className="text-base font-semibold text-text-primary">
-                        {result.calculator?.name || 'Calculator'}
-                      </Text>
+                    <Text className="text-lg font-bold text-text-primary mb-1">
+                      {result.calculatorName || 'Калькулятор'}
+                    </Text>
+                    <Text className="text-sm text-text-secondary">
+                      {formatDate(result.createdAt)}
+                    </Text>
+                  </View>
+                  <View className="bg-primary-light px-3 py-1 rounded-lg">
+                    <Text className="text-sm font-semibold text-primary">
+                      {result.result}
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Input Parameters */}
+                {result.inputData && Object.keys(result.inputData).length > 0 && (
+                  <View className="bg-surface rounded-xl p-3 mb-3">
+                    <Text className="text-xs font-semibold text-text-secondary mb-2">
+                      ПАРАМЕТРЫ
+                    </Text>
+                    <View className="gap-1">
+                      {Object.entries(result.inputData).map(([key, value]) => (
+                        <View key={key} className="flex-row justify-between">
+                          <Text className="text-sm text-text-secondary">{key}:</Text>
+                          <Text className="text-sm font-medium text-text-primary">
+                            {String(value)}
+                          </Text>
+                        </View>
+                      ))}
                     </View>
-                    <Text className="text-xs text-text-secondary capitalize mb-1">
-                      {result.calculator?.category}
+                  </View>
+                )}
+
+                {/* Interpretation */}
+                {result.interpretation && (
+                  <View className="bg-info-light border border-info rounded-xl p-3">
+                    <Text className="text-xs font-semibold text-info mb-1">
+                      ИНТЕРПРЕТАЦИЯ
                     </Text>
-                    <Text className="text-xs text-text-muted">
-                      {new Date(result.performedAt).toLocaleString('ru-RU')}
+                    <Text className="text-sm text-text-primary">
+                      {result.interpretation}
                     </Text>
                   </View>
-                  <View className="items-end ml-3">
-                    <Text className="text-2xl font-bold text-text-primary">
-                      {(() => {
-                        const v = (result as any).resultValue;
-                        if (typeof v === 'number' && isFinite(v)) return v.toFixed(1);
-                        if (typeof v === 'string' && v.trim() !== '' && !isNaN(Number(v))) return Number(v).toFixed(1);
-                        return '-';
-                      })()}
-                    </Text>
-                    <Text className="text-xs text-text-muted mt-1">→</Text>
-                  </View>
-                </View>
-                
-                <View className="bg-surface rounded-xl p-3 mt-2">
-                  <Text className="text-sm text-text-secondary" numberOfLines={2}>
-                    {result.interpretation}
-                  </Text>
-                </View>
-              </Pressable>
+                )}
+              </View>
             ))}
           </View>
         )}
+
+        {/* Bottom spacing for navigation */}
+        <View style={{ height: 100 }} />
       </ScrollView>
     </View>
   );

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set backend API port for frontend config (if not already set)
+export APP_PORT="${APP_PORT:-8000}"
+
 # Calculate Expo URL based on environment
 EXPO_PORT="${EXPO_WEB_PORT:-3001}"
 
