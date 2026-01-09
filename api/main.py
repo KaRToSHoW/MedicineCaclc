@@ -7,8 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.core.config import settings
-from app.core.database import engine
-from app.models import Base
+from app.core.firebase_auth import initialize_firebase
 from app.api.v1 import api_router
 
 
@@ -16,12 +15,9 @@ from app.api.v1 import api_router
 async def lifespan(app: FastAPI):
     """Application lifespan events"""
     # Startup
-    async with engine.begin() as conn:
-        # Create tables if they don't exist
-        await conn.run_sync(Base.metadata.create_all)
+    initialize_firebase()  # Initialize Firebase Admin SDK with service account
     yield
-    # Shutdown
-    await engine.dispose()
+    # Shutdown - nothing to cleanup
 
 
 app = FastAPI(

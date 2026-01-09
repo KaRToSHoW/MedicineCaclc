@@ -3,6 +3,7 @@ Application configuration
 """
 from pydantic_settings import BaseSettings
 from typing import List
+import os
 
 
 class Settings(BaseSettings):
@@ -26,8 +27,17 @@ class Settings(BaseSettings):
     ANALYTICS_API_KEY: str = ""
     FCM_SERVER_KEY: str = ""
     
+    # Firebase Configuration
+    FIREBASE_API_KEY: str = ""
+    FIREBASE_AUTH_DOMAIN: str = ""
+    FIREBASE_PROJECT_ID: str = ""
+    FIREBASE_STORAGE_BUCKET: str = ""
+    FIREBASE_MESSAGING_SENDER_ID: str = ""
+    FIREBASE_APP_ID: str = ""
+    
     class Config:
-        env_file = ".env"
+        # Look for .env in project root (parent of api directory)
+        env_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "..", ".env")
         case_sensitive = True
         extra = "ignore"  # Ignore extra env vars like EXPO_PUBLIC_*
 
