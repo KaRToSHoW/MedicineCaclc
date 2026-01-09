@@ -3,17 +3,22 @@
  * Placeholder for future statistics functionality
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function DashboardStatisticsScreen() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   // Redirect if not authenticated
-  if (!isAuthenticated) {
-    router.replace('/(auth)/sign-in');
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
+      router.replace('/(auth)/sign-in');
+    }
+  }, [isAuthenticated, isLoading]);
+
+  if (isLoading || !isAuthenticated) {
     return null;
   }
 

@@ -45,6 +45,7 @@ const getApiBaseUrl = (): string => {
 };
 
 export const API_BASE_URL = getApiBaseUrl();
+export const API_URL = API_BASE_URL; // Alias for compatibility
 
 export const API_ENDPOINTS = {
   health: `${API_BASE_URL}/api/v1/health`,

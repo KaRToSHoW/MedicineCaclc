@@ -10,19 +10,17 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCalculationResultsStore } from '@/stores/calculationResultsStore';
 
 export default function DashboardHistoryScreen() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { items, loading, fetchAll } = useCalculationResultsStore();
 
-  // Redirect if not authenticated
-  if (!isAuthenticated) {
-    router.replace('/(auth)/sign-in');
-    return null;
-  }
-
-  // Load calculation history on mount
+  // Load calculation history only when authenticated
   useEffect(() => {
-    fetchAll();
-  }, [fetchAll]);
+    if (!authLoading && isAuthenticated) {
+      fetchAll();
+    } else if (!authLoading && !isAuthenticated) {
+      router.replace('/(auth)/sign-in');
+    }
+  }, [isAuthenticated, authLoading, fetchAll]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

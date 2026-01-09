@@ -38,7 +38,7 @@ fi
 # Keep running and forward signals
 echo ""
 echo "═══════════════════════════════════════════"
-echo "  🏥 Медицинский Калькулятор"
+echo "  🫀 Клиренс креатинина"
 echo "═══════════════════════════════════════════"
 echo "  📱 Metro Bundler:  http://localhost:3001"
 echo "  🌐 Web Interface:  http://localhost:3000"

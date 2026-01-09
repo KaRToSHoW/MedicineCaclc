@@ -37,15 +37,18 @@ export const useCalculationResultsStore = create<CalculationResultsStore>((set) 
   },
 
   addItem: async (data: CreateCalculationResultInput | FormData) => {
+    set({ loading: true, error: null });
     try {
       const newItem = await calculationResultsService.create(data);
       set((state) => ({
-        items: [newItem, ...state.items]
+        items: [newItem, ...state.items],
+        loading: false,
+        error: null
       }));
       return newItem;
     } catch (error: any) {
       console.error('Failed to create calculation_result:', error);
-      set({ error: error.message || 'Failed to create calculation_result' });
+      set({ error: error.message || 'Failed to create calculation_result', loading: false });
       throw error;
     }
   },

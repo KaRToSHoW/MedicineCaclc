@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, TextInput, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '@/hooks/useAuth';
@@ -10,7 +10,7 @@ import { Alert } from '@/utils/alert';
  */
 
 export default function SettingsScreen() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   
@@ -18,6 +18,24 @@ export default function SettingsScreen() {
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Update form when user data loads
+  useEffect(() => {
+    if (user) {
+      setName(user.name || '');
+      setEmail(user.email || '');
+    }
+  }, [user]);
+
+  // Show loading indicator during auth state changes
+  if (isLoading) {
+    return (
+      <View className="flex-1 bg-surface items-center justify-center">
+        <ActivityIndicator size="large" color="#6366f1" />
+        <Text className="text-text-secondary mt-4">Загрузка...</Text>
+      </View>
+    );
+  }
 
   // Show login prompt if not authenticated
   if (!isAuthenticated) {

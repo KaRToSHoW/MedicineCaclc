@@ -1,7 +1,7 @@
 module.exports = {
   expo: {
-    name: 'Медицинский Калькулятор',
-    slug: 'medical-calculator',
+    name: 'Клиренс креатинина',
+    slug: 'creatinine-clearance',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',

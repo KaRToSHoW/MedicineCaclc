@@ -7,7 +7,7 @@ import { cockcroftGaultCalculator } from '@/lib/calculators/cockcroftGault';
 import type { InputField } from '@/lib/calculators/cockcroftGault';
 
 export default function CockcroftGaultScreen() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const { addItem: createResult, loading: calculating } = useCalculationResultsStore();
   
   const calculator = cockcroftGaultCalculator;
@@ -16,15 +16,21 @@ export default function CockcroftGaultScreen() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !isLoading) {
       router.replace('/(auth)/sign-in');
       return;
     }
     
-    // Initialize form
-    initializeForm();
+    if (isAuthenticated) {
+      // Initialize form
+      initializeForm();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isLoading]);
+
+  if (isLoading || !isAuthenticated) {
+    return null;
+  }
 
   const initializeForm = () => {
     const initialData: Record<string, any> = {};

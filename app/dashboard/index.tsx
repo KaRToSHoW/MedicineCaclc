@@ -3,17 +3,22 @@
  * Main dashboard with user info and quick actions
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function DashboardOverviewScreen() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
 
   // Redirect if not authenticated
-  if (!isAuthenticated) {
-    router.replace('/(auth)/sign-in');
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
+      router.replace('/(auth)/sign-in');
+    }
+  }, [isAuthenticated, isLoading]);
+
+  if (isLoading || !isAuthenticated) {
     return null;
   }
 
@@ -60,7 +65,7 @@ export default function DashboardOverviewScreen() {
         {/* Welcome Message */}
         <View className="bg-surface-elevated rounded-2xl p-6 mb-6 border border-border">
           <Text className="text-lg font-bold text-text-primary mb-4">
-            Личный кабинет
+            Профиль
           </Text>
           <Text className="text-sm text-text-secondary mb-4">
             Здесь будет отображаться информация о вашем профиле и активности.

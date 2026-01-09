@@ -3,14 +3,14 @@
  * User profile and settings
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, TextInput, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '@/hooks/useAuth';
 import { Alert } from '@/utils/alert';
 
 export default function DashboardProfileScreen() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   
@@ -20,8 +20,13 @@ export default function DashboardProfileScreen() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Redirect if not authenticated
-  if (!isAuthenticated) {
-    router.replace('/(auth)/sign-in');
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
+      router.replace('/(auth)/sign-in');
+    }
+  }, [isAuthenticated, isLoading]);
+
+  if (isLoading || !isAuthenticated) {
     return null;
   }
 
@@ -237,7 +242,7 @@ export default function DashboardProfileScreen() {
         {/* App Info */}
         <View className="items-center py-4">
           <Text className="text-xs text-text-muted mb-1">
-            Медицинский Калькулятор
+            Клиренс креатинина
           </Text>
           <Text className="text-xs text-text-muted">
             Версия 1.0.0

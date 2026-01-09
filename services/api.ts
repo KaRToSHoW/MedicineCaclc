@@ -80,13 +80,19 @@ class ApiService {
 
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
+      console.log('🔑 Using token (first 20 chars):', token.substring(0, 20) + '...');
+    } else {
+      console.log('⚠️ No token found in storage');
     }
 
     try {
+      console.log(`📡 ${options.method || 'GET'} ${url}`);
       const response = await fetch(url, {
         ...options,
         headers,
       });
+
+      console.log(`📥 Response: ${response.status} ${response.statusText}`);
 
       // For 204 No Content or empty responses, return null
       if (response.status === 204 || response.headers.get('content-length') === '0') {
@@ -99,13 +105,15 @@ class ApiService {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || data.errors?.join(', ') || 'Request failed');
+        console.error('❌ API Error:', data);
+        throw new Error(data.error || data.errors?.join(', ') || data.detail || 'Request failed');
       }
 
       // Convert snake_case response from Rails to camelCase for JS
       return keysToCamelCase(data);
     } catch (error) {
       if (error instanceof Error) {
+        console.error('❌ Request error:', error.message);
         throw error;
       }
       throw new Error('Network request failed');

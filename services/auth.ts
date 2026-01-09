@@ -13,12 +13,13 @@ import {
   signOut,
   onAuthStateChanged,
   getIdToken,
+  User as FirebaseUser,
 } from 'firebase/auth';
 
 class AuthService {
   async login({ email, password }: { email: string; password: string }) {
     const result = await signInWithEmailAndPassword(auth, email, password);
-    const token = await getIdToken(result.user);
+    const token = await getIdToken(result.user, true); // Force refresh
     await storage.set('session_token', token);
     await storage.set('uid', result.user.uid);
     return { sessionToken: token, user: { id: result.user.uid, email: result.user.email } } as any;
@@ -26,7 +27,7 @@ class AuthService {
 
   async signup({ email, password }: { email: string; password: string }) {
     const result = await createUserWithEmailAndPassword(auth, email, password);
-    const token = await getIdToken(result.user);
+    const token = await getIdToken(result.user, true); // Force refresh
     await storage.set('session_token', token);
     await storage.set('uid', result.user.uid);
     return { sessionToken: token, user: { id: result.user.uid, email: result.user.email } } as any;
@@ -51,6 +52,20 @@ class AuthService {
   async isAuthenticated(): Promise<boolean> {
     const token = await storage.get('session_token');
     return !!token;
+  }
+
+  async refreshToken(): Promise<string | null> {
+    const user = auth.currentUser;
+    if (!user) return null;
+    
+    try {
+      const token = await getIdToken(user, true); // Force refresh
+      await storage.set('session_token', token);
+      return token;
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      return null;
+    }
   }
 }
 

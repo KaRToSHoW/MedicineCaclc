@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -8,31 +8,32 @@ import { useAuth } from '@/hooks/useAuth';
  */
 
 export default function HomeScreen() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
+
+  // Show loading indicator during auth state changes
+  if (isLoading) {
+    return (
+      <View className="flex-1 bg-surface items-center justify-center">
+        <ActivityIndicator size="large" color="#6366f1" />
+        <Text className="text-text-secondary mt-4">Загрузка...</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView className="flex-1 bg-surface-secondary" contentContainerStyle={{ paddingBottom: 80 }}>
-      {/* Header with Gradient - Mobile Optimized */}
-      <View className="bg-gradient-primary px-4 pt-12 pb-6 shadow-xl">
+      {/* Header with Solid Background - Mobile Optimized */}
+      <View className="bg-primary px-4 pt-12 pb-6 shadow-xl">
         <View className="flex-row items-start justify-between mb-4">
           <View className="flex-1">
             <Text className="text-2xl font-bold text-text-inverse mb-2">
-              🏥 Медицинский калькулятор
+              🫀 Клиренс креатинина
             </Text>
             <Text className="text-sm text-text-inverse opacity-95">
-              Профессиональные клинические расчеты
+              Расчет по формуле Cockcroft-Gault
             </Text>
           </View>
-          {isAuthenticated ? (
-            <Pressable
-              onPress={() => router.push('/dashboard')}
-              className="bg-surface rounded-button px-3 py-2 shadow-card active:opacity-80"
-            >
-              <Text className="text-xs text-primary font-bold">
-                👤 Кабинет
-              </Text>
-            </Pressable>
-          ) : (
+          {!isAuthenticated ? (
             <Pressable
               onPress={() => router.push('/(auth)/sign-in')}
               className="bg-surface rounded-button px-3 py-2 shadow-card active:opacity-80"
@@ -41,7 +42,7 @@ export default function HomeScreen() {
                 Войти
               </Text>
             </Pressable>
-          )}
+          ) : null}
         </View>
       </View>
 
@@ -52,15 +53,15 @@ export default function HomeScreen() {
             Добро пожаловать! 👋
           </Text>
           <Text className="text-sm text-text-secondary text-center leading-5">
-            Система готова к работе. Здесь будут отображаться основные функции приложения.
+            Калькулятор клиренса креатинина для оценки функции почек и коррекции доз лекарственных препаратов.
           </Text>
         </View>
       </View>
 
-      {/* Calculators Section */}
+      {/* Calculator Section */}
       <View className="px-4 pb-4">
         <Text className="text-lg font-bold text-text-primary mb-3">
-          Калькуляторы
+          Калькулятор
         </Text>
         <Pressable
           onPress={() => router.push('/cockcroft-gault')}
@@ -83,39 +84,6 @@ export default function HomeScreen() {
         </Pressable>
       </View>
 
-      {/* Quick Actions - Mobile Optimized */}
-      <View className="px-4 pb-4">
-        <Text className="text-lg font-bold text-text-primary mb-3">
-          Быстрые действия
-        </Text>
-        <View className="flex-row gap-3">
-          {isAuthenticated ? (
-            <Pressable
-              onPress={() => router.push('/dashboard')}
-              className="flex-1 bg-surface rounded-card p-4 shadow-card-hover active:opacity-80"
-            >
-              <Text className="text-2xl mb-2">👤</Text>
-              <Text className="text-sm font-bold text-text-primary">Личный кабинет</Text>
-            </Pressable>
-          ) : (
-            <Pressable
-              onPress={() => router.push('/(auth)/sign-in')}
-              className="flex-1 bg-surface rounded-card p-4 shadow-card-hover active:opacity-80"
-            >
-              <Text className="text-2xl mb-2">🔑</Text>
-              <Text className="text-sm font-bold text-text-primary">Войти</Text>
-            </Pressable>
-          )}
-          <Pressable
-            onPress={() => router.push('/settings')}
-            className="flex-1 bg-surface rounded-card p-4 shadow-card-hover active:opacity-80"
-          >
-            <Text className="text-2xl mb-2">⚙️</Text>
-            <Text className="text-sm font-bold text-text-primary">Настройки</Text>
-          </Pressable>
-        </View>
-      </View>
-
       {/* Info Note - Mobile Optimized */}
       <View className="px-4 pb-6">
         <View className="bg-info-bg border-2 border-info rounded-card p-3 shadow-soft">
@@ -126,7 +94,7 @@ export default function HomeScreen() {
                 Медицинский дисклеймер
               </Text>
               <Text className="text-xs text-text-secondary leading-4">
-                Эти калькуляторы предоставляют оценки на основе стандартных медицинских формул.
+                Этот калькулятор предоставляет оценки на основе стандартной медицинской формулы.
                 {' '}Всегда консультируйтесь с квалифицированным медицинским специалистом.
               </Text>
             </View>

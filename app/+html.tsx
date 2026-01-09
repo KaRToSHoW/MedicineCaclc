@@ -20,7 +20,7 @@ export default function Root({ children }: PropsWithChildren) {
         <meta name="theme-color" content="#2d6caa" />
         
         {/* PWA Meta Tags */}
-        <meta name="application-name" content="Медицинский Калькулятор" />
+        <meta name="application-name" content="Клиренс креатинина" />
         <meta name="apple-mobile-web-app-title" content="Медкальк" />
 
         {/* 
@@ -30,8 +30,8 @@ export default function Root({ children }: PropsWithChildren) {
         <ScrollViewStyleReset />
 
         {/* Add any additional <head> elements that you want globally available on web... */}
-        <title>Медицинский Калькулятор - Профессиональные клинические расчеты</title>
-        <meta name="description" content="Профессиональный медицинский калькулятор с 30+ клиническими расчетами. Кардиология, нефрология, педиатрия и другие." />
+        <title>Клиренс креатинина - Расчет по формуле Cockcroft-Gault</title>
+        <meta name="description" content="Калькулятор клиренса креатинина для оценки функции почек и коррекции доз лекарственных препаратов по формуле Cockcroft-Gault." />
       </head>
       <body>{children}</body>
     </html>
