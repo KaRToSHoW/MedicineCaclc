@@ -68,7 +68,28 @@ class ApiService {
     options: RequestInit = {},
     skipJsonConversion: boolean = false
   ): Promise<T> {
-    const token = await storage.get('session_token');
+    // Refresh token before each request to ensure it's fresh
+    let token = await storage.get('session_token');
+    
+    // Try to refresh token if available
+    if (token) {
+      try {
+        const { auth } = await import('./firebase');
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          const { getIdToken } = await import('firebase/auth');
+          const freshToken = await getIdToken(currentUser, false); // Don't force refresh, but ensure it's valid
+          if (freshToken && freshToken !== token) {
+            await storage.set('session_token', freshToken);
+            token = freshToken;
+            console.log('🔄 Token refreshed automatically');
+          }
+        }
+      } catch (error) {
+        console.warn('⚠️ Failed to refresh token:', error);
+        // Continue with existing token
+      }
+    }
     const headers: Record<string, string> = {
       ...(options.headers as Record<string, string>),
     };
@@ -80,7 +101,7 @@ class ApiService {
 
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
-      console.log('🔑 Using token (first 20 chars):', token.substring(0, 20) + '...');
+      console.log(`🔑 Using token (first 20 chars): ${token.substring(0, 20)}...`);
     } else {
       console.log('⚠️ No token found in storage');
     }
@@ -106,6 +127,22 @@ class ApiService {
 
       if (!response.ok) {
         console.error('❌ API Error:', data);
+        
+        // If unauthorized, clear session and redirect to login
+        if (response.status === 401 || response.status === 403) {
+          console.log('🚪 Auto-logout: Token invalid or expired');
+          await storage.remove('session_token');
+          await storage.remove('uid');
+          // Trigger logout in auth service
+          try {
+            const { auth } = await import('./firebase');
+            const { signOut } = await import('firebase/auth');
+            await signOut(auth);
+          } catch (e) {
+            console.warn('Failed to sign out:', e);
+          }
+        }
+        
         throw new Error(data.error || data.errors?.join(', ') || data.detail || 'Request failed');
       }
 
@@ -175,6 +212,30 @@ class ApiService {
 
   async delete<T>(url: string): Promise<T> {
     return this.request<T>(url, { method: 'DELETE' });
+  }
+
+  async patch<T>(url: string, data?: any, options?: RequestInit): Promise<T> {
+    // For FormData (file uploads), pass directly without conversion
+    if (data instanceof FormData) {
+      const { headers: _ignoredHeaders, ...restOptions } = options || {};
+      return this.request<T>(
+        url,
+        {
+          method: 'PATCH',
+          body: data,
+          ...restOptions,
+        },
+        true // Skip Content-Type header for FormData
+      );
+    }
+
+    // Convert camelCase request to snake_case for Rails
+    const snakeCaseData = data ? keysToSnakeCase(data) : undefined;
+    return this.request<T>(url, {
+      method: 'PATCH',
+      body: snakeCaseData ? JSON.stringify(snakeCaseData) : undefined,
+      ...options,
+    });
   }
 }
 

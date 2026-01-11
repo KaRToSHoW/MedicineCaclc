@@ -2,36 +2,46 @@
 Profile API endpoints
 """
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
+from typing import Dict, Any
 
-from app.core.database import get_db
 from app.core.firebase_auth import get_current_user_firebase
-from app.models import User
-from app.schemas import UserResponse, ProfileUpdate
+from app.core.firestore import get_firestore_client
+from app.schemas import ProfileUpdate
 
 router = APIRouter()
 
 
-@router.get("/profiles/me", response_model=UserResponse)
-async def get_profile(current_user: User = Depends(get_current_user_firebase)):
+@router.get("/profiles/me")
+async def get_profile(current_user: Dict[str, Any] = Depends(get_current_user_firebase)):
     """Get current user profile"""
     return current_user
 
 
-@router.patch("/profiles/me", response_model=UserResponse)
+@router.patch("/profiles/me")
 async def update_profile(
     profile_data: ProfileUpdate,
-    current_user: User = Depends(get_current_user_firebase),
-    db: AsyncSession = Depends(get_db)
+    current_user: Dict[str, Any] = Depends(get_current_user_firebase)
 ):
     """Update current user profile"""
+    db = get_firestore_client()
+    users_ref = db.collection('users')
+    user_doc_ref = users_ref.document(current_user['id'])
+    
+    # Prepare update data
+    update_data = {}
     if profile_data.name is not None:
-        current_user.name = profile_data.name
+        update_data['name'] = profile_data.name
     
     if profile_data.email is not None:
-        current_user.email = profile_data.email
+        update_data['email'] = profile_data.email
     
-    await db.commit()
-    await db.refresh(current_user)
+    # Update Firestore document
+    if update_data:
+        user_doc_ref.update(update_data)
+        
+        # Get updated user data
+        updated_doc = user_doc_ref.get()
+        if updated_doc.exists:
+            return updated_doc.to_dict()
     
     return current_user

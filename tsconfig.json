@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "types": ["jest"],
+    "module": "esnext",
     "baseUrl": ".",
     "resolveJsonModule": true,
     "esModuleInterop": true,

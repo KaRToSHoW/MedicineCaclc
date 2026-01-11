@@ -2,11 +2,10 @@
 External integrations API endpoints
 """
 from fastapi import APIRouter, Depends, HTTPException
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
 
-from app.core.security import get_current_user, get_current_user_optional
-from app.models import User
+from app.core.firebase_auth import get_current_user_firebase
 from app.services.external_integrations import medical_data_service
 
 router = APIRouter()
@@ -26,7 +25,7 @@ class ICD10SearchResponse(BaseModel):
 @router.post("/integrations/reference-ranges")
 async def get_reference_ranges(
     query: ReferenceRangeQuery,
-    current_user: Optional[User] = Depends(get_current_user_optional)
+    current_user: Optional[Dict[str, Any]] = Depends(get_current_user_firebase)
 ):
     """Get medical reference ranges"""
     result = medical_data_service.get_reference_ranges(
@@ -44,7 +43,7 @@ async def get_reference_ranges(
 @router.get("/integrations/icd10/search", response_model=List[ICD10SearchResponse])
 async def search_icd10(
     q: str,
-    current_user: Optional[User] = Depends(get_current_user_optional)
+    current_user: Optional[Dict[str, Any]] = Depends(get_current_user_firebase)
 ):
     """Search ICD-10 diagnostic codes"""
     if not q or len(q) < 2:
