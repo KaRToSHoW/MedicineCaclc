@@ -5,6 +5,17 @@
 # Set backend API port for frontend config
 export APP_PORT=8000
 
+# Pass through Clacky environment variables if they exist
+if [ -n "$CLACKY_PREVIEW_DOMAIN_BASE" ]; then
+  export CLACKY_PREVIEW_DOMAIN_BASE="$CLACKY_PREVIEW_DOMAIN_BASE"
+  echo "📍 Detected Clacky environment: https://8000${CLACKY_PREVIEW_DOMAIN_BASE}"
+fi
+
+if [ -n "$PUBLIC_HOST" ]; then
+  export PUBLIC_HOST="$PUBLIC_HOST"
+  echo "📍 Using PUBLIC_HOST: https://$PUBLIC_HOST"
+fi
+
 # Start Metro Bundler in background
 echo "🚀 Starting Metro Bundler on port 3001..."
 ./scripts/start-expo.sh > /tmp/metro.log 2>&1 &

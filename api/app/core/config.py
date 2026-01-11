@@ -11,11 +11,13 @@ class Settings(BaseSettings):
     
     PROJECT_NAME: str = "Medical Calculator API"
     
-    # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@127.0.0.1:5432/medical_calculator_development"
-    
-    # CORS
-    ALLOWED_ORIGINS: List[str] = ["*"]
+    # CORS - Allow Clacky preview domains and localhost
+    ALLOWED_ORIGINS: List[str] = [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://3000-1bca4202989e-web.clackypaas.com",
+        "https://3001-1bca4202989e-web.clackypaas.com",
+    ]
     
     # JWT
     SECRET_KEY: str = "your-secret-key-change-this-in-production"

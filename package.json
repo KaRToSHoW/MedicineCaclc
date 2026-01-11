@@ -8,7 +8,7 @@
     "web": "npx dotenv-cli -- ./scripts/start-expo.sh --web",
     "android": "npx dotenv-cli -- ./scripts/start-expo.sh --android",
     "ios": "npx dotenv-cli -- ./scripts/start-expo.sh --ios",
-    "start-backend": "/home/runner/.pyenv/shims/python3 api/main.py",
+    "start-backend": "python3 api/main.py",
     "gen": "node scripts/generators/index.js",
     "test": "run-p lint test:jest",
     "test:jest": "jest",

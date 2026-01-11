@@ -28,7 +28,7 @@ module.exports = {
     },
     extra: {
       // Use EXPO_PUBLIC_ prefixed variables (Expo convention)
-      APP_PORT: process.env.EXPO_PUBLIC_APP_PORT || '8000',
+      APP_PORT: process.env.EXPO_PUBLIC_APP_PORT || process.env.APP_PORT || '8000',
       PUBLIC_HOST: process.env.EXPO_PUBLIC_PUBLIC_HOST || process.env.PUBLIC_HOST || '',
       CLACKY_PREVIEW_DOMAIN_BASE: process.env.EXPO_PUBLIC_CLACKY_PREVIEW_DOMAIN_BASE || process.env.CLACKY_PREVIEW_DOMAIN_BASE || '',
     },

@@ -99,13 +99,13 @@ export default function DashboardHistoryScreen() {
                   </View>
                   <View className="bg-primary-light px-3 py-1 rounded-lg">
                     <Text className="text-sm font-semibold text-primary">
-                      {result.result}
+                      {result.resultValue}
                     </Text>
                   </View>
                 </View>
 
                 {/* Input Parameters */}
-                {result.inputData && Object.keys(result.inputData).length > 0 && (
+                {result.inputData && Object.keys(result.inputData).length > 0 ? (
                   <View className="bg-surface rounded-xl p-3 mb-3">
                     <Text className="text-xs font-semibold text-text-secondary mb-2">
                       ПАРАМЕТРЫ
@@ -121,10 +121,10 @@ export default function DashboardHistoryScreen() {
                       ))}
                     </View>
                   </View>
-                )}
+                ) : null}
 
                 {/* Interpretation */}
-                {result.interpretation && (
+                {result.interpretation ? (
                   <View className="bg-info-light border border-info rounded-xl p-3">
                     <Text className="text-xs font-semibold text-info mb-1">
                       ИНТЕРПРЕТАЦИЯ
@@ -133,7 +133,7 @@ export default function DashboardHistoryScreen() {
                       {result.interpretation}
                     </Text>
                   </View>
-                )}
+                ) : null}
               </View>
             ))}
           </View>

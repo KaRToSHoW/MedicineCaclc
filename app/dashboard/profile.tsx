@@ -7,17 +7,47 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, TextInput, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfileStore } from '@/stores/profileStore';
+import { useCalculationResultsStore } from '@/stores/calculationResultsStore';
 import { Alert } from '@/utils/alert';
 
 export default function DashboardProfileScreen() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const { profile, loading: profileLoading, fetchProfile, updateProfile } = useProfileStore();
+  const { items: calculationResults, fetchAll: fetchCalculations } = useCalculationResultsStore();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   
   // Form state
-  const [name, setName] = useState(user?.name || '');
-  const [email, setEmail] = useState(user?.email || '');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Load profile from database
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchProfile().catch(err => {
+        console.error('Failed to load profile:', err);
+      });
+    }
+  }, [isAuthenticated, fetchProfile]);
+
+  // Update form when profile loads
+  useEffect(() => {
+    if (profile) {
+      setName(profile.name || '');
+      setEmail(profile.email || '');
+    }
+  }, [profile]);
+
+  // Load calculation results for statistics
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchCalculations().catch(err => {
+        console.error('Failed to load calculations:', err);
+      });
+    }
+  }, [isAuthenticated, fetchCalculations]);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -52,11 +82,7 @@ export default function DashboardProfileScreen() {
 
     try {
       setLoading(true);
-      // TODO: Implement API call to update user profile
-      // await updateProfile({ name, email });
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await updateProfile({ name, email });
       
       Alert.alert('Успех', 'Профиль успешно обновлен');
       setIsEditing(false);
@@ -68,8 +94,8 @@ export default function DashboardProfileScreen() {
   };
 
   const handleCancel = () => {
-    setName(user?.name || '');
-    setEmail(user?.email || '');
+    setName(profile?.name || '');
+    setEmail(profile?.email || '');
     setErrors({});
     setIsEditing(false);
   };
@@ -107,12 +133,18 @@ export default function DashboardProfileScreen() {
           <View className="w-28 h-28 bg-primary rounded-full items-center justify-center mb-4 shadow-card">
             <Text className="text-6xl">👤</Text>
           </View>
-          <Text className="text-2xl font-bold text-text-primary mb-1">
-            {user?.name || 'Пользователь'}
-          </Text>
-          <Text className="text-base text-text-secondary">
-            {user?.email || 'email@example.com'}
-          </Text>
+          {profileLoading ? (
+            <ActivityIndicator size="small" color="#6366f1" />
+          ) : (
+            <>
+              <Text className="text-2xl font-bold text-text-primary mb-1">
+                {profile?.name || user?.name || 'Пользователь'}
+              </Text>
+              <Text className="text-base text-text-secondary">
+                {profile?.email || user?.email || 'email@example.com'}
+              </Text>
+            </>
+          )}
         </View>
 
         {/* Profile Section */}
@@ -214,11 +246,11 @@ export default function DashboardProfileScreen() {
           </Text>
           <View className="flex-row gap-3">
             <View className="flex-1 bg-surface border border-border rounded-xl p-4 items-center">
-              <Text className="text-3xl font-bold text-primary mb-1">0</Text>
+              <Text className="text-3xl font-bold text-primary mb-1">{calculationResults.length}</Text>
               <Text className="text-sm text-text-secondary text-center">Расчётов</Text>
             </View>
             <View className="flex-1 bg-surface border border-border rounded-xl p-4 items-center">
-              <Text className="text-3xl font-bold text-primary mb-1">0</Text>
+              <Text className="text-3xl font-bold text-primary mb-1">{calculationResults.length}</Text>
               <Text className="text-sm text-text-secondary text-center">Сохранено</Text>
             </View>
           </View>

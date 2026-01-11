@@ -4,6 +4,21 @@ This is an Expo + Python FastAPI full-stack template:
 - Frontend: Expo (React Native) with Expo Router and NativeWind
 - Backend: Python FastAPI (in `api/` directory)
 
+## ⚠️ IMPORTANT: Firebase Configuration Required
+
+**DO NOT install PostgreSQL** - this project uses Firebase Firestore only.
+
+**Before running the project:**
+1. Firebase service account JSON file is REQUIRED
+2. File must be placed in project root: `medcalc-71fb2-firebase-adminsdk-fbsvc-14a7ed45c0.json`
+3. If missing, request from project owner
+4. Backend will fail to start without this file
+
+**Get service account from Firebase Console:**
+- Go to Firebase Console > Project Settings > Service Accounts
+- Click "Generate new private key"
+- Save JSON file with the exact name above
+
 ## Startup Commands
 
 **Frontend (Expo):**
@@ -37,9 +52,8 @@ Restarting the Expo dev server is unnecessary because it automatically hot-reloa
 ### Backend
 - Python 3.x
 - FastAPI 0.115.5 (async web framework)
-- SQLAlchemy 2.0.36 (async ORM)
-- PostgreSQL (via asyncpg)
 - Pydantic 2.10.3 (data validation)
+- Firebase Admin SDK (authentication & Firestore)
 - JWT authentication (python-jose)
 - Uvicorn (ASGI server)
 
@@ -256,14 +270,12 @@ cd api && python -m pytest
 api/
 ├── main.py                 # FastAPI app entry point
 ├── requirements.txt        # Python dependencies
-├── seed_data.py           # Database seeding script
 └── app/
     ├── core/
     │   ├── config.py      # Application settings
-    │   ├── database.py    # SQLAlchemy setup
+    │   ├── firebase_auth.py # Firebase authentication
+    │   ├── firestore.py   # Firestore database client
     │   └── security.py    # JWT & password hashing
-    ├── models/
-    │   └── __init__.py    # SQLAlchemy models
     ├── schemas.py         # Pydantic schemas
     └── api/
         └── v1/            # API endpoints
@@ -278,21 +290,17 @@ api/
 ### Key Files
 
 **api/main.py** - FastAPI application with CORS and lifespan management
-**api/app/core/config.py** - Settings (DATABASE_URL, SECRET_KEY, etc.)
-**api/app/core/database.py** - Async SQLAlchemy engine and session
+**api/app/core/config.py** - Settings (SECRET_KEY, Firebase config, etc.)
+**api/app/core/firebase_auth.py** - Firebase Admin SDK initialization and authentication
+**api/app/core/firestore.py** - Firestore database client and operations
 **api/app/core/security.py** - JWT token creation and password hashing
-**api/app/models/__init__.py** - Database models (User, Calculator, CalculationResult, etc.)
 **api/app/schemas.py** - Pydantic request/response models
-**api/seed_data.py** - Seeds database with initial calculator data
 
 ### Running Backend
 
 ```bash
 # Install dependencies
 cd api && python3 -m pip install -r requirements.txt
-
-# Seed database
-python3 seed_data.py
 
 # Start server
 npm run start-backend

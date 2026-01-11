@@ -51,6 +51,15 @@ export default function DashboardOverviewScreen() {
               </Text>
             </Pressable>
             <Pressable
+              onPress={() => router.push('/dashboard/statistics')}
+              className="flex-1 bg-surface-elevated rounded-xl p-4 border border-border active:opacity-80"
+            >
+              <Text className="text-3xl mb-2 text-center">📊</Text>
+              <Text className="text-sm font-semibold text-text-primary text-center">
+                Статистика
+              </Text>
+            </Pressable>
+            <Pressable
               onPress={() => router.push('/settings')}
               className="flex-1 bg-surface-elevated rounded-xl p-4 border border-border active:opacity-80"
             >

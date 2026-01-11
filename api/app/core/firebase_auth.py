@@ -18,7 +18,7 @@ security = HTTPBearer()
 def initialize_firebase():
     """Initialize Firebase Admin SDK with service account credentials"""
     if not firebase_admin._apps:
-        # Path to service account JSON file
+        # Try to load from JSON file first (for local development)
         cred_path = os.path.join(
             os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
             '..',
@@ -28,9 +28,16 @@ def initialize_firebase():
         if os.path.exists(cred_path):
             cred = credentials.Certificate(cred_path)
             firebase_admin.initialize_app(cred)
-            print(f"✅ Firebase Admin SDK initialized with service account")
+            print(f"✅ Firebase Admin SDK initialized with service account file")
         else:
-            raise Exception(f"Service account file not found: {cred_path}")
+            # Fall back to default credentials (uses GOOGLE_APPLICATION_CREDENTIALS env var or Application Default Credentials)
+            try:
+                firebase_admin.initialize_app()
+                print(f"✅ Firebase Admin SDK initialized with default credentials")
+            except Exception as e:
+                print(f"⚠️ Warning: Firebase Admin SDK initialization failed: {e}")
+                print(f"⚠️ Firebase authentication will not work. Please provide service account credentials.")
+                # Don't raise - allow app to start for development without Firebase auth
 
 
 async def get_current_user_firebase(

@@ -161,3 +161,4 @@ class FirestoreCalculationResult:
                 return True
         
         return False
+
